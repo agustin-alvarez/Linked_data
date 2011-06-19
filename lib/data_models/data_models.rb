@@ -6,7 +6,7 @@ module DataModels
      models = []
 
      Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
-       models << file.gsub(RAILS_ROOT+'/app/models',"").gsub('.rb','').classify.gsub(":","")
+       models << file.gsub(RAILS_ROOT+'/app/models',"").gsub('.rb','').camelize
      end
 
      models
