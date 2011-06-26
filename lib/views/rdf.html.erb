@@ -1,0 +1,6 @@
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  <%= get_namespaces @namespaces -%>
+>
+<%= generate_rdf_request(@request,@namespaces) -%>
+</rdf:RDF>
