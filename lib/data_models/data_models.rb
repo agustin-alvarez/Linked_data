@@ -1,14 +1,19 @@
 module DataModels
-    
   
    def self.load_models
   
      models = []
-
-     Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
-       models << file.gsub(RAILS_ROOT+'/app/models',"").gsub('.rb','').camelize
-     end
-
+     
+       
+      Dir["/home/jnillo/Documentos/Proyectos/redmine/app/models/**/*.rb"].each do |file|
+         models << file.gsub('/home/jnillo/Documentos/Proyectos/redmine/app/models/',"").gsub('.rb','').gsub(":","")
+      end
+ 
+     
+      # Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
+      #   models << file.gsub(RAILS_ROOT+'/app/models/',"").gsub('.rb','').classify.gsub(":","")
+      # end
+     
      models
   
   end
@@ -24,5 +29,5 @@ module DataModels
   def self.build_models_yaml_file
 
   	self.models
-
+  end
 end
