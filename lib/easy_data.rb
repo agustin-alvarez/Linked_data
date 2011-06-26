@@ -1,7 +1,7 @@
-require "linked_data/version"
+require "easy_data/version"
 require "data_models/data_models"
 
-module LinkedData
+module EasyData
   
   def show_linked_data
     models = LinkedData.find :all

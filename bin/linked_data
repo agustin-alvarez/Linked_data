@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "lib/data_models/data_models"
 
 puts DataModels.load_models
