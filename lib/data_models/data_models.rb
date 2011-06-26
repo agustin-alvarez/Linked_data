@@ -4,7 +4,7 @@ module DataModels
   
      models = []
      
-       
+      #To test executable /bin/linked_data
       Dir["/home/jnillo/Documentos/Proyectos/redmine/app/models/**/*.rb"].each do |file|
          models << file.gsub('/home/jnillo/Documentos/Proyectos/redmine/app/models/',"").gsub('.rb','').gsub(":","")
       end
