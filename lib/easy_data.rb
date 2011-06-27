@@ -1,24 +1,11 @@
 require "easy_data/version"
 require "data_models/data_models"
 require "action_controller"
-
+require "controllers/easy_datas_controller"
+require "routes"
 
 module EasyData
 
-  module Routing 
-    module MapperExtensions
-      def easy_datas
-        @set.add_route "foaf/:model/:id.:format", :controller => "easy_datas", 
-                                                  :action => 'show',
-                                                  :conditions => {:method => :get},
-                                                  :only => [:show]
-
-     end
-    end
-  end
-  
-  
-  
   def show_linked_data
     models = LinkedData.find :all
   end
@@ -50,31 +37,4 @@ module EasyData
  
 end
 
-class EasyDatasController < ActionController::Base
 
-  def show
-    begin
-      model = eval params[:model].to_s
-       
-      if params[:id]
-        @request = model.find params[:id]
-      else
-        @request = model.all
-      end
-
-      render :xml => @request
-    rescue
-      redirect_to :action => :describe_api
-    end
-  end
-
-  def describe_api
-      models = DataModels.load_models
-      list = {}
-      models.each do |mod|
-       list[mod] = "foaf/#{mod}"
-      end
-
-      render :xml => list
-  end
-end

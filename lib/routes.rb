@@ -1,5 +1,13 @@
 require "action_controller"
 
-ActionController::Routing::Routes.add_route "foaf/:model/:id.:format", :controller => "easy_datas", :action => "show"
+module EasyDataRouting 
+    def self.routes(map)
+       map.connect "foaf/:model/:id.:format", :controller => "easy_datas", 
+                                              :action => 'show',
+                                              :conditions => {:method => :get}
 
-#ActionController::Routing::Routes.reload
+       map.connect "list_models.:format", :controller => "easy_datas", 
+                                          :action => 'describe_api'
+    end
+end
+

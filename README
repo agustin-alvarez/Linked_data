@@ -8,6 +8,11 @@ begin
 rescue LoadError
 end
 
+In config/routes.rb at the end of routes declarations include:
+
+EasyDataRouting.routes(map)
+
+
 Commandas and Query
 ======================
 
