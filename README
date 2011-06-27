@@ -1,6 +1,26 @@
-This is a gem proyect.
+Installation
+===============
 
-This gem auto-generate Linked data information about models in Ruby on
-Rails projects.
+copy this lines to config/environment.rb:
+
+begin 
+  require "easy_data"
+rescue LoadError
+end
+
+Commandas and Query
+======================
+
+To get all possibles querys and URI's offers use this url:
+
+  http://[project_host]/list_models
+
+After, to get any information about any model or resource, used this url: 
+
+  http://[project_host]/foaf/[model]/[id][.format]
+
+[model] = any model list in first url
+[id] = to get any information with primary key
+[format] = this is for advance users, get response in this format
 
 
