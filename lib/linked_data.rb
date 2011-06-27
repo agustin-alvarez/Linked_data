@@ -1,5 +1,11 @@
 require "linked_data/version"
+require "data_models/data_models"
 
 module LinkedData
-  # Your code goes here...
+  
+  
+
+  def show_linked_data
+  end
+
 end
