@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
+
+
 require "easy_data/version"
 
 Gem::Specification.new do |s|
@@ -21,7 +23,7 @@ Gem::Specification.new do |s|
   #gem dependencies:
   #All is not necesary, only is for study his methods
 
-    #s.add_dependency(%q<addressable>, ["= 2.2.4"])
+    s.add_dependency(%q<hpricot>, [">= 0.8.4"])
     #s.add_dependency(%q<rdf>, [">= 0"])
     #s.add_dependency(%q<haml>, [">= 3.0.0"])
     #s.add_dependency(%q<nokogiri>, [">= 1.3.3"])

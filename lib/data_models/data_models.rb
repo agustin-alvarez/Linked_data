@@ -11,7 +11,7 @@ module DataModels
  
      
        Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
-         models << file.gsub(RAILS_ROOT+'/app/models/',"").gsub('.rb','').classify.gsub(":","")
+         models << file.gsub(RAILS_ROOT+'/app/models/',"").gsub('.rb','').classify
        end
      
      models
@@ -27,7 +27,14 @@ module DataModels
   end
 
   def self.build_models_yaml_file
-
   	self.models
+  end
+
+  def self.get_model_data(model)
+    begin 
+      eval model 
+    rescue 
+      eval model.pluralize 
+    end
   end
 end
