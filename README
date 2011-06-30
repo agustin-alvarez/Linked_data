@@ -12,6 +12,10 @@ In config/routes.rb at the end of routes declarations include:
 
 EasyDataRouting.routes(map)
 
+At the end, in [RAILS_HOME]/Rakefile copy this line:
+
+require "easy_data/tasks" 
+
 
 Commandas and Query
 ======================

@@ -1,0 +1,19 @@
+<div id="list_attributes" class="model_attributes">
+<%if @model_attributes.respond_to?:each%>
+   <ul>
+     <%@model_attributes.each do |att,properties|%>
+       <li><%=att%><br />
+          <% unless properties[:privacy].nil?%> 
+            <%= "privacy: #{properties[:privacy]}"%> 
+            <br />
+            <%= "rdf_type: #{properties[:rdf_type]}"%>
+          <% else %>
+            <%=properties%>
+          <% end%>
+       </li>
+     <%end%>
+   </ul>
+<%else%>
+ <span>Model no found</span>
+<%end%>
+</div>

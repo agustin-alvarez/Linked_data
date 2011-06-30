@@ -2,9 +2,11 @@ require "easy_data/version"
 require "data_models/data_models"
 require "action_controller"
 require "controllers/easy_datas_controller"
+require "data_models/model_rdf"
 require "routes"
 require 'ftools'
 
+ActionController::Base.view_paths << File.join(File.dirname(__FILE__), 'easy_data/templates')
 
 module EasyData
 

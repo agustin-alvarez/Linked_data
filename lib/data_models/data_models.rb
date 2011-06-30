@@ -18,16 +18,23 @@ module DataModels
   
   end
 
-  def self.model_attributes(model)
-  	
-  	clase = eval model
-  	
-  	clase.columns.map{|att| [att.name,att.type]}
-  	
+  def self.model_attributes(model)      
+      model.columns.map{|att| att.name}.join(", ")
+  end
+
+  def self.model_relations(model)
+
+    relations = {}
+	
+    model.reflections.each do |relation,values|  
+      relations[relation] = {"model" => values.class_name,"type" => values.macro.to_s} 
+    end   	
+   
+    relations
   end
 
   def self.build_models_yaml_file
-  	self.models
+    self.models
   end
 
   def self.get_model_data(model)

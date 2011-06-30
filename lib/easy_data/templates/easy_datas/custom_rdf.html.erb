@@ -1,0 +1,22 @@
+<h2>Model List</h2>
+<hr/>
+<%if @models.respond_to?:each%>
+ <ul>
+   <%@models.each do |model|%>
+     <li>
+          <h2><%= model %></h2>
+          <span><%= link_to_remote "Abrir",:url => {:controller => 'easy_datas', 
+                                                    :action => :model_attributes, 
+                                                    :model => model},
+                                           :update => "#{model}_attributes",
+                                           :success => "Effect.Appear('list_attributes', { duration: 0.4 })",
+                                           :failure => "alert('Ooops! An error occurred.')"                
+                 %>
+          </span>
+     </li>
+     <li id="<%=model%>_attributes"></li>
+   <%end%>
+ </ul>
+<%else%>
+ <h3> Not list model </h3>
+<%end%>
