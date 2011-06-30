@@ -9,6 +9,14 @@ require 'ftools'
 ActionController::Base.view_paths << File.join(File.dirname(__FILE__), 'easy_data/templates')
 
 module EasyData
+  
+  module RDF
+     
+     autoload :Namespaces 'data_models/rdf'
+     NAMESPACES = Dir.glob(File.join(File.dirname(__FILE__),'data_models','namespaces','*.rb')).map{ |f| File.basename(f)[0...-(File.extername(f).size)].to_sym } rescue []
+     NAMESPACES.each { |v| autoload v.to_s.upcase.to_sym, "data_models/namespaces/#{v}" unless v == :rdf }
+
+  end
 
   def show_linked_data
     models = LinkedData.find :all
