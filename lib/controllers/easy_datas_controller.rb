@@ -48,6 +48,7 @@ class EasyDatasController < ActionController::Base
      rdf = ModelRdf.new
 
      @model_attributes = rdf.get_attributes_model(params[:model])
+     @model = params[:model]
      
      render :partial => "model_attributes",:layout => nil
   
