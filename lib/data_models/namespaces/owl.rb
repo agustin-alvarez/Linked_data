@@ -1,6 +1,6 @@
-module RDF
-
-   class OWL
+module EasyData
+  module RDF
+   class OWL < Namespaces
      @@properties = {"allValuesFrom" => "",
      "annotatedProperty" => "",
      "annotatedSource" => "",
@@ -58,9 +58,19 @@ module RDF
      def self.to_s(property,resource,value)
         "<owl:#{property} rdf:resource"
      end
+   
+     #Return a list of Namespace's properties
+     def self.properties
+        @@properties.keys
+     end
 
-     def self.list
-     end 
+     def self.properties_form 
+       list = {}
+       @@properties.keys.each do |property|
+         list[property] = property
+       end
+       list
+     end
    end
-
+ end
 end

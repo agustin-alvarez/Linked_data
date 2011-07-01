@@ -1,6 +1,6 @@
-module RDF
-
-   class EXIF
+module EasyData
+  module RDF
+   class EXIF < Namespaces
      @@properties= {"_unknown" => "",
     "apertureValue" => "",
     "artist" => "",
@@ -169,9 +169,17 @@ module RDF
      end
      
      #Return a list of Namespace's properties
-     def self.list
+     def self.properties
         @@properties.keys
-     end 
-   end
+     end
 
+     def self.properties_form 
+       list = {}
+       @@properties.keys.each do |property|
+         list[property] = property
+       end
+       list
+     end
+   end
+ end
 end

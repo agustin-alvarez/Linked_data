@@ -1,6 +1,6 @@
-module RDF
-
-   class FOAF
+module EasyData 
+  module RDF
+   class FOAF < Namespaces
      @@properties= {"account" => "",
     "accountName" => "",
     "accountServiceHomepage" => "",
@@ -70,9 +70,17 @@ module RDF
      end
      
      #Return a list of Namespace's properties
-     def self.list
+     def self.properties
         @@properties.keys
+     end
+
+     def self.properties_form 
+       list = {}
+       @@properties.keys.each do |property|
+         list[property] = property
+       end
+       list
      end 
    end
-
+ end
 end

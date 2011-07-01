@@ -1,6 +1,6 @@
-module RDF
-
-   class DC
+module EasyData
+  module RDF
+   class DC < Namespaces
      @@properties = {"abstract" => "",
                      "accessRights" => "",
                      "accrualMethod" => "",
@@ -64,9 +64,17 @@ module RDF
      end
      
      #Return a list of Namespace's properties
-     def self.list
+     def self.properties
         @@properties.keys
-     end 
-   end
+     end
 
+     def self.properties_form 
+       list = {}
+       @@properties.keys.each do |property|
+         list[property] = property
+       end
+       list
+     end
+   end
+  end
 end
