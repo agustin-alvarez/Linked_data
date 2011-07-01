@@ -1,12 +1,13 @@
+<% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model} do -%>
 <div id="list_attributes" class="model_attributes">
 <%if @model_attributes.respond_to?:each%>
    <ul>
      <%@model_attributes.each do |att,properties|%>
        <li><%=att%><br />
           <% unless properties[:privacy].nil?%> 
-            <%= "privacy: #{properties[:privacy]}"%> 
+            <%= "access_privacy: "%><%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%> 
             <br />
-            <%= "rdf_type: #{properties[:rdf_type]}"%>
+            <%= "rdf_type: "%><%= select "rdf_type",att,@namespaces -%>
           <% else %>
             <%=properties%>
           <% end%>
@@ -16,5 +17,7 @@
 <%else%>
  <span>Model no found</span>
 <%end%>
+<%= submit_tag "Send" %>
 <%= link_to_function "[Close]","Effect.Hide('#{@model}_attributes',{duration: .3})"%>
 </div>
+<%end -%>

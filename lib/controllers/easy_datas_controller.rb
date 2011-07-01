@@ -41,7 +41,7 @@ class EasyDatasController < ActionController::Base
 
   def custom_rdf
     @models = DataModels.load_models
-  end
+     end
 
   def model_attributes
 
@@ -49,7 +49,8 @@ class EasyDatasController < ActionController::Base
 
      @model_attributes = rdf.get_attributes_model(params[:model])
      @model = params[:model]
-     
+     @namespaces = EasyData::RDF::Namespaces.list_form
+
      render :partial => "model_attributes",:layout => nil
   
   end
