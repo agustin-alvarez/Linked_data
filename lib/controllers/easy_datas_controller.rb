@@ -1,4 +1,5 @@
 require "action_controller"
+require "action_view"
 
 class EasyDatasController < ActionController::Base
   
@@ -50,8 +51,30 @@ class EasyDatasController < ActionController::Base
      @model_attributes = rdf.get_attributes_model(params[:model])
      @model = params[:model]
      @namespaces = EasyData::RDF::Namespaces.list_form
-
+     @properties = {}
      render :partial => "model_attributes",:layout => nil
   
+  end
+
+  def load_properties
+     namespace = "EasyData::RDF::#{params[:id].upcase}"
+     
+     @namespace = params[:id]
+     
+     properties = (eval namespace).properties_form
+   
+     render :inline => "<span>Property:</span><%= select 'property',attribute,properties -%>",:locals => {:properties => properties,
+                                                                                    :attribute => params[:attribute]}
+   
+  #   render :update  do |page|
+  #     page.insert_html params[:block],:partial => html
+  #   end
+  
+  end
+  
+  def custom_attributes
+
+    debugger   
+
   end
 end

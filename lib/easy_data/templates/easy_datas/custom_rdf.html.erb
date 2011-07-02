@@ -3,18 +3,18 @@
 <%if @models.respond_to?:each%>
  <ul>
    <%@models.each do |model|%>
-     <li>
+     <li class="list_model">
           <h2><%= model %></h2>
           <span><%= link_to_remote "Abrir",:url => {:controller => 'easy_datas', 
                                                     :action => :model_attributes, 
                                                     :model => model},
                                            :update => "#{model}_attributes",
-                                           :success => "Effect.Appear('list_attributes', { duration: 0.4 })",
+                                           :success => "Effect.Appear('#{model}_attributes', { duration: 0.4 })",
                                            :failure => "alert('Ooops! An error occurred.')"                
                  %>
           </span>
      </li>
-     <li id="<%=model%>_attributes"></li>
+     <li id="<%=model%>_attributes" class="list_attributes" style="display:none"></li>
    <%end%>
  </ul>
 <%else%>

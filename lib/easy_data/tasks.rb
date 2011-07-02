@@ -5,7 +5,30 @@ require 'active_record'
 
 
 namespace :easy_data do
-  
+
+  desc <<-END_DESC
+          "This tasks install and initialize parameters for run gem."
+          END_DESC
+  task :install => :environment do
+     
+  end
+ 
+  desc <<-END_DESC
+          "Generate info initialize gem"
+          END_DESC
+  task :generate_info_initialize => :environment do
+    
+    easy_data_initialize_dir = "#{RAILS_ROOT}/config/initializers"  
+
+    file = File.open("#{easy_data_initialize_dir}/load_easy_data.rb","w")
+    
+    puts "Generating info initialize gem"
+    file.puts "#Load templates paths:"
+    file.puts "ActionController::Base.view_paths << EasyData.get_view_path"   
+    
+
+    file.close
+  end
 
   desc <<-END_DESC
           "Generating yml file with asociate info rdf to model's attributes"
@@ -44,6 +67,17 @@ namespace :easy_data do
 
    puts "Rdf Information Model, was generated in #{easy_data_dir}/rdf_info.yml"
 
+  end
+
+  desc <<-END_DESC
+          "Copy style for custom rdf interface"
+          END_DESC
+  task :copy_style_interface => :environment do
+
+     file_style = EasyData.get_style_path
+     #Copy file to public/stylesheets:
+     puts "Copy Style File to this proyect: "
+     File.copy(File.join(File.dirname(__FILE__), 'templates/stylesheets/easy_data_style.css'),"#{RAILS_ROOT}/public/stylesheets/easy_data_style.css")
   end
 
 end

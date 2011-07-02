@@ -5,8 +5,8 @@ require "controllers/easy_datas_controller"
 require "data_models/model_rdf"
 require "routes"
 require 'ftools'
+require 'ruby-debug'
 
-ActionController::Base.view_paths << File.join(File.dirname(__FILE__), 'easy_data/templates')
 
 module EasyData
   
@@ -60,6 +60,13 @@ module EasyData
     attributes
   end
 
+  def self.get_view_path
+    File.join(File.dirname(__FILE__), 'easy_data/templates')
+  end
+  
+  def self.get_style_path
+    File.join(File.dirname(__FILE__), 'easy_data/templates/stylesheets/easy_data_style.css')
+  end
  
   private
  

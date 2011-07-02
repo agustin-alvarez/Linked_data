@@ -1,13 +1,23 @@
 <% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model} do -%>
 <div id="list_attributes" class="model_attributes">
 <%if @model_attributes.respond_to?:each%>
-   <ul>
+   <ul class="attributes_info">
      <%@model_attributes.each do |att,properties|%>
-       <li><%=att%><br />
-          <% unless properties[:privacy].nil?%> 
-            <%= "access_privacy: "%><%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%> 
-            <br />
-            <%= "rdf_type: "%><%= select "rdf_type",att,@namespaces -%>
+       <li><span class="attribute"><%=att%></span>
+           <br />
+           <% unless properties[:privacy].nil?%> 
+             <span>Access privacy: </span><%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%> 
+             <br />
+             <div id="<%="select_#{@model}_#{att}"%>"><span>Rdf Type: </span><%= select "rdf_type",att,@namespaces -%></div>
+             <%= observe_field "rdf_type_#{att}",{:url => {:controller => "easy_datas",:action => "load_properties",
+                                                                    :block=>"properties_#{att}",:attribute => att},
+                                                            :with => '"id="+value',
+                                                            :on => :selected,
+                                                            :update => "properties_#{@model}_#{att}"}
+            %>
+            <div id="<%= "properties_#{@model}_#{att}"%>">
+            &nbsp; 
+            </div>
           <% else %>
             <%=properties%>
           <% end%>
@@ -18,6 +28,6 @@
  <span>Model no found</span>
 <%end%>
 <%= submit_tag "Send" %>
-<%= link_to_function "[Close]","Effect.Hide('#{@model}_attributes',{duration: .3})"%>
+<%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{duration: .3})",:class=>"close_list"%>
 </div>
 <%end -%>
