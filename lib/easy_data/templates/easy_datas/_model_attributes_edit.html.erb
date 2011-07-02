@@ -1,23 +1,27 @@
-<% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model} do -%>
+<% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model},
+                   :update => "#{@model}_attributes" do -%>
 <div id="list_attributes" class="model_attributes">
 <%if @model_attributes.respond_to?:each%>
    <div class="attributes_info">
      <%@model_attributes.each do |att,properties|%>
+         <div class="property">
            <span class="attribute"><%=att%></span>
            <br />
            <% unless properties[:privacy].nil?%> 
              <div id="select_privacy">
                <span>Access privacy: </span>
-               <%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%> 
+               <%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%>
+               <span class="rdf_info"><%= "(Current value: #{properties[:privacy]})"%></span> 
              </div>
              <br />
 
              <div id="<%="select_#{@model}_#{att}"%>">
                <span>Rdf Type: </span>
-               <%= select "rdf_type",att,@namespaces -%>
+               <%= select "rdf_type",att,@namespaces,{:prompt => "Select a namespaces..."} -%>
+               <span class="rdf_info"><%= "(Current value: #{properties[:namespace]})" %></span>
              </div>
              <%= observe_field "rdf_type_#{att}",{:url => {:controller => "easy_datas",:action => "load_properties",
-                                                                    :block=>"properties_#{att}",:attribute => att},
+                                                                    :block=>"properties_#{att}",:attribute => att,:model => @model},
                                                             :with => '"id="+value',
                                                             :on => :selected,
                                                             :update => "properties_#{@model}_#{att}"}
@@ -27,6 +31,7 @@
           <% else %>
             <span> This attribute can't be publicate</span>
           <% end%>
+         </div>
        <br/>
      <%end%>
    </ul>

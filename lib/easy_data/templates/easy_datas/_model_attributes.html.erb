@@ -3,6 +3,7 @@
 <%if @model_attributes.respond_to?:each%>
    <div class="attributes_info">
      <%@model_attributes.each do |att,properties|%>
+          <div class="property">
            <span class="attribute"><%=att%></span>
            <% unless properties[:namespace].nil?%> 
             <div id="privacy">
@@ -20,6 +21,7 @@
           <%else%>
            <span>This attribute can't be publicate</span>
           <%end%>
+         </div>
          <br />
      <%end%>
    </div>

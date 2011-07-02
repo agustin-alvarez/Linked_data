@@ -68,14 +68,18 @@ class EasyDatasController < ActionController::Base
   end
 
   def load_properties
+
      namespace = "EasyData::RDF::#{params[:id].upcase}"
      
      @namespace = params[:id]
-     
+     @model_attributes = rdf.get_attributes_model(params[:model])
+
      properties = (eval namespace).properties_form
    
-     render :inline => "<span>Property:</span><%= select 'property',attribute,properties -%>",:locals => {:properties => properties,
-                                                                                    :attribute => params[:attribute]}
+     render :inline => "<span>Property:</span><%= select 'property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
+                        :locals => {:properties => properties,
+                                    :attribute => params[:attribute],
+                                    :current_value => @model_attributes[params[:model][@namespace][params[:attribute].to_sym]]}
    
   #   render :update  do |page|
   #     page.insert_html params[:block],:partial => html
@@ -87,14 +91,17 @@ class EasyDatasController < ActionController::Base
 
      rdf = ModelRdf.new
      @model = params[:model]
+     
      params[:property].each do |att,value|
         rdf.update_attributes_model(params[:model],att,'namespace',params[:rdf_type][att])
         rdf.update_attributes_model(params[:model],att,'property',value)
-        rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att]))
+        rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att].to_i))
      end
+
+     rdf.save
 
      @model_attributes = rdf.get_attributes_model(@model)
      
-
+     render :partial => "model_attributes",:layout => nil
   end
 end
