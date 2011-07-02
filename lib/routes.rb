@@ -31,6 +31,7 @@ module EasyDataRouting
          end
          ed_routes.with_options :conditions => {:method => :post} do |ed_actions|
            ed_actions.connect 'easy_datas/model_attributes/:model', :action => 'model_attributes'
+           ed_actions.connect 'easy_datas/model_attributes_edit/:model', :action => 'model_attributes_edit'
            ed_actions.connect 'easy_datas/load_properties/:block/:attribute', :action => 'load_properties'
            ed_actions.connect 'easy_datas/custom_attributes/:model', :action => 'custom_attributes'
          end

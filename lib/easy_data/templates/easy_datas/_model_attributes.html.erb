@@ -1,33 +1,47 @@
-<% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model} do -%>
 <div id="list_attributes" class="model_attributes">
+
 <%if @model_attributes.respond_to?:each%>
-   <ul class="attributes_info">
+   <div class="attributes_info">
      <%@model_attributes.each do |att,properties|%>
-       <li><span class="attribute"><%=att%></span>
-           <br />
-           <% unless properties[:privacy].nil?%> 
-             <span>Access privacy: </span><%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%> 
-             <br />
-             <div id="<%="select_#{@model}_#{att}"%>"><span>Rdf Type: </span><%= select "rdf_type",att,@namespaces -%></div>
-             <%= observe_field "rdf_type_#{att}",{:url => {:controller => "easy_datas",:action => "load_properties",
-                                                                    :block=>"properties_#{att}",:attribute => att},
-                                                            :with => '"id="+value',
-                                                            :on => :selected,
-                                                            :update => "properties_#{@model}_#{att}"}
-            %>
-            <div id="<%= "properties_#{@model}_#{att}"%>">
-            &nbsp; 
+           <span class="attribute"><%=att%></span>
+           <% unless properties[:namespace].nil?%> 
+            <div id="privacy">
+              <span>Access privacy: </span>
+              <span><%= properties[:privacy] %></span> 
             </div>
-          <% else %>
-            <%=properties%>
-          <% end%>
-       </li>
+            <div id="<%="namespace"%>">
+              <span>Rdf Namespace: </span>
+              <span><%= properties[:namespace] -%></span>
+            </div>
+            <div id="<%= "property"%>">
+              <span>Property:</span>
+              <span><%=properties[:property] %></span>
+            </div>
+          <%else%>
+           <span>This attribute can't be publicate</span>
+          <%end%>
+         <br />
      <%end%>
-   </ul>
+   </div>
+
 <%else%>
  <span>Model no found</span>
 <%end%>
-<%= submit_tag "Send" %>
-<%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{duration: .3})",:class=>"close_list"%>
+
+
+
+ <span>
+      <%= link_to_remote "Edit",:url => {:controller => 'easy_datas', 
+                                          :action => :model_attributes_edit, 
+                                          :model => @model},
+                                  :update => "#{@model}_attributes",
+                                  :success => "Effect.Appear('#{@model}_attributes', { duration: 0.4 })",
+                                  :failure => "alert('Ooops! An error occurred.')"                
+       %>
+ </span>
+
+ <%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{duration: .3})",:class=>"close_list"%>
+
 </div>
-<%end -%>
+
+

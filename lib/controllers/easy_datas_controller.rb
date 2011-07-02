@@ -42,17 +42,28 @@ class EasyDatasController < ActionController::Base
 
   def custom_rdf
     @models = DataModels.load_models
-     end
+  end
 
   def model_attributes
+    
+    rdf = ModelRdf.new
+    
+    @model_attributes = rdf.get_attributes_model(params[:model])
+    @model = params[:model]
+
+    render :partial => "model_attributes",:layout => nil
+
+  end
+
+  def model_attributes_edit
 
      rdf = ModelRdf.new
 
      @model_attributes = rdf.get_attributes_model(params[:model])
      @model = params[:model]
      @namespaces = EasyData::RDF::Namespaces.list_form
-     @properties = {}
-     render :partial => "model_attributes",:layout => nil
+     
+     render :partial => "model_attributes_edit",:layout => nil
   
   end
 
@@ -74,7 +85,16 @@ class EasyDatasController < ActionController::Base
   
   def custom_attributes
 
-    debugger   
+     rdf = ModelRdf.new
+     @model = params[:model]
+     params[:property].each do |att,value|
+        rdf.update_attributes_model(params[:model],att,'namespace',params[:rdf_type][att])
+        rdf.update_attributes_model(params[:model],att,'property',value)
+        rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att]))
+     end
+
+     @model_attributes = rdf.get_attributes_model(@model)
+     
 
   end
 end

@@ -43,7 +43,7 @@ namespace :easy_data do
      File.makedirs easy_data_dir
    end
 
-   file = File.open("#{easy_data_dir}/rdf_info.yml","w")
+   file = File.open("#{easy_data_dir}/rdf_info.yaml","w")
    rdf_info = {}
 
    file.puts "#This is a document about RDF descriptions"
@@ -65,7 +65,7 @@ namespace :easy_data do
 
    file.close
 
-   puts "Rdf Information Model, was generated in #{easy_data_dir}/rdf_info.yml"
+   puts "Rdf Information Model, was generated in #{easy_data_dir}/rdf_info.yaml"
 
   end
 

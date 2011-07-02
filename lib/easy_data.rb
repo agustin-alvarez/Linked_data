@@ -48,11 +48,11 @@ module EasyData
     model_data.columns.each do |att|
   
      if att.primary
-       attributes[att.name] = {:privacy => 'private',:rdf_type => 'property'}
+       attributes[att.name] = {:privacy => 'private',:namespace => 'not definded',:property => 'not defined'}
      elsif att.name =~ /_id$/
        attributes[att.name] = "no publication"
      else
-       attributes[att.name] = {:privacy => 'public',:rdf_type => "property"}
+       attributes[att.name] = {:privacy => 'public',:namespace => 'not defined',:property => 'not defined'}
      end
 
     end  
