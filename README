@@ -12,10 +12,13 @@ In config/routes.rb at the end of routes declarations include:
 
 EasyDataRouting.routes(map)
 
-At the end, in [RAILS_HOME]/Rakefile copy this line:
+After, in [RAILS_HOME]/Rakefile copy this line:
 
 require "easy_data/tasks" 
 
+At the end, execute the next task:
+
+rake easy_data:install RAILS_ENV=development
 
 Commandas and Query
 ======================

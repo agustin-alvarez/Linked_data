@@ -9,8 +9,8 @@ namespace :easy_data do
   desc <<-END_DESC
           "This tasks install and initialize parameters for run gem."
           END_DESC
-  task :install => :environment do
-     
+  task :install => [:generate_info_initialize,:generate_info_rdf,:copy_style_interface] do
+     puts "*** Finish install Easy Data gem in this proyect  ***"
   end
  
   desc <<-END_DESC
@@ -23,6 +23,7 @@ namespace :easy_data do
     file = File.open("#{easy_data_initialize_dir}/load_easy_data.rb","w")
     
     puts "Generating info initialize gem"
+
     file.puts "#Load templates paths:"
     file.puts "ActionController::Base.view_paths << EasyData.get_view_path"   
     
@@ -35,9 +36,11 @@ namespace :easy_data do
           END_DESC
   task :generate_info_rdf => :environment do
 
+   puts "Generating RDF informations "
+
    models = DataModels.load_models
 
-   easy_data_dir = "#{RAILS_ROOT}/config/easy_data"
+   easy_data_dir = "#{RAILS_ROOT}/config/easy_data"  
 
    unless File.exist? easy_data_dir
      File.makedirs easy_data_dir
@@ -76,7 +79,7 @@ namespace :easy_data do
 
      file_style = EasyData.get_style_path
      #Copy file to public/stylesheets:
-     puts "Copy Style File to this proyect: "
+     puts "Copy Style File to this proyect"
      File.copy(File.join(File.dirname(__FILE__), 'templates/stylesheets/easy_data_style.css'),"#{RAILS_ROOT}/public/stylesheets/easy_data_style.css")
   end
 
