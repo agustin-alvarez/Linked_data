@@ -1,6 +1,8 @@
 module EasyData
   module RDF
    class RDFS < Namespaces
+     @@uri = "http://www.w3.org/2000/01/rdf-schema#"
+
      @@properties= {"comment" => "",
                     "domain" => "",
                     "isDefinedBy" => "",
@@ -11,6 +13,11 @@ module EasyData
                     "subClassOf" => "",
                     "subPropertyOf" => ""  
                    }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

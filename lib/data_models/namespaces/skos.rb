@@ -1,6 +1,9 @@
 module EasyData
   module RDF
    class SKOS < Namespaces
+
+     @@uri = "http://www.w3.org/2004/02/skos/core#"
+   
      @@properties= {"altLabel" => "",
     "broadMatch" => "",
     "broader" => "",
@@ -30,6 +33,11 @@ module EasyData
     "semanticRelation" => "",
     "topConceptOf" => ""   
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

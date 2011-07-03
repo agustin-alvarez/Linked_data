@@ -1,6 +1,8 @@
 module EasyData
   module RDF
    class DC < Namespaces
+     @@uri = "http://purl.org/dc/elements/1.1/"    
+ 
      @@properties = {"abstract" => "",
                      "accessRights" => "",
                      "accrualMethod" => "",
@@ -57,6 +59,11 @@ module EasyData
                      "type" => "",
                      "valid" => ""
                     }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

@@ -70,16 +70,18 @@ class EasyDatasController < ActionController::Base
   def load_properties
 
      namespace = "EasyData::RDF::#{params[:id].upcase}"
-     
+
+     rdf = ModelRdf.new    
+ 
      @namespace = params[:id]
      @model_attributes = rdf.get_attributes_model(params[:model])
-
+    
      properties = (eval namespace).properties_form
    
      render :inline => "<span>Property:</span><%= select 'property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
                         :locals => {:properties => properties,
                                     :attribute => params[:attribute],
-                                    :current_value => @model_attributes[params[:model][@namespace][params[:attribute].to_sym]]}
+                                    :current_value => @model_attributes[params[:attribute]][:property]}
    
   #   render :update  do |page|
   #     page.insert_html params[:block],:partial => html

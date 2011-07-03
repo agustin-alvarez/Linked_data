@@ -1,6 +1,8 @@
 module EasyData
   module RDF
    class DOAP < Namespaces
+     @@uri = "http://usefulinc.com/ns/doap#"
+     
      @@properties= {"'anon-root'" => "",
     "audience" => "",
     "blog" => "",
@@ -39,6 +41,11 @@ module EasyData
     "vendor" => "",
     "wiki" => ""   
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

@@ -1,6 +1,8 @@
 module EasyData 
   module RDF
    class FOAF < Namespaces
+     @@uri = "http://xmlns.com/foaf/0.1/"
+
      @@properties= {"account" => "",
     "accountName" => "",
     "accountServiceHomepage" => "",
@@ -63,6 +65,11 @@ module EasyData
     "workplaceHomepage" => "",
     "yahooChatID" => ""
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

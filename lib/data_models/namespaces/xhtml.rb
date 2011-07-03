@@ -1,8 +1,14 @@
 module EasyData
  module RDF
    class XHTML < Namespaces
+     @@uri = "http://www.w3.org/1999/xhtml/vocab#"
      @@properties= {   
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

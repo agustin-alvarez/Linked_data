@@ -1,6 +1,7 @@
 module EasyData 
   module RDF
    class CC < Namespaces
+     @@uri = "http://creativecommons.org/ns#"
      @@properties= {"attributionName" => "",
                     "attributionURL" => "",
                     "deprecatedOn" => "",
@@ -13,6 +14,10 @@ module EasyData
                     "requires" => "", 
                    }
 
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
      # Return tag to rdf doc
      def self.to_s(property,resource,value)
         @@properties[property].gsub('%%',resource).gsub('$$',value)

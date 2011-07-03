@@ -1,6 +1,8 @@
 module EasyData  
   module RDF
    class RSS < Namespaces
+
+     @@uri = "http://purl.org/rss/1.0/"
      @@properties = {"description" => "",
                      "items" => "",
                      "link" => "",
@@ -8,6 +10,11 @@ module EasyData
                      "title" => "",
                      "url" => "" 
                     }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

@@ -1,6 +1,9 @@
 module EasyData
   module RDF
    class XSD < Namespaces
+ 
+     @@uri = "http://www.w3.org/2001/XMLSchema#"
+   
      @@properties= {"NOTATION" => "",
     "QName" => "",
     "anyURI" => "",
@@ -46,6 +49,11 @@ module EasyData
     "unsignedLong" => "",
     "unsignedShort" => "" 
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

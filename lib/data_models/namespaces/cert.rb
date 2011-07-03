@@ -1,12 +1,17 @@
 module EasyData  
   module RDF
    class CERT < Namespaces
+     @@uri = "http://www.w3.org/ns/auth/cert#"
      @@properties= {"decimal" => "",
                     "hex" => "",
                     "identity" => "",
                     "public_key" => "", 
      }
-
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
      # Return tag to rdf doc
      def self.to_s(property,resource,value)
         @@properties[property].gsub('%%',resource).gsub('$$',value)

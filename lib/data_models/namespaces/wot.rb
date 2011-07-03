@@ -1,6 +1,8 @@
 module EasyData
   module RDF
    class WOT < Namespaces
+
+     @@uri = "http://www.xmlns.com/wot/0.1/" 
      @@properties= {"assurance" => "",
                     "encryptedTo" => "",
                     "encrypter" => "",
@@ -15,6 +17,11 @@ module EasyData
                     "signer" => "",
                     "sigtime" => ""   
                     }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

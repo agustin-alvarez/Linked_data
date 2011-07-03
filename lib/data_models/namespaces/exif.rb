@@ -1,6 +1,8 @@
 module EasyData
   module RDF
    class EXIF < Namespaces
+     @@uri = "http://www.w3.org/2003/12/exif/ns#"
+    
      @@properties= {"_unknown" => "",
     "apertureValue" => "",
     "artist" => "",
@@ -162,6 +164,11 @@ module EasyData
     "yCbCrSubSampling" => "",
     "yResolution" => "" 
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

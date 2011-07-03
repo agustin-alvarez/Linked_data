@@ -1,11 +1,17 @@
 module EasyData
   module RDF
    class GEO < Namespaces
+     @@uri = "http://www.w3.org/2003/01/geo/wgs84_pos#"
      @@properties= { "lat" => "",
                      "location" => "",
                      "long" => "",
                      "lat_long" => ""   
                    }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)

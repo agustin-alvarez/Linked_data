@@ -1,6 +1,9 @@
 module EasyData
   module RDF
    class SIOC < Namespaces
+
+     @@uri = "http://rdfs.org/sioc/ns#"
+
      @@properties= {"about" => "",
     "account_of" => "",
     "administrator_of" => "",
@@ -79,6 +82,11 @@ module EasyData
     "topic" => "", 
     "usergroup_of" => "" 
      }
+       
+     # Return Namespace URI
+     def self.uri
+       @@uri
+     end
 
      # Return tag to rdf doc
      def self.to_s(property,resource,value)
