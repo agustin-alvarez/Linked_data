@@ -1,7 +1,5 @@
 require "yaml"
 
-
-
 class ModelRdf 
     
    #######################################################################
@@ -62,7 +60,7 @@ class ModelRdf
      query.each do |element|
        elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",'attributes' => get_properties_tag(element)}
      end     
-     
+
      request[:body] = elements
      request[:header] = get_header(get_attributes_model(model))
      request
@@ -70,9 +68,9 @@ class ModelRdf
    end
 
    def get_header(attributes)
-      headers = {}
-     
-      (attributes["attributes"]||attributes["associations"]).each do |att,properties|
+      headers = {"xmlns:rdf"=>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"}
+      
+      (attributes["attributes"].merge(attributes["associations"])).each do |att,properties|
         if properties != "no publication" && properties[:namespace] != 'not defined'
           headers["xmlns:#{properties[:namespace]}"] = (eval "EasyData::RDF::#{properties[:namespace].upcase}.get_uri") #EasyData.get_uri_namespace(properties[:namespace])
         end
@@ -81,9 +79,17 @@ class ModelRdf
    end
 
    def get_properties_tag(element)
+
       attributes = get_attributes_model(element.class.to_s)
+
+      # If element's class is a polimorphic class, we used base class.
+      if attributes.nil?
+        attributes = get_attributes_model(element.class.base_class.to_s)
+      end 
+
       properties = {}
-      if element.attributes.respond_to? :each  
+
+      if element.attributes.respond_to? :each 
        element.attributes.each do |att|
          #conditions to methods to check if can be show
          if attributes["attributes"][att.first][:privacy]!= "hidden" && attributes["attributes"][att.first][:namespace] != "not defined" && attributes["attributes"][att.first][:property]!="not defined" && att.second != nil
