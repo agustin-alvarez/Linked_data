@@ -49,17 +49,17 @@ module EasyData
     model_data.columns.each do |att|
   
      if att.primary
-       attributes[att.name] = {:privacy => 'private',:namespace => 'not defined',:property => 'not defined'}
+       attributes[att.name] = {:privacy => 'Private',:namespace => 'not defined',:property => 'not defined'}
      elsif att.name =~ /_id$/
        attributes[att.name] = "no publication"
      else
-       attributes[att.name] = {:privacy => 'public',:namespace => 'not defined',:property => 'not defined'}
+       attributes[att.name] = {:privacy => 'Public',:namespace => 'not defined',:property => 'not defined'}
      end
 
     end  
        
     model_data.reflections.keys.each do |ref|
-      associations[ref.to_s] = {:privacy => 'public',:namespace => 'not defined',:property => 'not defined'}
+      associations[ref.to_s] = {:privacy => 'Public',:namespace => 'not defined',:property => 'not defined'}
     end
 
     {"attributes" => attributes,"associations" => associations}

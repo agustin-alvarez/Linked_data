@@ -26,7 +26,7 @@ class ModelRdf
 
    #Return attributes of model stored in the configuration yaml file
    def get_attributes_model(model)
-      self.model_rdf[model]
+      self.model_rdf[model] 
    end
 
    # update attributes with rdf properties.
@@ -55,20 +55,29 @@ class ModelRdf
    #######################################################################
 
    def get_model_rdf(query,model,host)
-     request = {:body => "",:header => ""}
+     request = {:body => "",:header => {"xmlns:rdf"=>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"}}
      elements = {}
+     models = []
      query.each do |element|
-       elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",'attributes' => get_properties_tag(element)}
+       elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",
+                               'attributes' => get_properties_tag(element),
+                               'associations' => get_associations_tag(element)
+                               }
+       
+       models << element.class.to_s
      end     
-
+     attributes = {}
      request[:body] = elements
-     request[:header] = get_header(get_attributes_model(model))
+     models.each do |mod|
+       attributes = get_attributes_model(mod) || get_attributes_model((eval mod).base_class.to_s)
+       request[:header].merge!(get_header(attributes))
+     end
      request
      #Generating of rdf variable
    end
 
    def get_header(attributes)
-      headers = {"xmlns:rdf"=>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"}
+      headers = {}
       
       (attributes["attributes"].merge(attributes["associations"])).each do |att,properties|
         if properties != "no publication" && properties[:namespace] != 'not defined'
@@ -88,11 +97,10 @@ class ModelRdf
       end 
 
       properties = {}
-
       if element.attributes.respond_to? :each 
        element.attributes.each do |att|
          #conditions to methods to check if can be show
-         if attributes["attributes"][att.first][:privacy]!= "hidden" && attributes["attributes"][att.first][:namespace] != "not defined" && attributes["attributes"][att.first][:property]!="not defined" && att.second != nil
+         if can_see?(attributes["attributes"][att.first][:privacy]) && exist_info_att(attributes["attributes"][att.first],att.second)
            properties["#{attributes['attributes'][att.first][:namespace]}:#{attributes["attributes"][att.first][:property]}"] = att.second
          end
        end  
@@ -100,5 +108,49 @@ class ModelRdf
       
       properties
    
+    end
+
+    def get_associations_tag(element)
+       
+       associations = get_attributes_model(element.class.to_s)
+       
+       if associations.nil?
+         associations = get_attributes_model(element.class.base_class.to_s)
+       end
+       properties = {}       
+       element.class.reflections.each do |ref,value|
+         rel = eval "element.#{ref}"
+        
+         if exist_info_assoc(rel.to_a,associations["associations"][ref.to_s]) && can_see?(associations["associations"][ref.to_s][:privacy]) && !rel.empty?
+           
+           properties.merge!({"#{associations['associations'][ref.to_s][:namespace]}:#{associations['associations'][ref.to_s][:property]}" => {:model => rel.first.class ,
+                                                                                                                                                 :id => rel.collect{|obj| obj.id}}
+                             })
+         end
+       end       
+       properties
+    end
+
+
+    private
+    ########################################################################
+    ##  FUNCTIONS FOR CHECK IF SHOW oR NoT THE CURRENT ITEM               ##
+    ########################################################################
+
+    def can_see?(privacy)
+      privacy=="Public" || (privacy=="Private" && !@current_user.nil?)
+    end
+
+    def exist_info_att(attributes,value)
+       attributes[:namespace] != "not defined" && 
+       attributes[:property] !="not defined" &&
+       !value.nil?     
+    end
+
+    def exist_info_assoc(rels,rdf_info)
+       !rels.nil? && !rels.empty? && 
+        rdf_info[:namespace] != "not defined" && 
+        rdf_info[:property] != "not defined"
+
     end
 end
