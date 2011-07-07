@@ -1,5 +1,9 @@
-body{width:90%;padding: 2% 5%}
-h1{color:red;text-decoration:underline}
+body{width:90%;padding: 2% 5%;background-color:#fbf3b4;font-family:helvetica;}
+.authenticate{background:url("../images/easy_data_logo.png")no-repeat 0 0;padding-top:130px;margin:0 auto;width:400px}
+.authenticate form{background:#767676;width:375px;color:white;overflow:hidden;padding: 20px 30px}
+.authenticate form .lbl_auth{float:left}
+.authenticate form input{float:right}
+.authenticate form span{width:95%;display:block;overflow:hidden}h1{color:red;text-decoration:underline}
 ul{list-style:none;width:90%;float:left;}
 ul li.list_model{color:white;background:grey}
 ul div.list_attributes{overflow:hidden;background-color:white;color:black;padding:0 5%;}

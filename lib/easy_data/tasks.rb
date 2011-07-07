@@ -83,4 +83,25 @@ namespace :easy_data do
      File.copy(File.join(File.dirname(__FILE__), 'templates/stylesheets/easy_data_style.css'),"#{RAILS_ROOT}/public/stylesheets/easy_data_style.css")
   end
 
+  desc <<-END_DESC
+          "Add admin user to configure Rdf Info"
+          END_DESC
+  task :add_user,:user,:pass, :needs=> :environment do |t,args|
+
+    args.with_defaults(:user => "admin", :pass => "admin")
+
+    easy_data_dir = "#{RAILS_ROOT}/config/easy_data"
+
+    file = File.open("#{easy_data_dir}/setting.yaml","w")
+    file.puts "#User admin:"
+    
+    admin = {"user_admin" =>{"user" => args.user,"pass" => args.pass}}
+    file.puts admin.to_yaml
+
+    file.close
+
+    puts "User #{args.user} added"
+
+  end
+
 end

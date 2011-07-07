@@ -2,27 +2,15 @@ require "action_controller"
 
 module EasyDataRouting 
     def self.routes(map)
-     # DataModels.load_models.each do |model|
-     #  map.connect "#{model.gsub("::","_")}/:id.:format", :controller => "easy_datas", 
-     #                                      :action => 'show',
-     #                                      :model => model,
-    #                                       :conditions => {:method => :get}
-     # end
-     #  map.connect "list_models.:format", :controller => "easy_datas", 
-     #                                     :action => 'describe_api'
-#
-#       map.connect "custom_rdf", :controller => "easy_datas",
-#                                 :action => "custom_rdf"
-      
-  #     map.resources :easy_datas,:member => {:load_properties => :get
-      #                                       :model_attributes => :post,
-      #                                       :show => :get,
-      #                                       :describe_api => :get
-   #                                         } 
+       
        map.with_options :controller => 'easy_datas' do |ed_routes|
          ed_routes.with_options :conditions => {:method => :get} do |ed_views|
-           ed_views.connect 'list_models.:format', :action => 'describe_api'
-           ed_views.connect 'custom_rdf', :action=> "custom_rdf"
+           ed_views.connect 'linked_data.:format', :action => 'info_linked_data'
+           ed_views.connect 'easy_datas/custom_rdf', :action=> "custom_rdf"
+           ed_views.connect 'easy_data', :action => "custom_rdf"
+           ed_views.connect 'easy_datas/authenticate_user', :action => "authenticate_user"
+          
+           ed_views.connect 'easy_datas/logout', :action => 'logout'
            DataModels.load_models.each do |model|
              ed_views.connect "#{model.gsub("::","_")}/:params", :controller => "easy_datas", 
                                                                  :action => 'show',
@@ -34,6 +22,7 @@ module EasyDataRouting
            ed_actions.connect 'easy_datas/model_attributes/:model', :action => 'model_attributes'
            ed_actions.connect 'easy_datas/model_attributes_edit/:model', :action => 'model_attributes_edit'
            ed_actions.connect 'easy_datas/load_properties/:block/:attribute', :action => 'load_properties'
+           ed_actions.connect 'easy_datas/login', :action => 'login'
            ed_actions.connect 'easy_datas/custom_attributes/:model', :action => 'custom_attributes'
          end
 

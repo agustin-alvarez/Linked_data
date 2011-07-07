@@ -5,9 +5,11 @@ require "builder"
 class EasyDatasController < ActionController::Base
   
   layout 'easy_data_layout'
+  
+  before_filter :authenticated, :only => [:custom_rdf]
 
   def show
-    
+       
    # begin
       model = eval params[:model].to_s
       conditions = parser_params(params[:params]||nil)
@@ -34,7 +36,7 @@ class EasyDatasController < ActionController::Base
   
   end
 
-  def describe_api
+  def info_linked_data
       models = DataModels.load_models
       list = {}
       models.each do |mod|
@@ -72,23 +74,26 @@ class EasyDatasController < ActionController::Base
   end
 
   def load_properties
-
-     namespace = "EasyData::RDF::#{params[:id].upcase}"
-
-     rdf = ModelRdf.new    
- 
-     @namespace = params[:id]
-     @model_attributes = rdf.get_attributes_model(params[:model])
-    
-     properties = (eval namespace).properties_form
   
-     render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
+     unless params[:id] == ""
+       namespace = "EasyData::RDF::#{params[:id].upcase}"
+
+       rdf = ModelRdf.new    
+ 
+       @namespace = params[:id]
+       @model_attributes = rdf.get_attributes_model(params[:model])
+    
+       properties = (eval namespace).properties_form
+  
+       render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
                         :locals => {:properties => properties,
                                     :type => params[:type],
                                     :attribute => params[:attribute],
                                     :current_value => @model_attributes[params[:type]][params[:attribute]][:property]}
+     else
+       render :inline => ""
+     end
   end
-  
   def custom_attributes
 
      rdf = ModelRdf.new
@@ -117,6 +122,27 @@ class EasyDatasController < ActionController::Base
      render :partial => "model_attributes",:layout => nil
   end
 
+  def authenticate_user
+  end
+
+  def login
+    admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml")) 
+
+    if admin["user_admin"]["user"] == params[:nick] && admin["user_admin"]["password"] == params[:pass]
+      @current_user = params[:nick]
+      session[:easy_data_session] = params[:nick]
+      redirect_to :action => "custom_rdf"
+    else
+      redirect_to :authenticate_user
+    end
+  end
+
+  def logout
+    @current_user = nil
+    session[:easy_data_session].delete!("*") if !session[:easy_data_session].nil?
+    redirect_to :action => "authenticate_user"
+  end
+
   private 
 
   def parser_params (params = nil)
@@ -133,6 +159,13 @@ class EasyDatasController < ActionController::Base
        end
        return conditions
      end
+  end
+
+  def authenticated
+    debugger
+    if session[:easy_data_session].nil?
+      redirect_to :action => "authenticate_user"
+    end
   end
 
 end
