@@ -50,6 +50,7 @@ class ModelRdf
      file.close
    end
 
+   
    #######################################################################
    # Building RDF                           
    #######################################################################
@@ -113,14 +114,15 @@ class ModelRdf
     def get_associations_tag(element)
        
        associations = get_attributes_model(element.class.to_s)
-       
+       class_element = element.class
        if associations.nil?
          associations = get_attributes_model(element.class.base_class.to_s)
+         class_element = element.class.base_class
        end
        properties = {}       
-       element.class.reflections.each do |ref,value|
-         rel = eval "element.#{ref}"
-        
+      
+       class_element.reflections.each do |ref,value|
+         rel = eval "element.#{ref}" 
          if exist_info_assoc(rel.to_a,associations["associations"][ref.to_s]) && can_see?(associations["associations"][ref.to_s][:privacy]) && !rel.empty?
            
            properties.merge!({"#{associations['associations'][ref.to_s][:namespace]}:#{associations['associations'][ref.to_s][:property]}" => {:model => rel.first.class ,

@@ -10,40 +10,75 @@ class EasyDatasController < ActionController::Base
 
   def show
        
-   # begin
       model = eval params[:model].to_s
-      conditions = parser_params(params[:params]||nil)
+      
+      conditions = parser_params(params)
+     
       rdf = ModelRdf.new      
-
+      
       unless conditions.empty?
-        @reply = model.find :all, :conditions => conditions
-      else
-        @reply = model.find :all
+        @reply = model.find :all, :conditions => conditions || nil
       end
+
       @host="http://"+request.env["HTTP_HOST"]          
       
       @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
       
       @xml = Builder::XmlMarkup.new
+      
       respond_to do |format|
         format.html
         format.xml # render :template => "/rdf/request.xml.builder"   
       end
-       #render :file => "/rdf/request",:content_type => "application/xml",:locals => {:rdf_model => @rdf_model}
-   # rescue
-   #   raise ActionController::RoutingError.new('Not Found')    
-   # end
-  
+      
   end
 
-  def info_linked_data
+  def show_all
+      model = eval params[:model].to_s
+      
+      rdf = ModelRdf.new      
+      
+      @reply = model.find :all
+      
+      @host="http://"+request.env["HTTP_HOST"]          
+      
+      @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
+      
+      @xml = Builder::XmlMarkup.new
+      
+      respond_to do |format|
+        format.html
+        format.xml # render :template => "/rdf/request.xml.builder"   
+      end
+  end
+
+  # Show information about data publications
+  # 
+  #
+  def info_easy_data
       models = DataModels.load_models
-      list = {}
+      @list = []
+      
       models.each do |mod|
-       list[mod.gsub("::","_")] = "#{mod.gsub("::","_")}"
+       @list << "#{mod.gsub("::","_")}"
       end
 
-      render :xml => list
+      respond_to do |format|
+        format.html
+        format.xml
+      end
+  end
+
+  # Information about access to publicated data
+  def access_to_data 
+  end
+
+  # Generate Linked Data Graph
+  def linked_data
+  end
+  
+  # FAQ 
+  def faq
   end
 
   def custom_rdf
@@ -71,6 +106,15 @@ class EasyDatasController < ActionController::Base
      
      render :partial => "model_attributes_edit",:layout => nil
   
+  end
+
+  def model_attributes_info
+    rdf = ModelRdf.new
+    
+    @model_attributes = rdf.get_attributes_model(params[:model])
+    @model = params[:model]
+
+    render :partial => "model_attributes_info",:layout => nil
   end
 
   def load_properties
@@ -139,30 +183,29 @@ class EasyDatasController < ActionController::Base
 
   def logout
     @current_user = nil
-    session[:easy_data_session].delete!("*") if !session[:easy_data_session].nil?
+    session[:easy_data_session]=nil if !session[:easy_data_session].nil?
     redirect_to :action => "authenticate_user"
   end
 
   private 
 
-  def parser_params (params = nil)
+  def parser_params (parameters = nil)
      
      conditions = {}
-
-     if params.nil? || params == 'ALL'
-       return conditions
-     else
-       params = params.split("$")
-       params.each do |p|
-         p = p.split(':')
-         conditions[p[0].downcase.to_sym] = p[1]   
+    
+     if !parameters.empty?
+       parameters.each do |key,value|
+         unless ["controller","action","method","format","model"].include?key
+           conditions[key.to_sym] = value
+         end   
        end
-       return conditions
      end
+
+     return conditions
+     
   end
 
   def authenticated
-    debugger
     if session[:easy_data_session].nil?
       redirect_to :action => "authenticate_user"
     end

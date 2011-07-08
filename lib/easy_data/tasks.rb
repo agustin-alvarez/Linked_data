@@ -104,4 +104,15 @@ namespace :easy_data do
 
   end
 
+  desc <<-END_DESC
+          "Build Linked Data Graph"
+          END_DESC
+
+  task :build_linked_data_graph, :needs => :environment do
+
+    puts "Generating Linked Data graph..."
+    EasyData.build_linked_data_graph
+    puts "Ok"
+  end
+
 end

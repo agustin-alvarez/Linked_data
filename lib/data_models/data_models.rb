@@ -1,13 +1,31 @@
 module DataModels
   
-   def self.load_models
+  def self.load_models
+
      models = []
- 
+     models_valids = []
+     mod = nil
+
      Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
        models << file.gsub(RAILS_ROOT+'/app/models/',"").gsub('.rb','').classify
      end
- 
-     models
+     
+     models.each do |model|
+       begin
+         mod = eval model
+       rescue
+         begin
+           mod = eval model.pluralize
+         rescue
+           mod = nil
+         end
+       end
+       if mod
+         models_valids << mod.to_s
+       end
+     end
+   
+     models_valids
   end
 
   def self.model_attributes(model)      

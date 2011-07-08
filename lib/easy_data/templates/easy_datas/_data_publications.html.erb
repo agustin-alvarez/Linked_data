@@ -1,0 +1,16 @@
+<div id="list_models" class="list_model_info">
+ <ul>
+    <% list.each do |model|%>
+      <li>
+        <%= link_to_remote model,:url => {:controller => 'easy_datas', 
+                                          :action => :model_attributes_info, 
+                                          :model => model},
+                                 :update => "info_models"               
+        %>  
+      </li>
+    <%end%>
+ </ul>
+</div>
+
+<div id="info_models" class="ed_info_models">
+</div>
