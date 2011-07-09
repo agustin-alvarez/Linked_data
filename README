@@ -13,6 +13,10 @@ At the end, execute the next task:
 
    rake easy_data:install RAILS_ENV=development
 
+To start with administration, you should assign at admin user:
+
+   rake easy_data:add_user[user,pass] RAILS_ENV=development
+
 Commandas and Query
 ======================
 
