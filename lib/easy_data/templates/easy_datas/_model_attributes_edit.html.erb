@@ -1,6 +1,9 @@
 <% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model},
                    :update => "#{@model}_attributes" do -%>
+
 <div id="list_attributes" class="model_attributes">
+   <!--<span>Model</span>--!
+   <%#= render :partial => "list_model_info", :locals => {:model_name => @model, :model=> @model_attributes, :namespaces => @namespaces}%>
    <!-- Attributes -->
    <span>Attributes</span>
    <%= render :partial => "list_properties_edit",:locals => {:attributes => @model_attributes["attributes"],:model => @model,:namespaces => @namespaces,:type => "attributes"}%>

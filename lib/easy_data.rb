@@ -42,7 +42,7 @@ module EasyData
       associations[ref.to_s] = {:privacy => 'Public',:namespace => 'not defined',:property => 'not defined'}
     end
 
-    {"attributes" => attributes,"associations" => associations}
+    {:privacy => "Private",:namespace => "not defined",:property => "not defined","attributes" => attributes,"associations" => associations}
   end
 
   def self.get_view_path

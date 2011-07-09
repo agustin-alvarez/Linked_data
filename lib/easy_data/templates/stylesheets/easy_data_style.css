@@ -21,13 +21,16 @@ div.attributes_info div.property span.rdf_info{color:grey;font-size:12px}
 .ed_main_menu{background:url('images/main_menu.jpg') repeat-x 0 0;overflow:hidden;width:100%;margin:0 auto;display:block;}
 .ed_main_menu ul{color:white !important;font-weight:bold;;margin:0px;width:100%;padding:0px 20%}
 .ed_main_menu ul li{float:left;width:10%;text-align:center;padding:10px 0px;}
+.ed_main_menu ul li.menu_link{width:10% !important}
 .ed_main_menu ul li.menu_link:hover{background-color:red;padding:10px 0px;cursor:pointer}
 .ed_main_menu ul li a{color:white}
-.ed_main_menu ul li.layer_menu{font-size:14px;width:20% !important;padding:11px 0}
+.ed_main_menu ul li.layer_menu{font-size:14px;width:300px !important;padding:11px 0}
+
 
 .ed_info_content{background:#235099 url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:0 25%;overflow:hidden;}
 .ed_info_content .list_model_info{float:left;width:30%}
 .ed_info_content .list_model_info ul li{margin:0;}
 .ed_info_content .list_model_info ul li:hover{margin:0;color:white !important;background-color:#ccc}
+.ed_info_content .list_model_info ul li a{color:white;font-weight:bold}
 .ed_info_content .list_model_info ul li a:hover{color:white;font-weight:bold;}
 .ed_info_content .ed_info_models{float:left;width:70%;padding:5% 0;}

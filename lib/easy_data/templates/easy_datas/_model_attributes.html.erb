@@ -15,12 +15,12 @@
                                         :action => :model_attributes_edit, 
                                         :model => @model},
                                :update => "#{@model}_attributes",
-                               :success => "Effect.Appear('#{@model}_attributes', { duration: 0.4 })",
+                               :success => "Effect.Appear('#{@model}_attributes', { duration: 0.4 });",
                                :failure => "alert('Ooops! An error occurred.')"                
      %>
 </span>
 
- <%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{duration: .3})",:class=>"close_list"%>
+ <%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{ duration : 0.3});Effect.Appear('open_#{@model}',{ duration : 0.3});",:class=>"close_list"%>
 
 </div>
 

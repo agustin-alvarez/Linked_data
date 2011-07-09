@@ -2,23 +2,27 @@
 <span><%= link_to "[Logout]", :controller => "easy_datas",:action => "logout" %></span>
 <hr/>
 <%if @models.respond_to?:each%>
+<div id="list_models" class="list_model_info">
  <ul>
    <%@models.each do |model|%>
      <li class="list_model">
           <h2><%= model %></h2>
-          <span><%= link_to_remote "Abrir",:url => {:controller => 'easy_datas', 
+          <span id="open_<%=model%>"><%= link_to_remote "Abrir",:url => {:controller => 'easy_datas', 
                                                     :action => :model_attributes, 
                                                     :model => model},
                                            :update => "#{model}_attributes",
-                                           :success => "Effect.Appear('#{model}_attributes', { duration: 0.4 })",
+                                           :success => "Effect.Appear('model_attributes', { duration: 0.4 });
+                                                        Effect.Fade('open_#{model}')",
                                            :failure => "alert('Ooops! An error occurred.')"                
                  %>
           </span>
      
-     <div id="<%=model%>_attributes" class="list_attributes" style="display:none"></div>
      </li>
    <%end%>
  </ul>
+</div>
+<div id="model_attributes" class="ed_info_models" style="display:none"></div>
+
 <%else%>
  <h3> Not list model </h3>
 <%end%>

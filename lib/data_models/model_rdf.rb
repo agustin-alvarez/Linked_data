@@ -23,7 +23,22 @@ class ModelRdf
    def get_models
       self.model_rdf
    end
+   
+   def public?()
+      self.model_rdf[model][:privacy] == "Public"
+   end
+   
+   def private?()
+      self.model_rdf[model][:privacy] == "Private"
+   end
 
+   def hidden?()
+      self.model_rdf[model][:privacy] == "Hidden"
+   end
+
+   def get_rdf_info_model(model)
+      {:namespace => self.model_rdf[model][:namespace],:property => self.model_rdf[model][:property]}
+   end
    #Return attributes of model stored in the configuration yaml file
    def get_attributes_model(model)
       self.model_rdf[model] 
@@ -31,7 +46,12 @@ class ModelRdf
    
    # RDFa: Return attributes of model RDF info
    def model(model)
-      " typeof='#{self.model_rdf[model].}'"
+     info = get_rdf_info_model(model)
+     if info[:property] && info[:property]!= "not defined"
+      " typeof='#{info[:namespace]}:#{info[:property]}'"
+     else
+      " "
+     end
    end
 
    # update attributes with rdf properties.
@@ -51,11 +71,25 @@ class ModelRdf
 
    # RDFa: return a string with all prefix used to describes attributes
    def get_prefix(model)
-      prefix = ""
-      self.model_rdf[model]["attributes"].each do |att|
-        prefix += "#{att[:namespace]}:#{(eval "EasyData::RDF::#{att[:namespace].upcase}.get_uri")} "
+      prefix = []
+      data_model = get_attributes_model(model)
+      data_model["attributes"].each do |att,info|
+       if info[:namespace] && info[:namespace] != 'not defined'
+        puts info[:namespace]
+        prefix << "#{info[:namespace]}:#{(eval "EasyData::RDF::#{info[:namespace].upcase}.get_uri")} "
+       end
       end
-      prefix
+      data_model["associations"].each do |assoc,info|
+       if info[:namespace] && info[:namespace] != 'not defined'
+        prefix << "#{info[:namespace]}:#{(eval "EasyData::RDF::#{info[:namespace].upcase}.get_uri")} "
+       end
+      end
+
+      if data_model[:namespace] && data_model[:namespace] != 'not defined'
+        prefix << "#{data_model[:namespace]}:#{(eval "EasyData::RDF::#{data_model[:namespace].upcase}.get_uri")}"       
+      end
+
+      prefix.uniq.join(" ")
    end
 
    # Return privacy of a attribute 
@@ -75,25 +109,29 @@ class ModelRdf
    #######################################################################
 
    def get_model_rdf(query,model,host)
-     request = {:body => "",:header => {"xmlns:rdf"=>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"}}
-     elements = {}
-     models = []
-     query.each do |element|
-       elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",
-                               'attributes' => get_properties_tag(element),
-                               'associations' => get_associations_tag(element)
-                               }
+      if public?model.to_sym
+       request = {:body => "",:header => {"xmlns:rdf"=>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"}}
+       elements = {}
+       models = []
+       query.each do |element|
+          elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",
+                                  'attributes' => get_properties_tag(element),
+                                  'associations' => get_associations_tag(element)
+                                 }
        
-       models << element.class.to_s
-     end     
-     attributes = {}
-     request[:body] = elements
-     models.each do |mod|
-       attributes = get_attributes_model(mod) || get_attributes_model((eval mod).base_class.to_s)
-       request[:header].merge!(get_header(attributes))
-     end
-     request
-     #Generating of rdf variable
+          models << element.class.to_s
+       end     
+    
+       attributes = {}
+       request[:body] = elements
+       models.each do |mod|
+         attributes = get_attributes_model(mod) || get_attributes_model((eval mod).base_class.to_s)
+         request[:header].merge!(get_header(attributes))
+       end
+       request
+      else
+       {}
+      end
    end
 
    def get_header(attributes)

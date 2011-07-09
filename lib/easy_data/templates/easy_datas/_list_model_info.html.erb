@@ -1,0 +1,23 @@
+<div id="select_privacy">
+   <span>Access privacy: </span>
+     <%= select "privacy",model_name, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%>
+   <span class="rdf_info"><%= "(Current value: #{model[:privacy]})"%></span> 
+</div>
+
+<br />
+
+<div id="<%="select_#{model_name}"%>">
+  <span>Rdf Type: </span>
+    <%= select "rdf_type_#{type}","#{model_name}",namespaces,{:prompt => "Select a namespaces..."} -%>
+  <span class="rdf_info"><%= "(Current value: #{model[:namespace]})" %></span>
+</div>
+         
+  <%= observe_field "rdf_type_#{type}_#{model_name}",{:url => {:controller => "easy_datas",:action => "load_properties",
+                                                       :block=>"properties_#{model_name}",:model => model_name,:type => type},
+                                               :with => '"id="+value',
+                                               :on => :selected,
+                                               :update => "properties_model"}
+  %>
+<br/>
+<div id="<%= "properties_#{model_name}"%>">&nbsp;</div>
+

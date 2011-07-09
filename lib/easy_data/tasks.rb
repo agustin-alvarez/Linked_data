@@ -90,6 +90,7 @@ namespace :easy_data do
      end
 
      FileUtils.copy(File.join(File.dirname(__FILE__), 'templates/stylesheets/easy_data_style.css'),"#{easy_data_stylesheets}/easy_data_style.css")
+     
      FileUtils.cp_r(File.join(File.dirname(__FILE__), 'templates/images/'),"#{easy_data_stylesheets}/")
      
      unless File.exist? easy_data_linked_data_graphs

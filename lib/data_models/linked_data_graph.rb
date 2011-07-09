@@ -37,7 +37,7 @@ class LinkedDataGraph
               eval mod_assoc
            rescue
              begin
-              eval (mod_assoc.pluralize)
+              eval mod_assoc.pluralize
               mod_assoc = (mod_assoc.pluralize)
              rescue
                  (mod_assoc = info.options[:source].to_s.camelize)if info.options[:source]

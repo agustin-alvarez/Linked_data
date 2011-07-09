@@ -1,6 +1,5 @@
-class RDFa
-
-   :before_filter => 
+require "data_models/model_rdf" 
+class RDFa 
 
    def self.model(model)
      
@@ -15,45 +14,46 @@ class RDFa
    ####################################
 
    def self.div(model,value,attribute=nil,options=nil)
-      html_code.call('div',model,value,attribute,options)
+      html_code('div',model,value,attribute,options)
    end
 
    def self.span(model,value,attribute=nil,options=nil)
-      html_code.call('span',model,value,attribute,options)
+      html_code('span',model,value,attribute,options)
    end
    
    def self.li(model,value,attribute=nil,options=nil)
-      html_code.call('li',model,value,attribute,options)
+      html_code('li',model,value,attribute,options)
    end
    
    def self.td(model,value,attribute=nil,options=nil)
-      html_code.call('td',model,value,attribute,options)
+      html_code('td',model,value,attribute,options)
    end
 
    def self.th(model,value,attribute=nil,options=nil)
-      html_code.call('th',model,value,attribute,options)
+      html_code('th',model,value,attribute,options)
    end
    
    def self.p(model,value,attribute=nil,options=nil)
-      html_code.call('p',model,value,attribute,options)
+      html_code('p',model,value,attribute,options)
    end
    
    def self.img(model,src,attribute=nil,options=nil)
-      html_code.call('img',model,value,attribute,src+options.to_s)
+      html_code('img',model,nil,attribute,"src='#{src}' "+options.to_s)
    end 
-   #######################################
-   #
-   #######################################
-   private
 
-   def html_code(tag,model,value,attribute,options)
+   #######################################
+   # Generate html code with RDFa info
+   #######################################
+   
+   private
+   def self.html_code(tag,model,value,attribute,options = "")
     rdf_info = ModelRdf.new    
 
-    if attribute #prefix + type_of
-      options += rdf_info.get_prefix(model)
-      options += rdf_info.model(model)
+    if attribute.nil? #prefix + type_of
+      options = (options || "") + rdf_info.get_prefix(model)
+      options = options + rdf_info.model(model)
     else  #property
-      options += rdf_info.attribute(model,attribute)
+      options = (options||"") + rdf_info.attribute(model,attribute)
     end
     
     unless value.nil?
@@ -62,4 +62,5 @@ class RDFa
      "<#{tag} #{options}/>"
     end
    end
+
 end
