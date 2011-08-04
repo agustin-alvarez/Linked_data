@@ -23,7 +23,7 @@ class EasyDatasController < ActionController::Base
 
       end
              
-      render :xml => @request
+      render :file => "/rdf/request",:content_type => "application/xml",:locals => {:request => @request}
     rescue
       raise ActionController::RoutingError.new('Not Found')    
     end
