@@ -1,8 +1,8 @@
 module EasyData 
   module RDF
    class CC < Namespaces
-     @@uri = "http://creativecommons.org/ns#"
-     @@properties= {"attributionName" => "",
+     @@uri = "xmlns:cc=http://creativecommons.org/ns#"
+     @@properties= {"attributionName" => "<cc:attributionName>%value%</cc:attributionName>",
                     "attributionURL" => "",
                     "deprecatedOn" => "",
                     "jurisdiction" => "",
@@ -19,8 +19,8 @@ module EasyData
        @@uri
      end
      # Return tag to rdf doc
-     def self.to_s(property,resource,value)
-        @@properties[property].gsub('%%',resource).gsub('$$',value)
+     def self.to_s(property,uri,value)
+        @@properties[property].gsub("%uri%",uri).gsub('%value%',value)
      end
      
      #Return a list of Namespace's properties
@@ -35,6 +35,5 @@ module EasyData
        end
        list
      end 
-   end
   end
 end

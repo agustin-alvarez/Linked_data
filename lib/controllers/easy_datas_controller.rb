@@ -6,28 +6,25 @@ class EasyDatasController < ActionController::Base
   layout 'easy_data_layout'
 
   def show
-  #  unless params[:format].nil?
-  #    render :template => "hola.html.erb",:layout => 'easy_data_layout'
-  #  else
+
     begin
       model = eval params[:model].to_s
-       
-      if params[:id]
-        @request = model.find params[:id]
-      else
-        @request={}
-        relations = {}
-        @request["model"] = params[:model].to_s
-        @request["attributes"] = DataModels.model_attributes(model)
-        @request["relations"] = DataModels.model_relations(model)
+      conditions = parser_params params[:params]
+      rdf = ModelRdf.new      
 
+      unless conditions.empty?
+        @request = model.find :all, :conditions => conditions
+      else
+        @request = model.find :all
       end
+
+      @rdf_model = rdf.get_model_rdf(@request,"http://localhost:3000")
              
-      render :file => "/rdf/request",:content_type => "application/xml",:locals => {:request => @request}
+      render :file => "/rdf/request",:content_type => "application/xml",:locals => {:rdf_model => @rdf_model}
     rescue
       raise ActionController::RoutingError.new('Not Found')    
     end
-   # end
+  
   end
 
   def describe_api
@@ -106,4 +103,23 @@ class EasyDatasController < ActionController::Base
      
      render :partial => "model_attributes",:layout => nil
   end
+
+  private 
+
+  def parser_params (params = nil)
+     
+     conditions = {}
+
+     if params.nil?
+       return conditions
+     else
+       params = params.split("$")
+       params.each do |p|
+         p = p.split(':')
+         conditions[p[0].downcase.to_sym] = p[1]   
+       end
+       return conditions
+     end
+  end
+
 end

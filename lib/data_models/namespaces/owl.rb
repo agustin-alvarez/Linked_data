@@ -61,8 +61,9 @@ module EasyData
        @@uri
      end
 
-     def self.to_s(property,resource,value)
-        "<owl:#{property} rdf:resource"
+      # Return tag to rdf doc
+     def self.to_s(property,uri,value)
+        @@properties[property].gsub("%uri%",uri).gsub('%value%',value)
      end
    
      #Return a list of Namespace's properties

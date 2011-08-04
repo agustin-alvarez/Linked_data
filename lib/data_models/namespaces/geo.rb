@@ -13,9 +13,9 @@ module EasyData
        @@uri
      end
 
-     # Return tag to rdf doc
-     def self.to_s(property,resource,value)
-        @@properties[property].gsub('%%',resource).gsub('$$',value)
+      # Return tag to rdf doc
+     def self.to_s(property,uri,value)
+        @@properties[property].gsub("%uri%",uri).gsub('%value%',value)
      end
      
      #Return a list of Namespace's properties
