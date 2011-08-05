@@ -1,7 +1,7 @@
 module EasyData
   module RDF
    class OWL < Namespaces
-     @@owl= "http://www.w3.org/2002/07/owl#"
+     @@uri= "http://www.w3.org/2002/07/owl#"
 
      @@properties = {"allValuesFrom" => "",
      "annotatedProperty" => "",
@@ -57,7 +57,7 @@ module EasyData
      } 
        
      # Return Namespace URI
-     def self.uri
+     def self.get_uri
        @@uri
      end
 

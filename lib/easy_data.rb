@@ -72,6 +72,10 @@ module EasyData
   def self.get_style_path
     File.join(File.dirname(__FILE__), 'easy_data/templates/stylesheets/easy_data_style.css')
   end
+
+  def self.get_uri_namespace(namespace)
+     eval "RDF::#{namespace.upcase}.get_uri"
+  end
  
   private
  

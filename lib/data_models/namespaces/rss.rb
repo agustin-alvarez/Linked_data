@@ -12,7 +12,7 @@ module EasyData
                     }
        
      # Return Namespace URI
-     def self.uri
+     def self.get_uri
        @@uri
      end
 

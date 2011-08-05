@@ -17,9 +17,9 @@ class EasyDatasController < ActionController::Base
       else
         @reply = model.find :all
       end
-      debugger                                 
-      @rdf_model = rdf.get_model_rdf(@reply,"http://"+request.env["HTTP_HOST"])
-             
+                                 
+      @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
+             debugger
       render :file => "/rdf/request",:content_type => "application/xml",:locals => {:rdf_model => @rdf_model}
     rescue
       raise ActionController::RoutingError.new('Not Found')    

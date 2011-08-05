@@ -1,6 +1,7 @@
 require "yaml"
 
 
+
 class ModelRdf 
     
    #######################################################################
@@ -55,23 +56,26 @@ class ModelRdf
    # Building RDF                           
    #######################################################################
 
-   def get_model_rdf(query,host)
+   def get_model_rdf(query,model,host)
      request = {:body => "",:header => ""}
+     elements = {}
      query.each do |element|
-       request[:body][element.id]['description'] = "<rdf:Description about='#{host}/#{element.class.to_s}/#id:#{element.id}'" 
-       request[:body][element.id]['attributes'] = get_properties_tags(element)
-       model = element.class.to_s
+       elements[element.id] = {'description' => "<rdf:Description about='#{host}/#{element.class.to_s}/#id:#{element.id}'>",'attributes' => get_properties_tag(element)}
      end     
-     debugger
-     request[:header] = get_header(get_attributes_model(model))
      
-     ParserRdf.to_rdf(rdf_mod)                        #Generating of rdf variable
+     request[:body] = elements
+     request[:header] = get_header(get_attributes_model(model))
+     request
+     #Generating of rdf variable
    end
 
    def get_header(attributes)
-      headers = []
-      attributes.each do |att,properties|
-        headers << (eval "RDF::#{properties[:namespace].upcase}.uri")
+      headers = {}
+     
+      (attributes["attributes"]||attributes["associations"]).each do |att,properties|
+        if properties != "no publication" && properties[:namespace] != 'not defined'
+          headers[properties[:namespace]] = (eval "EasyData::RDF::#{properties[:namespace].upcase}.get_uri") #EasyData.get_uri_namespace(properties[:namespace])
+        end
       end         
       headers
    end
@@ -79,9 +83,12 @@ class ModelRdf
    def get_properties_tag(element)
       attributes = get_attributes_model(element.class.to_s)
       properties = []
-      if element.respond_to? :each  
+      if element.attributes.respond_to? :each  
        element.attributes.each do |att|
-         properties << get_property_tag(attributes[att.first][:namespace],attributes[att.first][:property],att.second)
+         #conditions to methods to check if can be show
+         if attributes["attributes"][att.first][:privacy]!= "hidden" && attributes["attributes"][att.first][:namespace] != "not defined" && attributes["attributes"][att.first][:property]!="not defined"
+           properties << get_property_tag(attributes["attributes"][att.first][:namespace],attributes["attributes"][att.first][:property],att.second)
+         end
        end  
       end
       properties
@@ -92,6 +99,6 @@ class ModelRdf
    end
    
    def get_association_tag(namespace,property,value)
-     "<#{namespace}:#{property} rdf:resource="{value}" />"
+     "<#{namespace}:#{property} rdf:resource='#{value}' />"
    end 
 end

@@ -1,7 +1,7 @@
 module EasyData  
   module RDF
    class DC11 < Namespaces
-     @uri = "http://purl.org/dc/elements/1.1/" 
+     @@uri = "http://purl.org/dc/elements/1.1/" 
      @@properties= {"contributor" => "",
                     "coverage" => "",
                     "creator" => "",
@@ -20,8 +20,9 @@ module EasyData
                    }
        
      # Return Namespace URI
-     def self.uri
-       @@uri
+     def self.get_uri
+        @@uri
+#       "http://purl.org/dc/elements/1.1/" 
      end
 
       # Return tag to rdf doc
