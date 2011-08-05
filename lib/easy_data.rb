@@ -44,7 +44,8 @@ module EasyData
   def self.yaml_description_model(model_data)
 
     attributes = {}
-   
+    associations = {}
+
     model_data.columns.each do |att|
   
      if att.primary
@@ -56,8 +57,12 @@ module EasyData
      end
 
     end  
-  
-    attributes
+       
+    model_data.reflections.keys.each do |ref|
+      associations[ref.to_s] = {:privacy => 'public',:namespace => 'not defined',:property => 'not defined'}
+    end
+
+    {"attributes" => attributes,"associations" => associations}
   end
 
   def self.get_view_path

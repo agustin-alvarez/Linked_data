@@ -19,6 +19,10 @@ module EasyData
         list
       end
 
+      def self.get_tag(attribute,namespace,property,value)
+         
+      end
+
     end
   end
 end

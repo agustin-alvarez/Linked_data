@@ -24,7 +24,7 @@ module EasyDataRouting
            ed_views.connect 'list_models.:format', :action => 'describe_api'
            ed_views.connect 'custom_rdf', :action=> "custom_rdf"
            DataModels.load_models.each do |model|
-             ed_views.connect "#{model.gsub("::","_")}?(:params)", :controller => "easy_datas", 
+             ed_views.connect "#{model.gsub("::","_")}/:params", :controller => "easy_datas", 
                                                                     :action => 'show',
                                                                     :model => model
            end

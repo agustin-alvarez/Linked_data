@@ -11,18 +11,14 @@ module EasyData
                     "morePermissions" => "",
                     "permits" => "",
                     "prohibits" => "",
-                    "requires" => "", 
+                    "requires" => "" 
                    }
 
      # Return Namespace URI
      def self.uri
        @@uri
      end
-     # Return tag to rdf doc
-     def self.to_s(property,uri,value)
-        @@properties[property].gsub("%uri%",uri).gsub('%value%',value)
-     end
-     
+         
      #Return a list of Namespace's properties
      def self.properties
         @@properties.keys
@@ -35,5 +31,6 @@ module EasyData
        end
        list
      end 
+   end
   end
 end

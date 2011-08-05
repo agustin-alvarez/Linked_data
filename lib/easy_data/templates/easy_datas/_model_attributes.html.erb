@@ -1,46 +1,24 @@
 <div id="list_attributes" class="model_attributes">
 
 <%if @model_attributes.respond_to?:each%>
-   <div class="attributes_info">
-     <%@model_attributes.each do |att,properties|%>
-          <div class="property">
-           <span class="attribute"><%=att%></span>
-           <% unless properties[:namespace].nil?%> 
-            <div id="privacy">
-              <span>Access privacy: </span>
-              <span><%= properties[:privacy] %></span> 
-            </div>
-            <div id="<%="namespace"%>">
-              <span>Rdf Namespace: </span>
-              <span><%= properties[:namespace] -%></span>
-            </div>
-            <div id="<%= "property"%>">
-              <span>Property:</span>
-              <span><%=properties[:property] %></span>
-            </div>
-          <%else%>
-           <span>This attribute can't be publicate</span>
-          <%end%>
-         </div>
-         <br />
-     <%end%>
-   </div>
-
+   <!-- ATTRIBUTES -->
+   <span>Resource Attributes</span>
+   <%= render :partial => "list_properties",:locals => {:attributes => @model_attributes["attributes"]} %> 
+   <span>Associations whit others Resources</span>
+   <!--ASSOCIATIONS-->
+   <%= render :partial => "list_properties",:locals => {:attributes => @model_attributes["associations"]} %> 
 <%else%>
  <span>Model no found</span>
 <%end%>
-
-
-
- <span>
-      <%= link_to_remote "Edit",:url => {:controller => 'easy_datas', 
-                                          :action => :model_attributes_edit, 
-                                          :model => @model},
-                                  :update => "#{@model}_attributes",
-                                  :success => "Effect.Appear('#{@model}_attributes', { duration: 0.4 })",
-                                  :failure => "alert('Ooops! An error occurred.')"                
-       %>
- </span>
+<span>
+     <%= link_to_remote "Edit",:url => {:controller => 'easy_datas', 
+                                        :action => :model_attributes_edit, 
+                                        :model => @model},
+                               :update => "#{@model}_attributes",
+                               :success => "Effect.Appear('#{@model}_attributes', { duration: 0.4 })",
+                               :failure => "alert('Ooops! An error occurred.')"                
+     %>
+</span>
 
  <%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{duration: .3})",:class=>"close_list"%>
 

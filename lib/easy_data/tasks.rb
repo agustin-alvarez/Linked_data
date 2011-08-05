@@ -58,7 +58,7 @@ namespace :easy_data do
      if model_data.respond_to?:columns 
        
       rdf_info[model] = EasyData.yaml_description_model(model_data)
-     
+      
      end
 
    end

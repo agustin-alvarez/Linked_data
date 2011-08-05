@@ -6,19 +6,19 @@ class EasyDatasController < ActionController::Base
   layout 'easy_data_layout'
 
   def show
-
+    
     begin
       model = eval params[:model].to_s
       conditions = parser_params params[:params]
       rdf = ModelRdf.new      
 
       unless conditions.empty?
-        @request = model.find :all, :conditions => conditions
+        @reply = model.find :all, :conditions => conditions
       else
-        @request = model.find :all
+        @reply = model.find :all
       end
-
-      @rdf_model = rdf.get_model_rdf(@request,"http://localhost:3000")
+      debugger                                 
+      @rdf_model = rdf.get_model_rdf(@reply,"http://"+request.env["HTTP_HOST"])
              
       render :file => "/rdf/request",:content_type => "application/xml",:locals => {:rdf_model => @rdf_model}
     rescue
@@ -74,27 +74,33 @@ class EasyDatasController < ActionController::Base
      @model_attributes = rdf.get_attributes_model(params[:model])
     
      properties = (eval namespace).properties_form
-   
-     render :inline => "<span>Property:</span><%= select 'property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
-                        :locals => {:properties => properties,
-                                    :attribute => params[:attribute],
-                                    :current_value => @model_attributes[params[:attribute]][:property]}
-   
-  #   render :update  do |page|
-  #     page.insert_html params[:block],:partial => html
-  #   end
   
+     render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
+                        :locals => {:properties => properties,
+                                    :type => params[:type],
+                                    :attribute => params[:attribute],
+                                    :current_value => @model_attributes[params[:type]][params[:attribute]][:property]}
   end
   
   def custom_attributes
 
      rdf = ModelRdf.new
      @model = params[:model]
-     
-     params[:property].each do |att,value|
-        rdf.update_attributes_model(params[:model],att,'namespace',params[:rdf_type][att])
+
+     params["rdf_type_attributes"].each do |att,value|
+       if value != ""
+        rdf.update_attributes_model(params[:model],att,'namespace',params[:rdf_type_attributes][att])
         rdf.update_attributes_model(params[:model],att,'property',value)
         rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att].to_i))
+       end
+     end
+
+     params["rdf_type_associations"].each do |assoc,value|
+       if value != ""
+        rdf.update_associations_model(params[:model],assoc,'namespace',params[:rdf_type_associations][assoc])
+        rdf.update_associations_model(params[:model],assoc,'property',value)
+        rdf.update_associations_model(params[:model],assoc,'privacy',rdf.privacy(params[:privacy][assoc].to_i))
+       end
      end
 
      rdf.save

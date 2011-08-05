@@ -61,7 +61,7 @@ module EasyData
     "gpsDifferential" => "",
     "gpsImgDirection" => "",
     "gpsImgDirectionRef" => "",
-    "gpsInfo";
+    "gpsInfo" => "",
     "gpsInfo_IFD_Pointer" => "",
     "gpsLatitude" => "",
     "gpsLatitudeRef" => "",

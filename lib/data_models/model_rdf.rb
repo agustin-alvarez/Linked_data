@@ -32,7 +32,11 @@ class ModelRdf
 
    # update attributes with rdf properties.
    def update_attributes_model(model,attribute,param,value)
-      self.model_rdf[model][attribute][param.to_sym] = value
+      self.model_rdf[model]['attributes'][attribute][param.to_sym] = value
+   end
+   
+   def update_associations_model(model,association,param,value)
+      self.model_rdf[model]['associations'][association][param.to_sym] = value
    end
    
    # Return privacy of a attribute 
@@ -52,13 +56,13 @@ class ModelRdf
    #######################################################################
 
    def get_model_rdf(query,host)
-
+     request = {:body => "",:header => ""}
      query.each do |element|
        request[:body][element.id]['description'] = "<rdf:Description about='#{host}/#{element.class.to_s}/#id:#{element.id}'" 
        request[:body][element.id]['attributes'] = get_properties_tags(element)
        model = element.class.to_s
      end     
-
+     debugger
      request[:header] = get_header(get_attributes_model(model))
      
      ParserRdf.to_rdf(rdf_mod)                        #Generating of rdf variable
@@ -84,6 +88,10 @@ class ModelRdf
    end
 
    def get_property_tag(namespace,property,value)
-     eval "RDF::#{namespace.upcase}.to_s(#{property},#{value})"
+     "<#{namespace}:#{property}>#{value}</#{namespace}:#{property}>"
+   end
+   
+   def get_association_tag(namespace,property,value)
+     "<#{namespace}:#{property} rdf:resource="{value}" />"
    end 
 end
