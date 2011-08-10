@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   #All is not necesary, only is for study his methods
 
     s.add_dependency(%q<hpricot>, [">= 0.8.4"])
+    s.add_dependency(%q<haml>, [">= 3.0.0"])
     #s.add_dependency(%q<rdf>, [">= 0"])
     #s.add_dependency(%q<haml>, [">= 3.0.0"])
     #s.add_dependency(%q<nokogiri>, [">= 1.3.3"])

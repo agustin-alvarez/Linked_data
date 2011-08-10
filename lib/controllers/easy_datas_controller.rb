@@ -17,10 +17,12 @@ class EasyDatasController < ActionController::Base
       else
         @reply = model.find :all
       end
-                                 
+      @host="http://"+request.env["HTTP_HOST"]          
       @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
-             debugger
-      render :file => "/rdf/request",:content_type => "application/xml",:locals => {:rdf_model => @rdf_model}
+        debugger
+      render :template => "/rdf/request"   
+ 
+       #render :file => "/rdf/request",:content_type => "application/xml",:locals => {:rdf_model => @rdf_model}
     rescue
       raise ActionController::RoutingError.new('Not Found')    
     end
@@ -88,17 +90,17 @@ class EasyDatasController < ActionController::Base
      @model = params[:model]
 
      params["rdf_type_attributes"].each do |att,value|
-       if value != ""
+       if params["attributes_property"][att] != "" && params[:rdf_type_attributes][att]
         rdf.update_attributes_model(params[:model],att,'namespace',params[:rdf_type_attributes][att])
-        rdf.update_attributes_model(params[:model],att,'property',value)
+        rdf.update_attributes_model(params[:model],att,'property',params["attributes_property"][att])
         rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att].to_i))
        end
      end
 
      params["rdf_type_associations"].each do |assoc,value|
-       if value != ""
+       if params["associations_property"][att] != "" && params[:rdf_type_associations]
         rdf.update_associations_model(params[:model],assoc,'namespace',params[:rdf_type_associations][assoc])
-        rdf.update_associations_model(params[:model],assoc,'property',value)
+        rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
         rdf.update_associations_model(params[:model],assoc,'privacy',rdf.privacy(params[:privacy][assoc].to_i))
        end
      end
