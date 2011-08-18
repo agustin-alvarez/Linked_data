@@ -1,28 +1,26 @@
-<h2>Custom Rdf Information</h2>
-<span><%= link_to "[Logout]", :controller => "easy_datas",:action => "logout" %></span>
-<hr/>
+<%= render :partial => "menu_custom"%>
 <%if @models.respond_to?:each%>
-<div id="list_models" class="list_model_info">
- <ul>
-   <%@models.each do |model|%>
+<div id="custom_content" class="ed_info_content">
+  <div id="list_models" class="list_model_info">
+   <ul>
+    <%@models.each do |model|%>
      <li class="list_model">
-          <span class="model"><%= model %></span>
-          <span id="open_<%=model%>"><%= link_to_remote "Abrir",:url => {:controller => 'easy_datas', 
-                                                    :action => :model_attributes, 
-                                                    :model => model},
+          <span class="model"><%= link_to_remote model,:url => {:controller => 'easy_datas', 
+                                                       :action => :model_attributes, 
+                                                       :model => model},
                                            :update => "model_attributes",
-                                           :success => "Effect.Appear('model_attributes', { duration: 0.4 });
-                                                        Effect.Fade('open_#{model}')",
+                                           :success => "Effect.Appear('model_attributes', { duration: 0.4 });",
                                            :failure => "alert('Ooops! An error occurred.')"                
                  %>
           </span>
      
-     </li>
-   <%end%>
- </ul>
+      </li>
+    <%end%>
+   </ul>
+  </div>
+  <div id="model_attributes" class="ed_info_models" style="display:none"></div>
 </div>
-<div id="model_attributes" class="ed_info_models" style="display:none"></div>
-
 <%else%>
  <h3> Not list model </h3>
 <%end%>
+<%= render :partial => "footer"%>
