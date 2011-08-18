@@ -1,16 +1,17 @@
 <% if @model_attributes["attributes"]%>
-<h2> Attributes: </h2>
-<ul>
+ <span class="data_info"> Attributes: </span>
+ <ul>
   <%@model_attributes["attributes"].keys.each do |att|%>
    <li><%=att%></li>
   <%end%>
 </ul>
 <%end%>
 <%if @model_attributes["associations"] %>
-<h2> Associations: </h2>
+<span class="data_info"> Associations: </span>
 <ul>
   <%@model_attributes["associations"].keys.each do |assoc|%>
     <li><%=assoc%></li>
   <%end%>
 </ul>
 <%end%>
+

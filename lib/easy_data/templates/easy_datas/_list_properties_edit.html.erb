@@ -6,7 +6,7 @@
         <% unless properties[:privacy].nil?%> 
            <div id="select_privacy">
              <span>Access privacy: </span>
-               <%= select "privacy",att, {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%>
+               <%= select "privacy",att, {"Hidden" => "Hidden","Public" => "Public","Private" => "Private"}%>
              <span class="rdf_info"><%= "(Current value: #{properties[:privacy]})"%></span> 
            </div>
            <br />

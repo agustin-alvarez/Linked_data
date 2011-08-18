@@ -1,6 +1,6 @@
 <div id="select_privacy">
    <span>Access privacy: </span>
-     <%= select "privacy","#{model_name}", {"Hidden" => 0,"Public" => 1,"Authenticated" => 2}%>
+     <%= select "privacy","#{model_name}", {"Hidden" => "Hidden","Public" => "Public","Privacy" => "Privacy"}%>
    <span class="rdf_info"><%= "(Current value: #{model[:privacy]})"%></span> 
 </div>
 

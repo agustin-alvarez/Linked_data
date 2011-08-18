@@ -111,7 +111,10 @@ namespace :easy_data do
     file = File.open("#{easy_data_dir}/setting.yaml","w")
     file.puts "#User admin:"
 
-    admin = {"user_admin" =>{"user" => args.user,"pass" => args.pass}}
+    admin = {"user_admin" =>{"user" => args.user,"pass" => args.pass},
+             "proyect" => {"name" => nil, "contact_email" => nil,"description" => nil},
+             "access" => {"ip" => nil}
+            }
     file.puts admin.to_yaml
 
     file.close

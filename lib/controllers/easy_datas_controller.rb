@@ -168,9 +168,8 @@ class EasyDatasController < ActionController::Base
     
      rdf = ModelRdf.new
      @model = params[:model]
-     if params["rdf_type_attributes"].respond_to?:each
+     unless params["attributes_property"].nil?
       params["rdf_type_attributes"].each do |att,value|
-        debugger
         if params["attributes_property"][att] != "" && value != ""
          rdf.update_attributes_model(params[:model],att,'namespace',value)
          rdf.update_attributes_model(params[:model],att,'property',params["attributes_property"][att])
@@ -178,7 +177,7 @@ class EasyDatasController < ActionController::Base
         end
       end
      end
-     if params["rdf_type_associations"].respond_to?:each
+     unless params["associations_property"].nil?
       params["rdf_type_associations"].each do |assoc,value|
         if value != "" && params["associations_property"][assoc] != ""
          rdf.update_associations_model(params[:model],assoc,'namespace',value)
@@ -189,8 +188,8 @@ class EasyDatasController < ActionController::Base
      end
      
      rdf.update_model(params[:model],"privacy",params[:privacy][params[:model]]) if params[:privacy][params[:model]]
-     if params[:property][params[:model]]
-       rdf.update_model(params[:model],"namespace",params[:namespace][params[:model]]) 
+     if params[:property]
+       rdf.update_model(params[:model],"namespace",params[:namespace][params[:model]])
        rdf.update_model(params[:model],"property",params[:property][params[:model]]) 
      end
      rdf.save
@@ -204,8 +203,8 @@ class EasyDatasController < ActionController::Base
   end
 
   def login
-    admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml")) 
-    if admin["user_admin"]["user"] == params[:nick] && admin["user_admin"]["password"] == params[:pass]
+     
+    if @admin["user_admin"]["user"] == params[:nick] && @admin["user_admin"]["password"] == params[:pass]
       @current_user = params[:nick]
       session[:easy_data_session] = params[:nick]
       redirect_to :action => "custom_rdf"
@@ -239,9 +238,14 @@ class EasyDatasController < ActionController::Base
   end
 
   def authenticated
-    
-    if session[:easy_data_session].nil?
-      redirect_to :action => "authenticate_user"
+    @admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+
+    if @admin["access"]["ip"].nil? || @admin["access"]["ip"].to_s == request.ip.to_s
+     if session[:easy_data_session].nil?
+       redirect_to :action => "authenticate_user"
+     end
+    else
+      render_404
     end
   end
 
