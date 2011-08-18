@@ -53,6 +53,11 @@ class ModelRdf
       " "
      end
    end
+  
+   # update model rdf info
+   def update_model(model,param,value)
+      self.model_rdf[model][param.to_sym] = value
+   end
 
    # update attributes with rdf properties.
    def update_attributes_model(model,attribute,param,value)

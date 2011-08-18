@@ -6,11 +6,11 @@
  <ul>
    <%@models.each do |model|%>
      <li class="list_model">
-          <h2><%= model %></h2>
+          <span class="model"><%= model %></span>
           <span id="open_<%=model%>"><%= link_to_remote "Abrir",:url => {:controller => 'easy_datas', 
                                                     :action => :model_attributes, 
                                                     :model => model},
-                                           :update => "#{model}_attributes",
+                                           :update => "model_attributes",
                                            :success => "Effect.Appear('model_attributes', { duration: 0.4 });
                                                         Effect.Fade('open_#{model}')",
                                            :failure => "alert('Ooops! An error occurred.')"                

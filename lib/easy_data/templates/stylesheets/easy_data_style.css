@@ -6,7 +6,6 @@ a{text-decoration:none}
 .authenticate form input{float:right}
 .authenticate form span{width:95%;display:block;overflow:hidden}
 ul{list-style:none;width:90%;float:left;}
-ul li.list_model{color:white;background:grey}
 ul div.list_attributes{overflow:hidden;background-color:white;color:black;padding:0 5%;}
 
 ul.attributes_info{width:100%;clear:left;padding:0}
@@ -28,9 +27,11 @@ div.attributes_info div.property span.rdf_info{color:grey;font-size:12px}
 
 
 .ed_info_content{background:#235099 url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:0 25%;overflow:hidden;}
-.ed_info_content .list_model_info{float:left;width:30%}
-.ed_info_content .list_model_info ul li{margin:0;}
-.ed_info_content .list_model_info ul li:hover{margin:0;color:white !important;background-color:#ccc}
-.ed_info_content .list_model_info ul li a{color:white;font-weight:bold}
+.list_model_info{float:left;width:30%}
+.list_model_info ul li{margin:0;overflow:hidden;background:grey;color:white;padding:5px 20px}
+.list_model_info ul li:hover{margin:0;color:white !important;background-color:#ccc}
+.list_model_info ul li a{color:white;font-weight:bold}
+.list_model_info ul li span{float:left}
+.list_model_info ul li .model{width:80%;font-size:20px}
 .ed_info_content .list_model_info ul li a:hover{color:white;font-weight:bold;}
 .ed_info_content .ed_info_models{float:left;width:70%;padding:5% 0;}

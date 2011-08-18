@@ -127,14 +127,22 @@ class EasyDatasController < ActionController::Base
  
        @namespace = params[:id]
        @model_attributes = rdf.get_attributes_model(params[:model])
-    
+       
        properties = (eval namespace).properties_form
-  
-       render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
-                        :locals => {:properties => properties,
-                                    :type => params[:type],
-                                    :attribute => params[:attribute],
-                                    :current_value => @model_attributes[params[:type]][params[:attribute]][:property]}
+       
+       if params[:attribute]!=params[:model]
+         render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
+                          :locals => {:properties => properties,
+                                      :type => params[:type],
+                                      :attribute => params[:attribute],
+                                      :current_value => @model_attributes[params[:type]][params[:attribute]][:property]}
+       else
+         render :inline => "<span>Property:</span><%= select 'property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span><br />",
+                          :locals => {:properties => properties,
+                                      :attribute => params[:model],
+                                      :current_value => @model_attributes[:property]}
+
+       end
      else
        render :inline => ""
      end
@@ -160,23 +168,31 @@ class EasyDatasController < ActionController::Base
     
      rdf = ModelRdf.new
      @model = params[:model]
-
-     params["rdf_type_attributes"].each do |att,value|
-       if params["attributes_property"][att] != "" && value != ""
-        rdf.update_attributes_model(params[:model],att,'namespace',value)
-        rdf.update_attributes_model(params[:model],att,'property',params["attributes_property"][att])
-        rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att].to_i))
-       end
+     if params["rdf_type_attributes"].respond_to?:each
+      params["rdf_type_attributes"].each do |att,value|
+        debugger
+        if params["attributes_property"][att] != "" && value != ""
+         rdf.update_attributes_model(params[:model],att,'namespace',value)
+         rdf.update_attributes_model(params[:model],att,'property',params["attributes_property"][att])
+         rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att].to_i))
+        end
+      end
      end
-    
-     params["rdf_type_associations"].each do |assoc,value|
-       if value != "" && params["associations_property"][assoc] != ""
-        rdf.update_associations_model(params[:model],assoc,'namespace',value)
-        rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
-        rdf.update_associations_model(params[:model],assoc,'privacy',rdf.privacy(params[:privacy][assoc].to_i))
-       end
+     if params["rdf_type_associations"].respond_to?:each
+      params["rdf_type_associations"].each do |assoc,value|
+        if value != "" && params["associations_property"][assoc] != ""
+         rdf.update_associations_model(params[:model],assoc,'namespace',value)
+         rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
+         rdf.update_associations_model(params[:model],assoc,'privacy',rdf.privacy(params[:privacy][assoc].to_i))
+        end
+      end
      end
-
+     
+     rdf.update_model(params[:model],"privacy",params[:privacy][params[:model]]) if params[:privacy][params[:model]]
+     if params[:property][params[:model]]
+       rdf.update_model(params[:model],"namespace",params[:namespace][params[:model]]) 
+       rdf.update_model(params[:model],"property",params[:property][params[:model]]) 
+     end
      rdf.save
 
      @model_attributes = rdf.get_attributes_model(@model)
@@ -189,7 +205,6 @@ class EasyDatasController < ActionController::Base
 
   def login
     admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml")) 
-
     if admin["user_admin"]["user"] == params[:nick] && admin["user_admin"]["password"] == params[:pass]
       @current_user = params[:nick]
       session[:easy_data_session] = params[:nick]
@@ -224,6 +239,7 @@ class EasyDatasController < ActionController::Base
   end
 
   def authenticated
+    
     if session[:easy_data_session].nil?
       redirect_to :action => "authenticate_user"
     end

@@ -14,27 +14,34 @@ class RDFa
    # HTML Tags
    ####################################
 
-      
-   def a(model,value,attribute=nil,options=nil)
-      _html_code('a',model,value,attribute,options)
+   #-----------------------------------------------Links
+   def a(model,href,attribute=nil,options=nil)
+      _html_code('a',model,attribute,"href='#{href||'#'}' "+options.to_s)
    end
 
-   def ul(model,value,options=nil)
+   #-----------------------------------------------End Links
+   #-----------------------------------------------List_to_user
+   def ul(model,value,attribute=nil,options=nil)
       _html_code_list('ul',model,value,options)
    end
  
-   def ol(model,value,options=nil)
+   def ol(model,value,attribute=nil,options=nil)
       _html_code_list('ol',model,value,options)
    end
-   
-      
-   def img(model,src,attribute=nil,options=nil)
-      _html_code('img',model,nil,attribute,"src='#{src}' "+options.to_s)
+   #-----------------------------------------------End List_to_user
+   #------------------------------------------------AUTO-CLOSED   
+   def img(model,value,attribute=nil,options=nil)
+      _html_code('img',model,nil,attribute,"src='#{value||'#'}' "+options.to_s)
    end
+
+   def input(model,type,attribute=nil,options=nil)
+      nil
+   end
+   #------------------------------------------------END AUTO-CLOSED   
 
    # This method is called if doesnt exist the method called by class's users
    def method_missing(sym, *args, &block)
-     _html_code(sym.to_s,args[0],args[1],args[2],args[3],args[4])
+     _html_code(sym.to_s,args[0],args[1],args[2],args[3])
    end
 
    #######################################
@@ -68,15 +75,15 @@ class RDFa
     data_model = rdf_info.get_attributes_model(model)
 
     html = "<#{tag} #{options}>"
-
-    data_model["attributes"].each do |att,info|
+    unless value.nil?
+     data_model["attributes"].each do |att,info|
       if info[:namespace] && info[:property]
         html << "<li property='#{info[:namespace]}:#{info[:property]}'>#{value.attributes[att]}</li>"
       end
+     end
+    
+     html << "</#{tag}>"
     end
-
-    html << "</#{tag}>"
-   
     html
    end
 
