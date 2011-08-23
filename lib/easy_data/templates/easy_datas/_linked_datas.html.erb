@@ -1,12 +1,12 @@
 <div id="list_models" class="list_model_info">
  <ul>
     <% @list.each do |model|%>
-      <% if File.exists? image_path("linked_data_graphs/linked_data_#{model}.png")%>
+      <% if File.exists?("public/images/linked_data_graphs/linked_data_#{model}.png")%>
        <li> 
-         <%= link_to_remote model,:url => {:controller => 'easy_datas', 
-                                          :action => :load_linked_data_graph, 
-                                          :model => model},
-                                 :update => "info_models"
+         <%= link_to_remote model,:url => {:controller => "easy_datas",
+                                           :action => "load_linked_data_graph", 
+                                           :model => model},
+                                  :update => "info_models"
          %>  
        </li>
       <%end%>

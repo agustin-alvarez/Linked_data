@@ -58,12 +58,12 @@ class LinkedDataGraph
       file.puts "digraph G {"
       #file.puts 'size="15,15";'
       file.puts "rankdir = LR;"
-      file.puts "model[color=#80e3ff]"
+      file.puts "#{model}[color=green]"
      
       #Draw nodes
 
       graph_info[:assoc].each do |assoc|
-         file.puts "#{assoc} [color=#ffdc98]"
+         file.puts "#{assoc} [color=yellow]"
          file.puts '"'+model+'" -> "'+assoc.to_s+'"[dir=none];'
       end
 

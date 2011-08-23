@@ -141,7 +141,8 @@ class EasyDatasController < ActionController::Base
   
   def load_linked_data_graph
      if params[:model]
-      render :inline => "<img src='images/linked_data_graphs/linked_data_#{params[:model]}' title='' />"
+      @model = params[:model]
+      render :partial => "linked_data_model"
      else
       models = DataModels.load_models
       @list = []
@@ -155,7 +156,7 @@ class EasyDatasController < ActionController::Base
   end
 
   def custom_attributes
-    debugger
+    
      rdf = ModelRdf.new
      @model = params[:model]
 
