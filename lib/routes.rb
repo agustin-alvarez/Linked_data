@@ -36,6 +36,8 @@ module EasyDataRouting
            ed_actions.connect 'easy_datas/load_properties/:block/:attribute', :action => 'load_properties'
            ed_actions.connect 'easy_datas/login', :action => 'login'
            ed_actions.connect 'easy_datas/custom_attributes/:model', :action => 'custom_attributes'
+           ed_actions.connect 'easy_datas/settings', :action => 'settings'
+           ed_actions.connect 'easy_datas/settings_custom', :action => 'custom_settings'
          end
 
        #Ajax routes:

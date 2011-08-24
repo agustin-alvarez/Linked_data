@@ -1,0 +1,18 @@
+<%- form_remote_for :settings,:url => {:controller => "easy_datas",:action=>"custom_settings"} do%>
+
+ <span>Proyecto</span>
+ <ul>
+   <li><span>Project's name(?):</span><%= text_field "project","project"%></li>
+   <li><span>Logo(?):</span><%= select "project","logo",@images,{:prompt => "Select logo ..."}%></li>
+   <li><span>Description(?):</span><%= text_area "project","description","cols" => 80,"rows"=>5%></li>
+ </ul>
+ <span>Access</span>
+ <ul>
+   <li><span>User:</span><%= text_field "user_admin","user"%></li>
+   <li><span>Password:</span><%= password_field "user_admin","pass"%></li>
+   <li><span>IP:</span><%= text_field "access","ip"%></li>
+ </ul>
+
+ <%= submit_tag %>
+
+<%end%>

@@ -198,12 +198,47 @@ class EasyDatasController < ActionController::Base
      
      render :partial => "model_attributes",:layout => nil
   end
+  
+  def settings
+     @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+     @images = Dir["#{RAILS_ROOT}/public/images/*"].map{|img| [img.gsub("#{RAILS_ROOT}/public/images/",""),img.gsub("#{RAILS_ROOT}/public/images/","")]}
+     render :partial => "settings",:layout => nil
+  end
+
+  def custom_settings
+     @settings = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+     
+     if !params["project"].nil? && params["project"]!=@settings["project"]["name"]
+       @settings["project"]["name"] = params["project"]
+     end
+    
+     if !params["logo"].nil? && params["setting"]["logo"]!=@settings["project"]["logo"]
+       @settings["project"]["logo"] = params["setting"]["logo"]
+     end
+
+     if !params["description"].nil? && params["description"]!=@settings["project"]["description"]
+       @settings["project"]["description"] = params["description"]
+     end
+
+     if !params["user"].nil? && !params["pass"].nil?
+       (@settings["user_admin"]["user"] = params["user"]) if @settings["user_admin"]["user"]!=params["user"]
+       (@settings["user_admin"]["pass"] = params["pass"]) if @settings["user_admin"]["pass"]!=params["pass"]
+     end
+
+     if !params["ip"].nil?
+       (@settings["access"]["ip"] = params["ip"]) if params["ip"]!=@settings["access"]["ip"]
+     end
+
+     save_settings(settings)
+     settings
+  end
 
   def authenticate_user
   end
 
   def login
-     
+    @admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+
     if @admin["user_admin"]["user"] == params[:nick] && @admin["user_admin"]["password"] == params[:pass]
       @current_user = params[:nick]
       session[:easy_data_session] = params[:nick]
@@ -238,15 +273,21 @@ class EasyDatasController < ActionController::Base
   end
 
   def authenticated
-    @admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
-
-    if @admin["access"]["ip"].nil? || @admin["access"]["ip"].to_s == request.ip.to_s
+    admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+    
+    if admin["access"]["ip"].nil? || admin["access"]["ip"].to_s == request.ip.to_s
      if session[:easy_data_session].nil?
        redirect_to :action => "authenticate_user"
      end
     else
       render_404
     end
+  end
+
+  def save_settings(settings)
+     file = File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml",'w')
+     file.puts YAML::dump(settings)
+     file.close
   end
 
 end
