@@ -1,14 +1,13 @@
 <div class="ed_main_menu">
   <ul>
-    <li class="layer_menu">Custom RDF Information</li>
-    <li class="menu_link"><%= link_to_remote "Custom Rdf",:url => {:controller => "easy_datas",:action => "custom_rdf"},
-                                                                   :update => "custom_content",
-                                                                   :html => {:title => "Custom RDF information"}
+    <li class="layer_menu"><%= "#{@settings["project"]["name"]||nil} - "%>Custom RDF Information</li>
+    <li class="menu_link"><%= link_to "Custom Rdf",{:controller => "easy_datas",:action => "custom_rdf"},
+                                                   {:title => "Custom RDF information"}
                           %>
     </li>
-    <li class="menu_link"><%= link_to_remote "Settings",:url => {:controller => "easy_datas",:action => "settings"},
-                                                           :update => "custom_content",
-                                                           :html => {:title => "Project Settings"}
+    <li class="menu_link"><%= link_to_remote "Settings",:url => {:controller => "easy_datas",:action => "view_settings"},
+                                                        :update => "custom_content",
+                                                        :html => {:title => "Project Settings"}
                           %>
     </li> 
     <li class="menu_link"><a href="mailto:jnillo9@gmail.com?subject='Any cuestion about EasyData'" title="Cuestion to Jnillo">Quiz</a></li>

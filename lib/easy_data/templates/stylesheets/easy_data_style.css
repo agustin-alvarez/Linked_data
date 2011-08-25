@@ -1,4 +1,4 @@
-body{width:100%;margin:0;padding:0;font-family:helvetica;}
+body{width:100%;height:100%;margin:0;padding:0;font-family:helvetica;}
 a{text-decoration:none}
 .authenticate{background:url("images/easy_data_logo.png")no-repeat 0 0;padding-top:130px;margin:0 auto;width:400px}
 .authenticate form{background:#767676;width:375px;color:white;overflow:hidden;padding: 20px 30px}
@@ -12,7 +12,7 @@ ul.attributes_info{width:100%;clear:left;padding:0}
 div.attributes_info{padding: 1% 3%;overflow:hidden}
 div.attributes_info div.property{border-bottom:1px black solid;padding:1em}
 div.attributes_info div.property span.attribute{font-size:1.15em;font-weight:bold;}
-div.attributes_info div.property span.rdf_info{color:grey;font-size:12px}
+.rdf_info{color:grey;font-size:12px}
 
 /*EASY DATA INFO*/
 .content{width:100%}
@@ -23,10 +23,10 @@ div.attributes_info div.property span.rdf_info{color:grey;font-size:12px}
 .ed_main_menu ul li.menu_link{width:10% !important}
 .ed_main_menu ul li.menu_link a:hover{background:url("images/bg_link.jpg") no-repeat 0 0;padding:10px 0px;cursor:pointer}
 .ed_main_menu ul li a{color:white}
-.ed_main_menu ul li.layer_menu{font-size:14px;width:300px !important;padding:11px 0;font-weight:bold}
+.ed_main_menu ul li.layer_menu{font-size:14px;width:300px !important;padding:11px 0;font-weight:bold;max-height:26px}
 
 
-.ed_info_content{background:url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:0 20%;overflow:hidden;}
+.ed_info_content{background:url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:2% 20%;overflow:hidden;min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -70px;}
 .list_model_info{float:left;width:40%;overflow:hidden}
 .list_model_info ul li{margin:0;overflow:hidden;color:blue;padding:5px 20px}
 .list_model_info ul li:hover{margin:0;color:blue !important;}
@@ -35,10 +35,12 @@ div.attributes_info div.property span.rdf_info{color:grey;font-size:12px}
 .list_model_info ul li .model{width:80%;font-size:20px}
 .ed_info_content .list_model_info ul li a:hover{background:url("images/bg_link.jpg") no-repeat 0 0;font-weight:bold;}
 .ed_info_content .ed_info_models{float:left;width:60%;padding:4% 0;}
-.ed_info_content .ed_info_models span{background:url("images/rdf_icon.png") no-repeat 0 0; padding-left:30px;color:#085DAD;text-decoration:underline;font-weight:bold;display:block;height:27px;}
-.ed_info_content .ed_info_models p{padding-left:30px;}
+.ed_info_content .settings_table{text-align:left;margin-left:5%;margin-bottom:5%;i}
+.ed_info_content .settings_table th{padding: 10px 0}
+.title_data_publications{color:#085DAD;text-decoration:underline;}
 .ed_info_content .ed_info_models .data_info{text-decoration:underline;color:#085DAD;font-size:15px;width:100%;display:block;}
 /*Footer*/
 
-.easy_data_footer{background:url("images/bg_ft.png") repeat-x 0 0;width:100%;}
+.easy_data_footer,.push{height:70px;}
+.easy_data_footer{background:url("images/bg_ft.png") repeat-x 0 0;width:100%;clear:both;}
 .easy_data_footer a{margin-left:60%}

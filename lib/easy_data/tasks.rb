@@ -112,7 +112,7 @@ namespace :easy_data do
     file.puts "#User admin:"
 
     admin = {"user_admin" =>{"user" => args.user,"pass" => args.pass},
-             "proyect" => {"name" => nil, "contact_email" => nil,"description" => nil},
+             "project" => {"name" => nil, "contact_email" => nil,"description" => nil},
              "access" => {"ip" => nil}
             }
     file.puts admin.to_yaml

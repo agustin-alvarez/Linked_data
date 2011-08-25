@@ -1,6 +1,6 @@
 <div class="ed_main_menu">
   <ul>
-    <li class="layer_menu"><a href="https://rubygems.org/gems/easy_data" title="Home page Easy Data project">Easy Data - Data Publications Information</a></li>
+    <li class="layer_menu"><%= "#{@settings["project"]["name"]||nil} - "%>Data Publications Information</li>
     <li class="menu_link"><%= link_to "Data Publications",{:controller => "easy_datas",:action => "info_easy_data"},
                                                                   {:title => "Data Publications"}
                           %>

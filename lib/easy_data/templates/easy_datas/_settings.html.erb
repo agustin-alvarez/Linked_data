@@ -1,17 +1,29 @@
-<%- form_remote_for :settings,:url => {:controller => "easy_datas",:action=>"custom_settings"} do%>
+<%- form_remote_for :settings,:url => {:controller => "easy_datas",:action=>"custom_settings"},:update => "custom_content" do%>
 
- <span>Proyecto</span>
- <ul>
-   <li><span>Project's name(?):</span><%= text_field "project","project"%></li>
-   <li><span>Logo(?):</span><%= select "project","logo",@images,{:prompt => "Select logo ..."}%></li>
-   <li><span>Description(?):</span><%= text_area "project","description","cols" => 80,"rows"=>5%></li>
- </ul>
- <span>Access</span>
- <ul>
-   <li><span>User:</span><%= text_field "user_admin","user"%></li>
-   <li><span>Password:</span><%= password_field "user_admin","pass"%></li>
-   <li><span>IP:</span><%= text_field "access","ip"%></li>
- </ul>
+ <table class="settings_table">
+   <tr>
+    <th colspan=2>Proyecto</th>
+   </tr>
+   <tr>
+    <td><span>Project's name(?):</span></td><td><%= text_field "project","project",:value =>@settings["project"]["name"] %></td>
+   </tr>
+   <tr>
+    <td><span>Logo(?):</span></td><td><%= select "project","logo",@images,{:selected => @settings["project"]["logo"]||nil,:prompt => "Select logo ..."}%></td>
+   </tr>
+   <tr>
+    <td><span>Description(?):</span></td><td><%= text_area "project","description","cols" => 80,"rows"=>5,:value=>@settings["project"]["description"]%></td>
+   </tr>
+   <tr><th colspan="2">Access</th>
+   <tr>
+     <td><span>User:</span></td><td><%= text_field "user_admin","user",:value=>@settings["user_admin"]["user"]%></td>
+   </tr>
+   <tr> 
+     <td><span>Password:</span></td><td><%= password_field "user_admin","pass"%></td>
+   </tr>
+   <tr> 
+     <td><span>IP:</span></td><td><%= text_field "access","ip",:value => @settings["access"]["ip"]%></td>
+   </tr>
+  </table>
 
  <%= submit_tag %>
 

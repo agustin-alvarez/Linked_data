@@ -58,6 +58,7 @@ class EasyDatasController < ActionController::Base
   def info_easy_data
       models = DataModels.load_models
       @list = []
+      @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
       
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
@@ -83,6 +84,7 @@ class EasyDatasController < ActionController::Base
 
   def custom_rdf
     @models = DataModels.load_models
+    @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
   end
 
   def model_attributes
@@ -199,6 +201,11 @@ class EasyDatasController < ActionController::Base
      render :partial => "model_attributes",:layout => nil
   end
   
+  def view_settings
+    @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+    render :template => "easy_datas/view_settings", :layout => false
+  end
+
   def settings
      @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
      @images = Dir["#{RAILS_ROOT}/public/images/*"].map{|img| [img.gsub("#{RAILS_ROOT}/public/images/",""),img.gsub("#{RAILS_ROOT}/public/images/","")]}
@@ -208,29 +215,30 @@ class EasyDatasController < ActionController::Base
   def custom_settings
      @settings = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
      
-     if !params["project"].nil? && params["project"]!=@settings["project"]["name"]
-       @settings["project"]["name"] = params["project"]
-     end
-    
-     if !params["logo"].nil? && params["setting"]["logo"]!=@settings["project"]["logo"]
-       @settings["project"]["logo"] = params["setting"]["logo"]
+     if !params["project"]["project"].empty? && params["project"]["project"]!=@settings["project"]["name"]
+       @settings["project"]["name"] = params["project"]["project"]
      end
 
-     if !params["description"].nil? && params["description"]!=@settings["project"]["description"]
-       @settings["project"]["description"] = params["description"]
+     if !params["project"]["logo"].empty? && params["project"]["logo"]!=@settings["project"]["logo"]
+       @settings["project"]["logo"] = params["project"]["logo"]
      end
 
-     if !params["user"].nil? && !params["pass"].nil?
-       (@settings["user_admin"]["user"] = params["user"]) if @settings["user_admin"]["user"]!=params["user"]
-       (@settings["user_admin"]["pass"] = params["pass"]) if @settings["user_admin"]["pass"]!=params["pass"]
+     if !params["project"]["description"].empty? && params["project"]["description"]!=@settings["project"]["description"]
+       @settings["project"]["description"] = params["project"]["description"]
+     end
+     
+     if !params["user_admin"]["user"].empty? && !params["user_admin"]["pass"].empty?
+       (@settings["user_admin"]["user"] = params["user_admin"]["user"]) if @settings["user_admin"]["user"]!=params["user_admin"]["user"]
+       (@settings["user_admin"]["pass"] = params["user_admin"]["pass"]) if @settings["user_admin"]["pass"]!=params["user_admin"]["pass"]
      end
 
-     if !params["ip"].nil?
-       (@settings["access"]["ip"] = params["ip"]) if params["ip"]!=@settings["access"]["ip"]
+     if !params["access"]["ip"].empty?
+       (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"]
      end
+     
+     save_settings(@settings)
 
-     save_settings(settings)
-     settings
+     render :template => "easy_datas/view_settings",:layout => false
   end
 
   def authenticate_user
@@ -280,7 +288,7 @@ class EasyDatasController < ActionController::Base
        redirect_to :action => "authenticate_user"
      end
     else
-      render_404
+      render :nothing => true, :status => 404
     end
   end
 

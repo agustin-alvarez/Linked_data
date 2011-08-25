@@ -1,0 +1,29 @@
+<span class="title_data_publications">Settings</span>
+<table class="settings_table">
+ <tr>
+  <th>Projects Data</th>
+ </tr>
+ <tr>
+  <td>Project's name: <%=@settings["project"]["name"]||""%></td>
+ </tr>
+ <tr>  
+  <td>Logo: <%=(image_tag(image_path(@settings["project"]["logo"])))unless@settings["project"]["logo"].nil?%></td>
+ </tr>
+ <tr> 
+  <td>Description: <%=@settings["project"]["description"]%></td>
+ </tr>
+ <tr><th>Access Data<th></tr>
+ <tr>
+  <td>User: <%=@settings["user_admin"]["user"]%></td>
+ </tr>
+ <tr>
+  <td>Password: <%=@settings["user_admin"]["pass"]%></td>
+ </tr>
+ <tr>
+  <td>IP: <%=@settings["access"]["ip"]%></td>
+ </tr>
+</table>
+
+<%= link_to_remote "Edit Settings",:url => {:controller => "easy_datas",:action => "settings"},
+                                   :update => "custom_content",
+                                   :html => {:title => "Project Settings"}%>

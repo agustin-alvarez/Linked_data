@@ -3,10 +3,10 @@
 <%if @model_attributes.respond_to?:each%>
    <!-- ATTRIBUTES -->
    
-   <span>Model</span>
+   <span class="title_data_publications">Model</span>
    <div class="attributes_info">
     <div id="privacy">
-      <span><b>Access privacy:</b></span>
+      <span>Access privacy:</span>
       <span><%= @model_attributes[:privacy] %></span> 
     </div>
     <div id="<%="namespace"%>">
@@ -18,9 +18,9 @@
       <span><%=@model_attributes[:property] %></span>
     </div>
    </div>
-   <span>Resource Attributes</span>
+   <span class="title_data_publications">Resource Attributes</span>
    <%= render :partial => "list_properties",:locals => {:attributes => @model_attributes["attributes"]} %> 
-   <span>Associations whit others Resources</span>
+   <span class="title_data_publications">Associations whit others Resources</span>
    <!--ASSOCIATIONS-->
    <%= render :partial => "list_properties",:locals => {:attributes => @model_attributes["associations"]} %> 
 <%else%>
