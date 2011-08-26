@@ -2,19 +2,16 @@ require "action_controller"
 
 module EasyDataRouting 
     def self.routes(map)
-       
        map.with_options :controller => 'easy_datas' do |ed_routes|
          ed_routes.with_options :conditions => {:method => :get} do |ed_views|
            ed_views.connect 'easy_datas/custom_rdf', :action=> "custom_rdf"
            ed_views.connect 'easy_data', :action => "custom_rdf"
            ed_views.connect 'easy_datas/authenticate_user', :action => "authenticate_user"
-           
            ed_views.connect 's/data_publications', :action => 'info_easy_data'
            ed_views.connect 'easy_datas/info_easy_data', :action => 'info_easy_data'
            ed_views.connect 'easy_datas/linked_data', :action => 'linked_data'
            ed_views.connect 'easy_datas/access_to_data', :action => 'access_to_data'
            ed_views.connect 'easy_datas/faq', :action => 'faq'
-            
            ed_views.connect 'easy_datas/logout', :action => 'logout'
            DataModels.load_models.each do |model|
              ed_views.connect "s/#{model.gsub("::","_")}", :controller => "easy_datas", 
@@ -25,7 +22,6 @@ module EasyDataRouting
                                                                           :action => 'show_all',
                                                                           :model => model,
                                                                           :format => 'xml'
-
            end
          end
          ed_routes.with_options :conditions => {:method => :post} do |ed_actions|
@@ -40,9 +36,6 @@ module EasyDataRouting
            ed_actions.connect 'easy_datas/custom_settings', :action => 'custom_settings'
            ed_actions.connect 'easy_datas/view_settings', :action => 'view_settings'
          end
-
-       #Ajax routes:
-      # map.resources :easy_datas,:member => {:load_properties => :post}
      end
    end
 end

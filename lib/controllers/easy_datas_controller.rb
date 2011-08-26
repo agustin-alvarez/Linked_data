@@ -264,12 +264,15 @@ class EasyDatasController < ActionController::Base
 
   private 
 
+  # Extract all parameters to build the query.
+  # @param [Hash] request's parameters 
+  # @return [Hahs] Conditions hash
   def parser_params (parameters = nil)
      
      conditions = {}
     
      if !parameters.empty?
-       parameters.each do |key,value|
+       parameters.each do |key,value| #Delete all elements that aren't need to query
          unless ["controller","action","method","format","model"].include?key
            conditions[key.to_sym] = value
          end   

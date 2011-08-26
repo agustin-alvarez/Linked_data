@@ -38,7 +38,7 @@ class RDFa
       nil
    end
    #------------------------------------------------END AUTO-CLOSED   
-
+   
    # This method is called if doesnt exist the method called by class's users
    def method_missing(sym, *args, &block)
      _html_code(sym.to_s,args[0],args[1],args[2],args[3])
@@ -49,6 +49,13 @@ class RDFa
    #######################################
    private
 
+   # This method generate a HTML tag with RDFa information included.
+   # @param [String] Html tag
+   # @param [String] Model's name
+   # @param [String] Tag content.
+   # @param [String] model's attribute
+   # @param [String] css and html tag options
+   # @return [String] Html tag with RDFa information
    def _html_code(tag,model,value,attribute,options = "")
     rdf_info = ModelRdf.new    
 
@@ -66,6 +73,12 @@ class RDFa
     end
    end
 
+   # This method generate a HTML list tag with RDFa information included.
+   # @param [String] Html tag
+   # @param [String] Model's name
+   # @param [String] Tag content
+   # @param [String] css and html tag options
+   # @return [String] Html list tag with RDFa information
    def _html_code_list(tag,model,value,options = "")
     rdf_info = ModelRdf.new    
 
