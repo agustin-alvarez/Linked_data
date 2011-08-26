@@ -13,7 +13,7 @@
 </div>
          
   <%= observe_field "namespace_#{model_name}",{:url => {:controller => "easy_datas",:action => "load_properties",
-                                                       :block=>"properties_#{model_name}",:attribute => model_name,:model => model_name,:type => type},
+                                                       :block=>"properties_#{model_name}",:attribute => model_name,:model => model_name},
                                                :with => '"id="+value',
                                                :on => :selected,
                                                :update => "properties_#{model_name}"}
