@@ -13,6 +13,9 @@
    <tr>
     <td><span>Description(?):</span></td><td><%= text_area "project","description","cols" => 80,"rows"=>5,:value=>@settings["project"]["description"]%></td>
    </tr>
+   <tr>
+    <td><span>Contact email(?):</span></td><td><%= text_field "project","email",:value=>@settings["project"]["contact_email"]%></td>
+   </tr>
    <tr><th colspan="2">Access</th>
    <tr>
      <td><span>User:</span></td><td><%= text_field "user_admin","user",:value=>@settings["user_admin"]["user"]%></td>

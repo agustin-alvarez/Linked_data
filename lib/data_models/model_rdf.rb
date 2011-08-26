@@ -161,7 +161,8 @@ class ModelRdf
    # @param [String] current host
    # @return [Hash] Response to be render in rdf file. 
    def get_model_rdf(query,model,host)
-      if public?model.to_sym
+      
+      if public?model
        request = {:body => "",:header => {"xmlns:rdf"=>"http://www.w3.org/1999/02/22-rdf-syntax-ns#"}}
        elements = {}
        models = []
@@ -193,9 +194,10 @@ class ModelRdf
       
       (attributes["attributes"].merge(attributes["associations"])).each do |att,properties|
         if properties != "no publication" && properties[:namespace] != 'not defined' && properties[:privacy]=="Public"
-          headers["xmlns:#{properties[:namespace]}"] = (eval "EasyData::RDF::#{properties[:namespace].upcase}.get_uri") #EasyData.get_uri_namespace(properties[:namespace])
+           headers["xmlns:#{properties[:namespace]}"] = (eval "EasyData::RDF::#{properties[:namespace].upcase}.get_uri") #EasyData.get_uri_namespace(properties[:namespace])
         end
-      end         
+      end    
+     
       headers
    end
 
@@ -215,12 +217,17 @@ class ModelRdf
       if element.attributes.respond_to? :each 
        element.attributes.each do |att|
          #conditions to methods to check if can be show
+        begin        
+         
          if can_see?(attributes["attributes"][att.first][:privacy]) && exist_info_att(attributes["attributes"][att.first],att.second)
            properties["#{attributes['attributes'][att.first][:namespace]}:#{attributes["attributes"][att.first][:property]}"] = att.second
          end
+         rescue
+           puts attributes["attributes"]         
+         end
        end  
       end
-      
+    
       properties
    
     end
@@ -239,14 +246,16 @@ class ModelRdf
        properties = {}       
       
        class_element.reflections.each do |ref,value|
-         rel = eval "element.#{ref}" 
-         if exist_info_assoc(rel.to_a,associations["associations"][ref.to_s]) && can_see?(associations["associations"][ref.to_s][:privacy]) && !rel.empty?
+         
+         rel = Array(eval "element.#{ref}")||Array()
+         
+         if exist_info_assoc(rel,associations["associations"][ref.to_s]) && can_see?(associations["associations"][ref.to_s][:privacy]) && !rel.empty?
            
-           properties.merge!({"#{associations['associations'][ref.to_s][:namespace]}:#{associations['associations'][ref.to_s][:property]}" => {:model => rel.first.class ,
-                                                                                                                                                 :id => rel.collect{|obj| obj.id}}
-                             })
+           properties.merge!({"#{associations['associations'][ref.to_s][:namespace]}:#{associations['associations'][ref.to_s][:property]}" => {:model => rel.first.class ,:id => rel.collect{|obj| obj.id}}
+          })
          end
-       end       
+       end     
+        
        properties
     end
 

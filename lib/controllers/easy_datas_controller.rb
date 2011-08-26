@@ -16,19 +16,31 @@ class EasyDatasController < ActionController::Base
      
       rdf = ModelRdf.new      
       
+      no_valid = lambda{|c| c.nil?||c.empty?}
+
       unless conditions.empty?
+       begin
         @reply = model.find :all, :conditions => conditions || nil
+       rescue
+        @reply = nil
+       end
+      end
+      
+      unless @reply.nil?
+        @host="http://"+request.env["HTTP_HOST"]          
+      
+        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
       end
 
-      @host="http://"+request.env["HTTP_HOST"]          
-      
-      @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
-      
       @xml = Builder::XmlMarkup.new
       
-      respond_to do |format|
-        format.html
-        format.xml # render :template => "/rdf/request.xml.builder"   
+      if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
+         render :nothing => true, :status => 404
+      else  
+       respond_to do |format|
+         format.html
+         format.xml                     # render :template => "/rdf/request.xml.builder"   
+       end
       end
       
   end
@@ -38,7 +50,9 @@ class EasyDatasController < ActionController::Base
       
       rdf = ModelRdf.new      
       
-      @reply = model.find :all
+      no_valid = lambda{|c| c.nil?||c.empty?}
+
+      @reply = model.find :all || nil
       
       @host="http://"+request.env["HTTP_HOST"]          
       
@@ -46,9 +60,13 @@ class EasyDatasController < ActionController::Base
       
       @xml = Builder::XmlMarkup.new
       
-      respond_to do |format|
-        format.html
-        format.xml # render :template => "/rdf/request.xml.builder"   
+      if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
+        render :nothing => true, :status => 404
+      else
+        respond_to do |format|
+          format.html
+          format.xml # render :template => "/rdf/request.xml.builder"   
+        end
       end
   end
 
@@ -170,30 +188,36 @@ class EasyDatasController < ActionController::Base
     
      rdf = ModelRdf.new
      @model = params[:model]
-     unless params["attributes_property"].nil?
-      params["rdf_type_attributes"].each do |att,value|
-        if params["attributes_property"][att] != "" && value != ""
-         rdf.update_attributes_model(params[:model],att,'namespace',value)
-         rdf.update_attributes_model(params[:model],att,'property',params["attributes_property"][att])
-         rdf.update_attributes_model(params[:model],att,'privacy',rdf.privacy(params[:privacy][att].to_i))
+     
+     params["rdf_type_attributes"].each do |att,value|
+        rdf.update_attributes_model(params[:model],att,'namespace',value) if value != ""
+        if params["attributes_property"] && !params["attributes_property"][att].nil?
+         rdf.update_attributes_model(params[:model],att,'property',params["attributes_property"][att])  
         end
-      end
-     end
-     unless params["associations_property"].nil?
-      params["rdf_type_associations"].each do |assoc,value|
-        if value != "" && params["associations_property"][assoc] != ""
-         rdf.update_associations_model(params[:model],assoc,'namespace',value)
-         rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
-         rdf.update_associations_model(params[:model],assoc,'privacy',rdf.privacy(params[:privacy][assoc].to_i))
-        end
-      end
+        rdf.update_attributes_model(params[:model],att,'privacy',params[:privacy][att])
      end
      
+     
+     params["rdf_type_associations"].each do |assoc,value|
+        
+        if value != ""
+         rdf.update_associations_model(params[:model],assoc,'namespace',value)
+        end
+        if params["associations_property"] && params["assocciations_property"][assoc]
+         rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
+        end
+         rdf.update_associations_model(params[:model],assoc,'privacy',params[:privacy][assoc])
+        
+     end
+     
+     
      rdf.update_model(params[:model],"privacy",params[:privacy][params[:model]]) if params[:privacy][params[:model]]
+
      if params[:property]
        rdf.update_model(params[:model],"namespace",params[:namespace][params[:model]])
        rdf.update_model(params[:model],"property",params[:property][params[:model]]) 
      end
+    
      rdf.save
 
      @model_attributes = rdf.get_attributes_model(@model)
@@ -225,6 +249,10 @@ class EasyDatasController < ActionController::Base
 
      if !params["project"]["description"].empty? && params["project"]["description"]!=@settings["project"]["description"]
        @settings["project"]["description"] = params["project"]["description"]
+     end
+
+     if !params["project"]["email"].empty? && params["project"]["email"]!=@settings["project"]["contact_email"]
+       @settings["project"]["contact_email"] = params["project"]["email"]
      end
      
      if !params["user_admin"]["user"].empty? && !params["user_admin"]["pass"].empty?

@@ -14,19 +14,14 @@
 
 <div id="info_models" class="ed_info_models">
 
-    <span class="title_data_publications">Bienvenido al sistema de información de la interfaz RDF del proyecto <%#= proyect%></span>
+    <span class="title_data_publications">Wellcome to the information system interface of the proyect's RDF</span>
 <p>
-    En el panel izquierdo se listan los modelos de la aplicación  de los cuales se han publicado sus datos para acceso mediante URI's desreferenciables. Si pincha sobre cualquiera de ellos podrá visualizar los datos publicados de éstos. Los datos se dividen en atributos, que son propios del modelo y que lo describen y, asociaciones con otros modelos. De esta forma tendrá una visión de la información que puede consultar a la aplicación mediante la interfaz RDF de la que dispone.
+    In the left pannel, it's list the application's models which the data have publicated on them to access by URI's. If you click in any of them, you can see the data of theses models. The data are divided in attributes which belong to the data model and describe him, and associations with others data model. This way you have a look of the publicated information which you can query to the application by the RDF interfaces which you can use.
 </p>
+<%if !@settings["project"]["contact_email"].nil?%>
 <p>
-    Si tiene alguna duda sobre el funcionamiento o el modo de acceso a los datos publicados y no encuentra soluci&oacute;n aqu&iacute; puede enviarnos un email de consulta a <%#= email_admin%>.
+    Si tiene alguna duda sobre el funcionamiento o el modo de acceso a los datos publicados y no encuentra soluci&oacute;n aqu&iacute; puede enviarnos un email de consulta a <img href="mailto:<%= @settings["project"]["contact_email"]%>" alt="Email"/>.
 </p>
-<p>
-    Un saludo.
-</p>
-
-
-
-
+<%end%>
 
 </div>

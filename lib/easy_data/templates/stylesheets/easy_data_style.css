@@ -42,6 +42,6 @@ div.attributes_info div.property span.attribute{font-size:1.15em;font-weight:bol
 .ed_info_content .ed_info_models .data_info{text-decoration:underline;color:#085DAD;font-size:15px;width:100%;display:block;}
 /*Footer*/
 
-.easy_data_footer,.push{height:70px;}
+.easy_data_footer,.push{height:70px;position:absolute;bottom:0}
 .easy_data_footer{background:url("images/bg_ft.png") repeat-x 0 0;width:100%;clear:both;}
 .easy_data_footer a{margin-left:60%}
