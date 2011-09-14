@@ -1,24 +1,17 @@
 Installation
 ===============
 
-copy this lines to config/environment.rb:
-
-begin 
-  require "easy_data"
-rescue LoadError
-end
-
 In config/routes.rb at the end of routes declarations include:
 
-EasyDataRouting.routes(map)
+   EasyDataRouting.routes(map)
 
 After, in [RAILS_HOME]/Rakefile copy this line:
 
-require "easy_data/tasks" 
+   require "easy_data/tasks" 
 
 At the end, execute the next task:
 
-rake easy_data:install RAILS_ENV=development
+   rake easy_data:install RAILS_ENV=development
 
 Commandas and Query
 ======================

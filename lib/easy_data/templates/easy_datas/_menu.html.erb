@@ -1,7 +1,7 @@
 <div class="ed_main_menu">
   <ul>
     <li><%= link_to_remote "Data Publications",:url => {:controller => "easy_datas",:action => "data_publicated"},:update => "information_content"%></li>
-    <li><%= link_to_remote "Linked Data",:url => {:controller => "easy_datas",:action => "linked_data"},:update => "information_content"%></li>
+    <li><%= link_to_remote "Linked Data",:url => {:controller => "easy_datas",:action => "load_linked_data_graph"},:update => "information_content"%></li>
     <li><%= link_to_remote "Access to Data", :url => {:controller => "easy_datas", :action => "access_to_data"},:update => "information_content"%></li>
     <li><%= link_to_remote "FAQ", :url => {:controller => 'easy_datas',:action => 'faq'},:update => "information_content"%></li>
   </ul>

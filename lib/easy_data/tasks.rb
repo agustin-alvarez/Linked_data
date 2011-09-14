@@ -1,4 +1,4 @@
-require "ftools"
+#require "ftools"
 require 'rake'
 require 'easy_data'
 require 'active_record'
@@ -9,7 +9,7 @@ namespace :easy_data do
   desc <<-END_DESC
           "This tasks install and initialize parameters for run gem."
           END_DESC
-  task :install => [:generate_info_initialize,:generate_info_rdf,:copy_style_interface] do
+  task :install => [:generate_info_initialize,:generate_info_rdf,:copy_style_interface,:build_linked_data_graph] do
      puts "*** Finish install Easy Data gem in this proyect  ***"
   end
  
@@ -25,6 +25,7 @@ namespace :easy_data do
     puts "Generating info initialize gem"
 
     file.puts "#Load templates paths:"
+    file.puts "require 'easy_data'"
     file.puts "ActionController::Base.view_paths << EasyData.get_view_path"   
     
 
@@ -80,7 +81,21 @@ namespace :easy_data do
      file_style = EasyData.get_style_path
      #Copy file to public/stylesheets:
      puts "Copy Style File to this proyect"
-     File.copy(File.join(File.dirname(__FILE__), 'templates/stylesheets/easy_data_style.css'),"#{RAILS_ROOT}/public/stylesheets/easy_data_style.css")
+
+     easy_data_stylesheets = "#{RAILS_ROOT}/public/stylesheets/easy_data"
+     easy_data_linked_data_graphs = "#{RAILS_ROOT}/public/images/linked_data_graphs"
+
+     unless File.exist? easy_data_stylesheets
+       Dir.mkdir easy_data_stylesheets
+     end
+
+     FileUtils.copy(File.join(File.dirname(__FILE__), 'templates/stylesheets/easy_data_style.css'),"#{easy_data_stylesheets}/easy_data_style.css")
+     FileUtils.cp_r(File.join(File.dirname(__FILE__), 'templates/images/'),"#{easy_data_stylesheets}/")
+     
+     unless File.exist? easy_data_linked_data_graphs
+       Dir.mkdir easy_data_linked_data_graphs
+     end
+
   end
 
   desc <<-END_DESC
@@ -94,7 +109,7 @@ namespace :easy_data do
 
     file = File.open("#{easy_data_dir}/setting.yaml","w")
     file.puts "#User admin:"
-    
+
     admin = {"user_admin" =>{"user" => args.user,"pass" => args.pass}}
     file.puts admin.to_yaml
 
