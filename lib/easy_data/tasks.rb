@@ -44,7 +44,7 @@ namespace :easy_data do
    easy_data_dir = "#{RAILS_ROOT}/config/easy_data"  
 
    unless File.exist? easy_data_dir
-     File.makedirs easy_data_dir
+     Dir.mkdir easy_data_dir
    end
 
    file = File.open("#{easy_data_dir}/rdf_info.yaml","w")

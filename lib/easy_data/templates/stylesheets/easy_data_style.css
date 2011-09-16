@@ -1,6 +1,6 @@
 body{width:90%;padding: 2% 5%;background-color:#fbf3b4;font-family:helvetica;}
 a{text-decoration:none}
-.authenticate{background:url("../images/easy_data_logo.png")no-repeat 0 0;padding-top:130px;margin:0 auto;width:400px}
+.authenticate{background:url("images/easy_data_logo.png")no-repeat 0 0;padding-top:130px;margin:0 auto;width:400px}
 .authenticate form{background:#767676;width:375px;color:white;overflow:hidden;padding: 20px 30px}
 .authenticate form .lbl_auth{float:left}
 .authenticate form input{float:right}
