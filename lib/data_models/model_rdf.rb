@@ -28,16 +28,36 @@ class ModelRdf
    def get_attributes_model(model)
       self.model_rdf[model] 
    end
+   
+   # RDFa: Return attributes of model RDF info
+   def model(model)
+      " typeof='#{self.model_rdf[model].}'"
+   end
 
    # update attributes with rdf properties.
    def update_attributes_model(model,attribute,param,value)
       self.model_rdf[model]['attributes'][attribute][param.to_sym] = value
    end
    
+   # RDFa: Return attribute rdf info
+   def attribute(model,attribute)
+      att_rdf = self.model_rdf[model]['attributes'][attribute]
+      " property='#{att_rdf[:namespace]}:#{att_rdf[:property]}'"
+   end
+
    def update_associations_model(model,association,param,value)
       self.model_rdf[model]['associations'][association][param.to_sym] = value
    end
-   
+
+   # RDFa: return a string with all prefix used to describes attributes
+   def get_prefix(model)
+      prefix = ""
+      self.model_rdf[model]["attributes"].each do |att|
+        prefix += "#{att[:namespace]}:#{(eval "EasyData::RDF::#{att[:namespace].upcase}.get_uri")} "
+      end
+      prefix
+   end
+
    # Return privacy of a attribute 
    def privacy(index)
      @@privacy[index]
@@ -50,9 +70,8 @@ class ModelRdf
      file.close
    end
 
-   
    #######################################################################
-   # Building RDF                           
+   # Building RDF
    #######################################################################
 
    def get_model_rdf(query,model,host)
