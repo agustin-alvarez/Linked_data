@@ -1,42 +1,41 @@
 require "action_controller"
 
 module EasyDataRouting 
-    def self.routes(map)
-       map.with_options :controller => 'easy_datas' do |ed_routes|
-         ed_routes.with_options :conditions => {:method => :get} do |ed_views|
-           ed_views.connect 'easy_datas/custom_rdf', :action=> "custom_rdf"
-           ed_views.connect 'easy_data', :action => "custom_rdf"
-           ed_views.connect 'easy_datas/authenticate_user', :action => "authenticate_user"
-           ed_views.connect 's/data_publications', :action => 'info_easy_data'
-           ed_views.connect 'easy_datas/info_easy_data', :action => 'info_easy_data'
-           ed_views.connect 'easy_datas/linked_data', :action => 'linked_data'
-           ed_views.connect 'easy_datas/access_to_data', :action => 'access_to_data'
-           ed_views.connect 'easy_datas/faq', :action => 'faq'
-           ed_views.connect 'easy_datas/logout', :action => 'logout'
-           DataModels.load_models.each do |model|
-             ed_views.connect "s/#{model.gsub("::","_")}", :controller => "easy_datas", 
-                                                               :action => 'show',
-                                                               :model => model,
-                                                               :format => 'xml'
-              ed_views.connect "s/#{model.gsub("::","_").pluralize}", :controller => "easy_datas", 
-                                                                          :action => 'show_all',
-                                                                          :model => model,
-                                                                          :format => 'xml'
+    def self.routes
+
+       resources :easy_datas do 
+           member do 
+             #GET
+             get '/custom_rdf', :to => "easy_datas#custom_rdf"
+             get '/authenticate_user',:to => "easy_datas#authenticate_user"
+             get '/s/data_publications', :to => 'easy_datas#info_easy_data'
+             get '/info_easy_data', :to => 'easy_datas#info_easy_data'
+             get '/linked_data', :to => 'easy_datas#linked_data'
+             get '/access_to_data', :to => 'easy_datas#access_to_data'
+             get '/faq', :to => 'easy_datas#faq'
+             get '/logout', :to => 'easy_datas#logout' 
+             #POST
+             post '/model_attributes_info', :to => "easy_datas#model_attributes_info"
+             post '/load_linked_data_graph', :to => "easy_datas#load_linked_data_graph"
+             post '/model_attributes/:model', :to => 'easy_datas#model_attributes'
+             post '/model_attributes_edit/:model', :to => 'easy_datas#model_attributes_edit'
+             post '/load_properties/:block/:attribute', :to => 'easy_datas#load_properties'
+             post '/login', :to => 'easy_datas#login'
+             post '/custom_attributes/:model', :to => 'easy_datas#custom_attributes'
+             post '/settings', :to => 'easy_datas#settings'
+             post '/custom_settings', :to => 'easy_datas#custom_settings'
+             post '/view_settings', :to => 'easy_datas#view_settings'
            end
-         end
-         ed_routes.with_options :conditions => {:method => :post} do |ed_actions|
-           ed_actions.connect 'easy_datas/model_attributes_info', :action => "model_attributes_info"
-           ed_actions.connect 'easy_datas/load_linked_data_graph', :action => "load_linked_data_graph"
-           ed_actions.connect 'easy_datas/model_attributes/:model', :action => 'model_attributes'
-           ed_actions.connect 'easy_datas/model_attributes_edit/:model', :action => 'model_attributes_edit'
-           ed_actions.connect 'easy_datas/load_properties/:block/:attribute', :action => 'load_properties'
-           ed_actions.connect 'easy_datas/login', :action => 'login'
-           ed_actions.connect 'easy_datas/custom_attributes/:model', :action => 'custom_attributes'
-           ed_actions.connect 'easy_datas/settings', :action => 'settings'
-           ed_actions.connect 'easy_datas/custom_settings', :action => 'custom_settings'
-           ed_actions.connect 'easy_datas/view_settings', :action => 'view_settings'
-         end
-     end
+       end
+       DataModels.load_models.each do |model|
+           match "/s/#{model.gsub("::","_")}.:format", :to => "easy_datas#show",
+                                                       :about => "/s/#{model.gsub("::","_")}"
+           match "/s/#{model.gsub("::","_").pluralize}.:format",:to => "easy_datas#show_all", 
+                                                        :about => "/s/#{model.gsub("::","_").pluralize}"
+       end
+
+  
+     
    end
 end
 
