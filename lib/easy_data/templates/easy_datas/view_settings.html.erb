@@ -27,6 +27,6 @@
  </tr>
 </table>
 
-<%= link_to_remote "Edit Settings",:url => {:controller => "easy_datas",:action => "settings"},
+<%= button_to_remote "Edit Settings",:url => {:controller => "easy_datas",:action => "settings"},
                                    :update => "custom_content",
                                    :html => {:title => "Project Settings"}%>

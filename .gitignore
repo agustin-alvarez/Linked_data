@@ -6,3 +6,4 @@ lib/task/testing_installation.rb
 bin/linked_data
 init.rb
 setup.rb
+.rvmrc

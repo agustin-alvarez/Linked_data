@@ -1,4 +1,6 @@
-<div class="authenticate"> 
+<div class="authenticate">
+<div class="left"></div>
+<div class="middle"> 
   <%form_remote_tag :url => {:controller => 'easy_datas',:action => "login"}, 
                   :update => "content" do  -%>
    <span>
@@ -9,6 +11,10 @@
      <%= label_tag :password,nil, :class => "lbla_auth"%>
      <%= password_field_tag ":password",nil%>
    </span>
-   <%= submit_tag "Send" %>
-  <%end%>
+   <%= submit_tag "Access" %>
+   <input type="button" name="reset_form" value="Cancel" onclick="this.form.reset();"> 
+ <%end%>
+</div>
+<div class="right"></div>
+<div class="bottom"></div>
 </div>

@@ -12,6 +12,6 @@
       <span class="title_data_publications">Associations</span>
       <%= render :partial => "list_properties_edit", :locals => {:attributes => @model_attributes["associations"], :model => @model, :namespaces => @namespaces, :type => "associations"} %>
       <%= submit_tag "Send" %>
-      <%= link_to_function "[Close]", "Effect.Fade('model_attributes',{duration: .3})", :class=>"close_list" %>
+      <%= button_to_function "Close", "Effect.Fade('model_attributes',{duration: .3})", :class=>"close_list" %>
 <% end -%>
 </div>

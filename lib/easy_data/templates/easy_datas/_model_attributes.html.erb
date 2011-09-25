@@ -27,7 +27,7 @@
  <span>Model no found</span>
 <%end%>
 <span>
-     <%= link_to_remote "Edit",:url => {:controller => 'easy_datas', 
+     <%= button_to_remote "Edit",:url => {:controller => 'easy_datas', 
                                         :action => :model_attributes_edit, 
                                         :model => @model},
                                :update => "model_attributes",
@@ -36,7 +36,7 @@
      %>
 </span>
 
- <%= link_to_function "[Close]","Effect.Fade('model_attributes',{ duration : 0.3});",:class=>"close_list"%>
+ <%= button_to_function "Close","Effect.Fade('model_attributes',{ duration : 0.3});",:class=>"close_list"%>
 
 </div>
 

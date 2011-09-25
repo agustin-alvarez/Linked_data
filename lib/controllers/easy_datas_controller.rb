@@ -203,7 +203,7 @@ class EasyDatasController < ActionController::Base
         if value != ""
          rdf.update_associations_model(params[:model],assoc,'namespace',value)
         end
-        if params["associations_property"] && params["assocciations_property"][assoc]
+        if params["associations_property"] && params["associations_property"][assoc]
          rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
         end
          rdf.update_associations_model(params[:model],assoc,'privacy',params[:privacy][assoc])
@@ -260,9 +260,7 @@ class EasyDatasController < ActionController::Base
        (@settings["user_admin"]["pass"] = params["user_admin"]["pass"]) if @settings["user_admin"]["pass"]!=params["user_admin"]["pass"]
      end
 
-     if !params["access"]["ip"].empty?
-       (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"]
-     end
+     (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"]
      
      save_settings(@settings)
 

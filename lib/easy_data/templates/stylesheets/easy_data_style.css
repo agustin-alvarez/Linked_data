@@ -1,12 +1,18 @@
-body{width:100%;height:100%;margin:0;padding:0;font-family:helvetica;}
+body{width:100%;height:100%;margin:0;padding:0;font-family:helvetica;background-color:#f7fffe}
 a{text-decoration:none;border:none}
 img{border: 0;}
-.authenticate{background:url("images/easy_data_logo.png")no-repeat 0 0;padding-top:130px;margin:0 auto;width:400px}
-.authenticate form{background:#767676;width:375px;color:white;overflow:hidden;padding: 20px 30px}
-.authenticate form .lbl_auth{float:left}
-.authenticate form input{float:right}
-.authenticate form span{width:95%;display:block;overflow:hidden}
-ul{list-style:none;width:90%;float:left;margin-top:30px;}
+.authenticate{background:url("images/LogoEasyData.jpg") no-repeat 0 0;padding-top:250px;padding-left:90px;margin:0 auto;width:560px;overflow:hidden;}
+.authenticate .left{display:block;background:url("images/login_bg.png") no-repeat 0 0;float:left;width:15px;height:130px;margin-left:50px}
+.authenticate .right{display:block;background:url("images/login_bg.png") no-repeat -15px 0;float:left;width:15px;height:130px;}
+.authenticate .middle{background:#487b4c;overflow:hidden;height:130px;width:400px;float:left}
+.authenticate .middle form{width:300px;height:130px;color:white;font-weight:bold;overflow:hidden;padding: 25px}
+.authenticate .middle form .lbl_auth{float:left}
+.authenticate .middle form input{float:right;width:180px}
+.authenticate .middle form input[type="submit"]{float:left !important;margin-left:115px;margin-top:10px;width:90px !important}
+.authenticate .middle form input[type="button"]{float:left !important;margin-left:5px;margin-top:10px;width:90px !important}
+.authenticate .middle form span{width:100%;display:block;overflow:hidden}
+.authenticate .bottom{display:block;height:95px;width:300px;margin-left:115px;float:left;background:url("images/loginBt.png") no-repeat 0 0}
+ul{list-style:none;width:90%;float:left;margin-top:20px;padding-left:0px;}
 ul div.list_attributes{overflow:hidden;background-color:white;color:black;padding:0 5%;}
 
 ul.attributes_info{width:100%;clear:left;padding:0}
@@ -18,30 +24,32 @@ div.attributes_info div.property span.attribute{font-size:1.15em;font-weight:bol
 /*EASY DATA INFO*/
 .content{width:100%}
 
-.ed_main_menu{background:url('images/main_menu.jpg') repeat-x 0 0;overflow:hidden;width:100%;margin:0 auto;display:block;}
+.ed_main_menu{background:#487b4c;overflow:hidden;width:100%;margin:0 auto;display:block;}
 .ed_main_menu ul{color:white !important;;margin:0px;width:100%;padding:0px 20%}
 .ed_main_menu ul li{float:left;width:10%;text-align:center;padding:10px 0px;}
 .ed_main_menu ul li.menu_link{width:10% !important}
-.ed_main_menu ul li.menu_link a:hover{background:url("images/bg_link.jpg") no-repeat 0 0;padding:10px 0px;cursor:pointer}
+.ed_main_menu ul li.menu_link a:hover{text-decoration:underline;padding:10px 0px;cursor:pointer}
 .ed_main_menu ul li a{color:white}
 .ed_main_menu ul li.layer_menu{font-size:14px;width:300px !important;padding:11px 0;font-weight:bold;max-height:26px}
 
 
-.ed_info_content{background:url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:2% 20%;overflow:hidden;min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -70px;}
-.list_model_info{float:left;width:40%;overflow:hidden}
-.list_model_info ul li{margin:0;overflow:hidden;color:blue;padding:5px 20px}
+.ed_info_content{background:url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:2% 20% 2% 20%;overflow:hidden;min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -70px;}
+.list_model_info{float:left;width:35%;overflow:hidden;border:1px #808080 solid;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;background-color:#ddbc8f}
+.list_model_info .title{font-size:22px;font-weight:bold;display:block;padding:10px 0 0 20px;color:#808080}
+.list_model_info ul li{margin:0;overflow:hidden;color:#808080;padding:5px 20px}
 .list_model_info ul li:hover{margin:0;color:blue !important;}
-.list_model_info ul li a{color:#085DAD;font-weight:bold}
+.list_model_info ul li a{color:#808080;font-weight:bold}
 .list_model_info ul li span{float:left}
-.list_model_info ul li .model{width:80%;font-size:20px}
-.ed_info_content .list_model_info ul li a:hover{background:url("images/bg_link.jpg") no-repeat 0 0;font-weight:bold;}
-.ed_info_content .ed_info_models{float:left;width:60%;padding:4% 0;}
+.list_model_info ul li .model{width:80%;font-size:15px}
+.ed_info_content .list_model_info ul li a:hover{background:#ddbc8f;font-weight:bold;}
+.ed_info_content .ed_info_models{float:left;width:60%;padding:4% 1%;}
 .ed_info_content .settings_table{text-align:left;margin-left:5%;margin-bottom:5%;i}
 .ed_info_content .settings_table th{padding: 10px 0}
-.title_data_publications{color:#085DAD;text-decoration:underline;}
+.title_data_publications{color:#808080;font-weight:bold;text-decoration:underline;}
 .ed_info_content .ed_info_models .data_info{text-decoration:underline;color:#085DAD;font-size:15px;width:100%;display:block;}
 /*Footer*/
 
-.easy_data_footer,.push{height:70px;position:absolute;bottom:0}
-.easy_data_footer{background:url("images/bg_ft.png") repeat-x 0 0;width:100%;clear:both;}
-.easy_data_footer a{margin-left:60%}
+.easy_data_footer,.push{height:100px;bottom:0;display:block}
+.easy_data_footer{width:100%;}
+.easy_data_footer a{margin-left:60%;overflow:hidden}
+
