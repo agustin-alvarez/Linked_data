@@ -10,6 +10,7 @@ module EasyDataRouting
            ed_views.connect 'easy_datas/authenticate_user', :action => "authenticate_user"
            
            ed_views.connect 's/data_publications', :action => 'info_easy_data'
+           ed_views.connect 'easy_datas/info_easy_data', :action => 'info_easy_data'
            ed_views.connect 'easy_datas/linked_data', :action => 'linked_data'
            ed_views.connect 'easy_datas/access_to_data', :action => 'access_to_data'
            ed_views.connect 'easy_datas/faq', :action => 'faq'
