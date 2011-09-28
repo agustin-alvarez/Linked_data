@@ -20,12 +20,35 @@ class ModelRdf
      @model_rdf = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/rdf_info.yaml"))
    end
 
-   # Return datas storeds in the RDF informations yaml file
+   # Return datas stored in the RDF informations yaml file
    # @return [Hash] return RDF informations
    def get_models
       self.model_rdf
    end
    
+   # Return data stored in the RDF informations yaml file about publicated models
+   # @return [Hash] return RDF information about public access information of publicated models
+   def get_public_models
+      models = []
+      self.load_models.each do |mod|
+        if self.public?(mod) 
+          models << mod
+        end
+      end
+   end
+   
+   # Return data stored in the RDF informations yaml file about publicated models.
+   # @return [Hash] return RDF information about not hidden rdf information's models. 
+   def get_not_hidden_models
+     models = []
+     self.load_models.each do |mod|
+       unless self.hidden?(mod) 
+         models << mod
+       end
+     end
+     models
+   end
+ 
    # Check if the model is public
    # @param [Symbol] model's name
    # @return [Boolean] true or false
@@ -94,6 +117,13 @@ class ModelRdf
      end
    end
   
+   def add_model(model,attributes)
+       self.model_rdf[model] = attributes
+   end 
+   
+   def delete_model(model)
+       self.model_rdf.delete(model)
+   end
    # Update model rdf info
    # @param [String] model's name
    # @param [String] model's property to be updated
@@ -172,6 +202,9 @@ class ModelRdf
      file.close
    end
 
+
+   def refresh_information
+   end
    #######################################################################
    # Building RDF
    #######################################################################

@@ -9,10 +9,10 @@ class EasyDatasController < ActionController::Base
   before_filter :authenticated, :only => [:custom_rdf]
 
   def show
-       
-      model = eval params[:model].to_s
+     begin  
+        model = (eval params[:model].to_s)  
       
-      conditions = parser_params(params)
+        conditions = parser_params(params)
      
       rdf = ModelRdf.new      
       
@@ -28,39 +28,45 @@ class EasyDatasController < ActionController::Base
        
       @xml = Builder::XmlMarkup.new
       
-      if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
-         render :nothing => true, :status => 404
-      else  
-       respond_to do |format|
-         format.html
-         format.xml                     # render :template => "/rdf/request.xml.builder"   
-       end
+        if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
+           render :nothing => true, :status => 400
+        else  
+           respond_to do |format|
+             format.html
+             format.xml                     # render :template => "/rdf/request.xml.builder"   
+           end
+        end
+      rescue
+          render :nothing => true, :status => 404
       end
-      
   end
 
   def show_all
-      model = eval params[:model].to_s
+      begin
+        model = eval params[:model].to_s
       
-      rdf = ModelRdf.new      
+        rdf = ModelRdf.new      
       
-      no_valid = lambda{|c| c.nil?||c.empty?}
-
-      @reply = model.find :all || nil
+        no_valid = lambda{|c| c.nil?||c.empty?}
+ 
+        @reply = model.find :all || nil
       
-      @host="http://"+request.env["HTTP_HOST"]          
+        @host="http://"+request.env["HTTP_HOST"]          
       
-      @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
+        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
       
-      @xml = Builder::XmlMarkup.new
+        @xml = Builder::XmlMarkup.new
       
-      if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
-        render :nothing => true, :status => 404
-      else
-        respond_to do |format|
-          format.html
-          format.xml # render :template => "/rdf/request.xml.builder"   
+        if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
+          render :nothing => true, :status => 404
+        else
+          respond_to do |format|
+            format.html
+            format.xml # render :template => "/rdf/request.xml.builder"   
+          end
         end
+      rescue
+         render :nothing => true, :status => 404
       end
   end
 
@@ -69,12 +75,7 @@ class EasyDatasController < ActionController::Base
   #
   def info_easy_data
       rdf = ModelRdf.new
-      models = []
-      DataModels.load_models.each do |mod|
-        unless rdf.hidden?(mod) 
-          models << mod
-        end
-      end
+      models = rdf.get_not_hidden_models
       @list = []
       @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
       
@@ -269,6 +270,12 @@ class EasyDatasController < ActionController::Base
      save_settings(@settings)
 
      render :template => "easy_datas/view_settings",:layout => false
+  end
+  
+  def refresh_information
+     debugger
+     EasyData.refresh_information
+     redirect_to :action => "custom_rdf"
   end
 
   def authenticate_user

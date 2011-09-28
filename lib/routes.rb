@@ -13,6 +13,8 @@ module EasyDataRouting
            ed_views.connect 'easy_datas/access_to_data', :action => 'access_to_data'
            ed_views.connect 'easy_datas/faq', :action => 'faq'
            ed_views.connect 'easy_datas/logout', :action => 'logout'
+           ed_views.connect 'easy_datas/refresh_information', :action => "refresh_information"
+
            DataModels.load_models.each do |model|
              ed_views.connect "s/#{model.gsub("::","_")}/:id", :controller => "easy_datas", 
                                                                :action => 'show',
@@ -23,6 +25,7 @@ module EasyDataRouting
                                                                           :model => model,
                                                                           :format => 'xml'
            end
+
          end
          ed_routes.with_options :conditions => {:method => :post} do |ed_actions|
            ed_actions.connect 'easy_datas/model_attributes_info', :action => "model_attributes_info"
