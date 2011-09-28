@@ -20,12 +20,35 @@ class ModelRdf
      @model_rdf = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/rdf_info.yaml"))
    end
 
-   # Return datas storeds in the RDF informations yaml file
+   # Return datas stored in the RDF informations yaml file
    # @return [Hash] return RDF informations
    def get_models
       self.model_rdf
    end
    
+   # Return data stored in the RDF informations yaml file about publicated models
+   # @return [Hash] return RDF information about public access information of publicated models
+   def get_public_models
+      models = []
+      self.load_models.each do |mod|
+        if self.public?(mod) 
+          models << mod
+        end
+      end
+   end
+   
+   # Return data stored in the RDF informations yaml file about publicated models.
+   # @return [Hash] return RDF information about not hidden rdf information's models. 
+   def get_not_hidden_models
+     models = []
+     self.load_models.each do |mod|
+       unless self.hidden?(mod) 
+         models << mod
+       end
+     end
+     models
+   end
+ 
    # Check if the model is public
    # @param [Symbol] model's name
    # @return [Boolean] true or false
@@ -61,6 +84,27 @@ class ModelRdf
       self.model_rdf[model] 
    end
    
+   # Return all models which they are assocciations of current model
+   # @param [String] current model name
+   # @return [Array] list of models which the are assocciations with current model.
+   def get_associations_model(model)
+      associations = self.model_rdf[model]['associations'].keys
+      models = DataModels.load_models
+      hash_associations = {}
+
+      associations.each do |assc|
+        if models.include?assc.camelize
+          hash_associations[assc] = assc 
+        elsif eval(model+'.reflections[:'+assc+'].class_name')
+          hash_associations[assc] = eval(model+'.reflections[:'+assc+'].class_name')
+        else
+          hash_associations[assc] = eval(model+'.reflections[:'+assc+'].options[:class_name]')
+        end
+      end
+
+      hash_associations
+   end
+
    # RDFa: Return attributes of model RDF info
    # @param [String] model's name
    # @return [String] model's rdf information to insert in HTML tag
@@ -73,6 +117,13 @@ class ModelRdf
      end
    end
   
+   def add_model(model,attributes)
+       self.model_rdf[model] = attributes
+   end 
+   
+   def delete_model(model)
+       self.model_rdf.delete(model)
+   end
    # Update model rdf info
    # @param [String] model's name
    # @param [String] model's property to be updated
@@ -130,7 +181,7 @@ class ModelRdf
       end
 
       if data_model[:namespace] && data_model[:namespace] != 'not defined'
-        prefix << "xmls:#{data_model[:namespace]}=#{(eval "EasyData::RDF::#{data_model[:namespace].upcase}.get_uri")}"       
+        prefix << "xmls:#{data_model[:namespace]}=#{(eval "EasyData::RDF::#{data_model[:namespace].upcase}.get_uri")}"
       end
 
       prefix.uniq.join(" ")
@@ -151,6 +202,9 @@ class ModelRdf
      file.close
    end
 
+
+   def refresh_information
+   end
    #######################################################################
    # Building RDF
    #######################################################################
@@ -167,7 +221,7 @@ class ModelRdf
        elements = {}
        models = []
        query.each do |element|
-          elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",
+          elements[element.id] = {'description' => "#{host}/s/#{element.class.to_s}/#{element.id}",
                                   'attributes' => get_properties_tag(element),
                                   'associations' => get_associations_tag(element)
                                  }

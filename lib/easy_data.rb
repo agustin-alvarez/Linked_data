@@ -6,7 +6,7 @@ require "data_models/model_rdf"
 require "data_models/linked_data_graph"
 require "data_models/RDFa"
 require "routes"
-#require 'ftools'
+require 'ftools'
 require 'ruby-debug'
 
 
@@ -63,7 +63,36 @@ module EasyData
   def self.build_linked_data_graph
     LinkedDataGraph.build(DataModels.load_models) 
   end
- 
+  
+
+  def self.refresh_information
+     rdf = ModelRdf.new
+     models = DataModels.load_models
+
+     unless self.info_update?(models,rdf)
+       rdf_models = rdf.get_models.keys
+
+       #Add the new models to rdf's information file
+       models.each do |model|
+        unless rdf_models.keys.include? model
+         model_data = DataModels.get_model_data(model)
+         if model_data.respond_to?:columns 
+           rdf.add_model(model,EasyData.yaml_description_model(eval model))
+         end
+        end
+       end
+
+       #Delete the models how they had deleted
+       rdf_models.each do |model|
+        unless models.include?model
+          rdf.delete_model model
+        end
+       end
+
+       rdf.save       
+     end
+  end 
+
   private
  
   def generate_query(model,params)
@@ -71,6 +100,8 @@ module EasyData
               FROM #{model};"
   end
 
-    
+  def self.info_update?(models,rdf)
+     ((models | rdf.get_models.keys)-(models & rdf.get_models.keys)).empty?
+  end
 end
 

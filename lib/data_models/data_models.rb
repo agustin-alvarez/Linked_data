@@ -11,14 +11,16 @@ module DataModels
      Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
        models << file.gsub(RAILS_ROOT+'/app/models/',"").gsub('.rb','').classify
      end
-
+     
      # Here, get the correct model's name: Singular or Plural
      models.each do |model|
        begin
          mod = eval model
+         mod.columns
        rescue
          begin
            mod = eval model.pluralize
+           mod.columns
          rescue
            mod = nil
          end

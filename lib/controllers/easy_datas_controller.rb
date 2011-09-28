@@ -9,64 +9,64 @@ class EasyDatasController < ActionController::Base
   before_filter :authenticated, :only => [:custom_rdf]
 
   def show
-       
-      model = eval params[:model].to_s
+     begin  
+        model = (eval params[:model].to_s)  
       
-      conditions = parser_params(params)
+        conditions = parser_params(params)
      
       rdf = ModelRdf.new      
       
       no_valid = lambda{|c| c.nil?||c.empty?}
-
-      unless conditions.empty?
-       begin
-        @reply = model.find :all, :conditions => conditions || nil
-       rescue
-        @reply = nil
-       end
-      end
       
+      @reply = model.find :all, :conditions => {:id => params[:id]}
+           
       unless @reply.nil?
         @host="http://"+request.env["HTTP_HOST"]          
       
         @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
       end
-
+       
       @xml = Builder::XmlMarkup.new
       
-      if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
-         render :nothing => true, :status => 404
-      else  
-       respond_to do |format|
-         format.html
-         format.xml                     # render :template => "/rdf/request.xml.builder"   
-       end
+        if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
+           render :nothing => true, :status => 400
+        else  
+           respond_to do |format|
+             format.html
+             format.xml                     # render :template => "/rdf/request.xml.builder"   
+           end
+        end
+      rescue
+          render :nothing => true, :status => 404
       end
-      
   end
 
   def show_all
-      model = eval params[:model].to_s
+      begin
+        model = eval params[:model].to_s
       
-      rdf = ModelRdf.new      
+        rdf = ModelRdf.new      
       
-      no_valid = lambda{|c| c.nil?||c.empty?}
-
-      @reply = model.find :all || nil
+        no_valid = lambda{|c| c.nil?||c.empty?}
+ 
+        @reply = model.find :all || nil
       
-      @host="http://"+request.env["HTTP_HOST"]          
+        @host="http://"+request.env["HTTP_HOST"]          
       
-      @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
+        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
       
-      @xml = Builder::XmlMarkup.new
+        @xml = Builder::XmlMarkup.new
       
-      if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
-        render :nothing => true, :status => 404
-      else
-        respond_to do |format|
-          format.html
-          format.xml # render :template => "/rdf/request.xml.builder"   
+        if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
+          render :nothing => true, :status => 404
+        else
+          respond_to do |format|
+            format.html
+            format.xml # render :template => "/rdf/request.xml.builder"   
+          end
         end
+      rescue
+         render :nothing => true, :status => 404
       end
   end
 
@@ -74,14 +74,15 @@ class EasyDatasController < ActionController::Base
   # 
   #
   def info_easy_data
-      models = DataModels.load_models
+      rdf = ModelRdf.new
+      models = rdf.get_not_hidden_models
       @list = []
       @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
       
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
       end
-
+    
       respond_to do |format|
         format.html
         format.xml
@@ -108,13 +109,10 @@ class EasyDatasController < ActionController::Base
   def model_attributes
     
     rdf = ModelRdf.new
-    
     @model_attributes = rdf.get_attributes_model(params[:model])
     @model = params[:model]
-    
 
     render :partial => "model_attributes",:layout => nil
-
   end
 
   def model_attributes_edit
@@ -167,15 +165,22 @@ class EasyDatasController < ActionController::Base
        render :inline => ""
      end
   end
-  
+
   def load_linked_data_graph
      if params[:model]
       @model = params[:model]
+      @associations = ModelRdf.new.get_associations_model(@model) 
+      @host = "http://"+request.env["HTTP_HOST"]
       render :partial => "linked_data_model"
      else
-      models = DataModels.load_models
+      rdf = ModelRdf.new
+      models = []
+      DataModels.load_models.each do |mod|
+        unless rdf.hidden?(mod) 
+          models << mod
+        end
+      end
       @list = []
-      
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
       end
@@ -185,10 +190,10 @@ class EasyDatasController < ActionController::Base
   end
 
   def custom_attributes
-    
+
      rdf = ModelRdf.new
      @model = params[:model]
-     
+
      params["rdf_type_attributes"].each do |att,value|
         rdf.update_attributes_model(params[:model],att,'namespace',value) if value != ""
         if params["attributes_property"] && !params["attributes_property"][att].nil?
@@ -203,7 +208,7 @@ class EasyDatasController < ActionController::Base
         if value != ""
          rdf.update_associations_model(params[:model],assoc,'namespace',value)
         end
-        if params["associations_property"] && params["assocciations_property"][assoc]
+        if params["associations_property"] && params["associations_property"][assoc]
          rdf.update_associations_model(params[:model],assoc,'property',params["associations_property"][assoc])
         end
          rdf.update_associations_model(params[:model],assoc,'privacy',params[:privacy][assoc])
@@ -260,13 +265,16 @@ class EasyDatasController < ActionController::Base
        (@settings["user_admin"]["pass"] = params["user_admin"]["pass"]) if @settings["user_admin"]["pass"]!=params["user_admin"]["pass"]
      end
 
-     if !params["access"]["ip"].empty?
-       (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"]
-     end
+     (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"] && params["access"]["ip"]!= ""
      
      save_settings(@settings)
 
      render :template => "easy_datas/view_settings",:layout => false
+  end
+  
+  def refresh_information
+     EasyData.refresh_information
+     redirect_to :action => "custom_rdf"
   end
 
   def authenticate_user

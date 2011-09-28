@@ -3,11 +3,12 @@
     <% @list.each do |model|%>
       <% if File.exists?("public/images/linked_data_graphs/linked_data_#{model}.png")%>
        <li> 
-         <%= link_to_remote model,:url => {:controller => "easy_datas",
-                                           :action => "load_linked_data_graph", 
-                                           :model => model},
-                                  :update => "info_models"
-         %>  
+         <span class="model"><%= link_to_remote model,:url => {:controller => "easy_datas",
+                                                               :action => "load_linked_data_graph", 
+                                                               :model => model},
+                                                      :update => "info_models"
+                              %> 
+         </span> 
        </li>
       <%end%>
     <%end%>

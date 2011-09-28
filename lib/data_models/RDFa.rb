@@ -2,21 +2,13 @@ require "data_models/model_rdf"
  
 class RDFa 
 
-   def self.model(model)
-     
-   end
-
-   def self.attribute(model,attributes)
-      
-   end
-
    ####################################
    # HTML Tags
    ####################################
 
    #-----------------------------------------------Links
-   def a(model,href,attribute=nil,options=nil)
-      _html_code('a',model,attribute,"href='#{href||'#'}' "+options.to_s)
+   def a(model,href,value,attribute=nil,options=nil)
+      _html_code('a',model,value,attribute,"href='#{href||'#'}' "+options.to_s)
    end
 
    #-----------------------------------------------End Links
@@ -57,13 +49,17 @@ class RDFa
    # @param [String] css and html tag options
    # @return [String] Html tag with RDFa information
    def _html_code(tag,model,value,attribute,options = "")
-    rdf_info = ModelRdf.new    
+    rdf_info = ModelRdf.new
 
     if attribute.nil? #prefix + type_of
       options = (options || "") + rdf_info.get_prefix(model)
       options = options + rdf_info.model(model)
     else  #property
-      options = (options||"") + rdf_info.attribute(model,attribute)
+      if attribute!=model
+       options = (options||"") + rdf_info.attribute(model,attribute)
+      else
+       options = (options||"") + rdf_info.model(model)
+      end
     end
     
     unless value.nil?

@@ -10,8 +10,9 @@
 <body>
     <div id="content" class="content">
         <%= yield %>
-        <div class="push"></div>
+        <%if controller.action_name != "authenticate_user"%>
+         <%= render :partial => "easy_datas/footer"%>
+        <%end%>
     </div>
-    <%= render :partial => "easy_datas/footer"%>
 </body>
 </html>
