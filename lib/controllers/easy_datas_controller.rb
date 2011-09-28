@@ -273,7 +273,6 @@ class EasyDatasController < ActionController::Base
   end
   
   def refresh_information
-     debugger
      EasyData.refresh_information
      redirect_to :action => "custom_rdf"
   end
