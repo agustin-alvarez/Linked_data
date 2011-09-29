@@ -35,6 +35,8 @@ div.attributes_info div.property span.rdf_info{color:grey;font-size:12px}
 .list_model_info ul li .model{width:80%;font-size:20px}
 .ed_info_content .list_model_info ul li a:hover{background:url("images/bg_link.jpg") no-repeat 0 0;font-weight:bold;}
 .ed_info_content .ed_info_models{float:left;width:60%;padding:4% 0;}
+.ed_info_content .ed_info_models span{background:url("images/rdf_icon.png") no-repeat 0 0; padding-left:30px;color:#085DAD;text-decoration:underline;font-weight:bold;display:block;height:27px;}
+.ed_info_content .ed_info_models p{padding-left:30px;}
 .ed_info_content .ed_info_models .data_info{text-decoration:underline;color:#085DAD;font-size:15px;width:100%;display:block;}
 /*Footer*/
 
