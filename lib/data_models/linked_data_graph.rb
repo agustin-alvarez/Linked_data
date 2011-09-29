@@ -57,22 +57,19 @@ class LinkedDataGraph
       
       file.puts "digraph G {"
       #file.puts 'size="15,15";'
-      file.puts "rankdir = LR;"
-      file.puts "#{model}[color=green]"
-     
+      file.puts 'graph [rotate=0, rankdir="LR"]'
+      file.puts 'node [color="#333333", style=filled,shape=box, fontname="Trebuchet MS"]'
+      file.puts 'edge [color="#666666", arrowhead="open", fontname="Trebuchet MS", fontsize="11"]'
+      file.puts model.to_s+'  [fillcolor="#116611", fontcolor="white"]'
+
       #Draw nodes
 
       graph_info[:assoc].each do |assoc|
-         file.puts "#{assoc} [color=yellow]"
+         file.puts assoc.to_s+' [fillcolor="#294b76", fontcolor="white"]'
          file.puts '"'+model+'" -> "'+assoc.to_s+'"[dir=none];'
       end
 
 
-      #Draw associations between nodes
-     # graph_info[:assoc].each do |assoc,nodes|
-     #   file.puts nodes+' [dir=none];'
-     # end      
-     
       file.puts "}"
 
       file.close
