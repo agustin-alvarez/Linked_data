@@ -1,6 +1,6 @@
 <div class="ed_main_menu">
   <ul>
-    <li class="layer_menu"><%= "#{@settings["project"]["name"]||nil} - "%>Data Publications Information</li>
+    <li class="layer_menu"><%= "#{(@settings["project"]["name"] rescue nil)} - "%>Data Publications Information</li>
     <li class="menu_link"><%= link_to "Data Publications",{:controller => "easy_datas",:action => "info_easy_data"},
                                                                   {:title => "Data Publications"}
                           %>

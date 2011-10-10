@@ -2,18 +2,18 @@
   <%attributes.each do |att,properties|%>
      <div class="property">
      <span class="attribute"><%=att%></span>
-     <% unless properties[:namespace].nil?%> 
+     <% unless properties["namespace"].nil?%>
        <div id="privacy">
          <span>Access privacy: </span>
-         <span><%= properties[:privacy] %></span> 
+         <span><%= properties["privacy"] %></span>
        </div>
        <div id="<%="namespace"%>">
          <span>Rdf Namespace: </span>
-         <span><%= properties[:namespace] -%></span>
+         <span><%= properties["namespace"] -%></span>
        </div>
        <div id="<%= "property"%>">
          <span>Property:</span>
-         <span><%=properties[:property] %></span>
+         <span><%=properties["property"] %></span>
        </div>
      <%else%>
         <span>This attribute can't be publicate</span>

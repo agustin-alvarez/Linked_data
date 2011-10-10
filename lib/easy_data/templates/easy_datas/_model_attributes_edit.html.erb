@@ -1,16 +1,17 @@
-<% form_remote_tag :url => {:controller => 'easy_datas',:action => "custom_attributes",:model => @model},
+<% form_remote_tag :url => {:controller => 'easy_datas', :action => "custom_attributes", :model => @model},
                    :update => "list_attributes" do -%>
 
-<div id="list_attributes" class="model_attributes">
-   <span class="title_data_publications">Model</span>
-   <%= render :partial => "list_model_info", :locals => {:model_name => @model, :model=> @model_attributes, :namespaces => @namespaces}%>
-   <!-- Attributes -->
-   <span class="title_data_publications">Attributes</span>
-   <%= render :partial => "list_properties_edit",:locals => {:attributes => @model_attributes["attributes"],:model => @model,:namespaces => @namespaces,:type => "attributes"}%>
-   <!--Associations-->
-   <span class="title_data_publications">Associations</span>
-   <%= render :partial => "list_properties_edit",:locals => {:attributes => @model_attributes["associations"],:model => @model,:namespaces => @namespaces,:type => "associations"}%>
-<%= submit_tag "Send" %>
-<%= link_to_function "[Close]","Effect.Fade('#{@model}_attributes',{duration: .3})",:class=>"close_list"%>
-<%end -%>
+    <div id="list_attributes" class="model_attributes">
+      <span class="title_data_publications">Model</span>
+      <%= render :partial => "list_model_info", :locals => {:model_name => @model, :model=> @model_attributes, :namespaces => @namespaces} %>
+      <!-- Attributes -->
+
+      <span class="title_data_publications">Attributes</span>
+      <%= render :partial => "list_properties_edit", :locals => {:attributes => @model_attributes["attributes"], :model => @model, :namespaces => @namespaces, :type => "attributes"} %>
+      <!--Associations-->
+      <span class="title_data_publications">Associations</span>
+      <%= render :partial => "list_properties_edit", :locals => {:attributes => @model_attributes["associations"], :model => @model, :namespaces => @namespaces, :type => "associations"} %>
+      <%= submit_tag "Send" %>
+      <%= link_to_function "[Close]", "Effect.Fade('model_attributes',{duration: .3})", :class=>"close_list" %>
+<% end -%>
 </div>
