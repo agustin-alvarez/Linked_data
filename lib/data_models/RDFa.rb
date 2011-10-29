@@ -7,8 +7,8 @@ class RDFa
    ####################################
 
    #-----------------------------------------------Links
-   def a(model,href,attribute=nil,options=nil)
-      _html_code('a',model,attribute,"href='#{href||'#'}' "+options.to_s)
+   def a(model,href,value,attribute=nil,options=nil)
+      _html_code('a',model,value,attribute,"href='#{href||'#'}' "+options.to_s)
    end
 
    #-----------------------------------------------End Links
@@ -55,7 +55,11 @@ class RDFa
       options = (options || "") + rdf_info.get_prefix(model)
       options = options + rdf_info.model(model)
     else  #property
-      options = (options||"") + rdf_info.attribute(model,attribute)
+      if attribute!=model
+       options = (options||"") + rdf_info.attribute(model,attribute)
+      else
+       options = (options||"") + rdf_info.model(model)
+      end
     end
     
     unless value.nil?
