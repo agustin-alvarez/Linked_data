@@ -65,7 +65,21 @@ class ModelRdf
    # @param [String] current model name
    # @return [Array] list of models which the are assocciations with current model.
    def get_associations_model(model)
-      self.model_rdf[model]['associations'].keys
+      associations = self.model_rdf[model]['associations'].keys
+      models = DataModels.load_models
+      hash_associations = {}
+
+      associations.each do |assc|
+        if models.include?assc.camelize
+          hash_associations[assc] = assc 
+        elsif eval(model+'.reflections[:'+assc+'].class_name')
+          hash_associations[assc] = eval(model+'.reflections[:'+assc+'].class_name')
+        else
+          hash_associations[assc] = eval(model+'.reflections[:'+assc+'].options[:class_name]')
+        end
+      end
+
+      hash_associations
    end
 
    # RDFa: Return attributes of model RDF info
@@ -174,7 +188,7 @@ class ModelRdf
        elements = {}
        models = []
        query.each do |element|
-          elements[element.id] = {'description' => "#{host}/#{element.class.to_s}/#id:#{element.id}",
+          elements[element.id] = {'description' => "#{host}/#{element.class.to_s}?id:#{element.id}",
                                   'attributes' => get_properties_tag(element),
                                   'associations' => get_associations_tag(element)
                                  }

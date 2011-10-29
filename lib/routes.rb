@@ -18,10 +18,6 @@ module EasyDataRouting
                                                                :action => 'show',
                                                                :model => model,
                                                                :format => 'xml'
-             ed_views.connect ":id/#{model.gsub("::","_")}/:association", :controller => "easy_datas", 
-                                                                          :action => 'show',
-                                                                          :model => model,
-                                                                          :format => 'xml'
              ed_views.connect "s/#{model.gsub("::","_").pluralize}", :controller => "easy_datas", 
                                                                           :action => 'show_all',
                                                                           :model => model,

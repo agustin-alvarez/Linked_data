@@ -1,17 +1,24 @@
+<span class="title_model"><%=@model%> Model</span>
+
 <% if @model_attributes["attributes"]%>
- <span class="data_info"> Attributes: </span>
+ <span class="title_data_publications"> Attributes </span>
  <ul>
-  <%@model_attributes["attributes"].keys.each do |att|%>
-   <li><%=att%></li>
+  <%@model_attributes["attributes"].each do |att,values|%>
+   <%if values[:privacy] && values[:privacy]!="Hidden" && values[:property]!="not defined"%>
+     <li><span  class="<%='lock' if values[:privacy]=="Private"%>" title="<%='Private attribute' if values[:privacy]=="Private"%>"><%=att%></span></li>
+   <%end%>
   <%end%>
-</ul>
+ </ul>
 <%end%>
+
 <%if @model_attributes["associations"] %>
-<span class="data_info"> Associations: </span>
-<ul>
-  <%@model_attributes["associations"].keys.each do |assoc|%>
-    <li><%=assoc%></li>
+ <span class="title_data_publications"> Associations </span>
+ <ul>
+  <%@model_attributes["associations"].each do |att,values|%>
+   <%if values[:privacy]!="Hidden" && values[:property]!="not defined"%>
+     <li><span class="<%='lock' if values[:privacy]=="Private"%>" title="<%='Private association' if values[:privacy]=="Private"%>"><%=att%></span></li>
+   <%end%>
   <%end%>
-</ul>
+ </ul>
 <%end%>
 

@@ -1,19 +1,19 @@
-<div class="title">Model <%= @model %></div>
+<div class="title_model">Model <%= @model %></div>
 <div class="linked_data_graphs"><%= image_tag(image_path("linked_data_graphs/linked_data_#{@model}.png"))%></div>
-<div class="linked_data_access">
 
- <span>Access model: <%=@model%></span><br />
- <span><a href="<%= @host+'/s/'+@model.camelize.pluralize%>" title="access to <%=@model%>"><%=@host+'/s/'+@model.camelize.pluralize%></a></span><br />
+<span class="title_data_publications">Access model <%=@model%></span>
 
- <%if @associations.respond_to?:each%>
-  <span>
-     Assocciations access:
-  </span>
-  <ul class="linked_data_assocciations">
-    <%@associations.each do |assoc|%>
-      <li><a href="<%= @host+'/s/'+assoc.camelize.pluralize%>" title="access to <%=assoc%>"><%= @host+'/s/'+assoc.camelize.pluralize%></a></li>
-    <%end%>
-  </ul>
- <%end%>
+<span class="simple_data"><a href="<%= @host+'/s/'+@model.camelize.pluralize%>" title="access to <%=@model%>"><%=@host+'/s/'+@model.camelize.pluralize%></a></span><br />
 
-</div>
+<%if @associations.respond_to?:each%>
+ <span class="title_data_publications">
+     Assocciations access
+ </span>
+ <ul class="linked_data_assocciations">
+   <%@associations.each do |assoc,model|%>
+     <li><%=assoc.camelize%> : <a href="<%= @host+'/s/'+model.camelize.pluralize%>" title="access to <%=assoc%>"><%= @host+'/s/'+model.camelize.pluralize%></a></li>
+   <%end%>
+ </ul>
+<%end%>
+
+

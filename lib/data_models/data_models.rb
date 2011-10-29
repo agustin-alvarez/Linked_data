@@ -16,9 +16,11 @@ module DataModels
      models.each do |model|
        begin
          mod = eval model
+         mod.columns
        rescue
          begin
            mod = eval model.pluralize
+           mod.columns
          rescue
            mod = nil
          end

@@ -17,7 +17,7 @@ class EasyDatasController < ActionController::Base
       rdf = ModelRdf.new      
       
       no_valid = lambda{|c| c.nil?||c.empty?}
-
+      
       unless conditions.empty?
        begin
         @reply = model.find :all, :conditions => conditions || nil
@@ -31,7 +31,7 @@ class EasyDatasController < ActionController::Base
       
         @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
       end
-
+       
       @xml = Builder::XmlMarkup.new
       
       if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
@@ -74,14 +74,20 @@ class EasyDatasController < ActionController::Base
   # 
   #
   def info_easy_data
-      models = DataModels.load_models
+      rdf = ModelRdf.new
+      models = []
+      DataModels.load_models.each do |mod|
+        unless rdf.hidden?(mod) 
+          models << mod
+        end
+      end
       @list = []
       @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
       
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
       end
-
+    
       respond_to do |format|
         format.html
         format.xml
@@ -108,13 +114,10 @@ class EasyDatasController < ActionController::Base
   def model_attributes
     
     rdf = ModelRdf.new
-    
     @model_attributes = rdf.get_attributes_model(params[:model])
     @model = params[:model]
-    
 
     render :partial => "model_attributes",:layout => nil
-
   end
 
   def model_attributes_edit
@@ -175,7 +178,13 @@ class EasyDatasController < ActionController::Base
       @host = "http://"+request.env["HTTP_HOST"]
       render :partial => "linked_data_model"
      else
-      models = DataModels.load_models
+      rdf = ModelRdf.new
+      models = []
+      DataModels.load_models.each do |mod|
+        unless rdf.hidden?(mod) 
+          models << mod
+        end
+      end
       @list = []
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
@@ -261,7 +270,7 @@ class EasyDatasController < ActionController::Base
        (@settings["user_admin"]["pass"] = params["user_admin"]["pass"]) if @settings["user_admin"]["pass"]!=params["user_admin"]["pass"]
      end
 
-     (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"]
+     (@settings["access"]["ip"] = params["access"]["ip"]) if params["access"]["ip"]!=@settings["access"]["ip"] && params["access"]["ip"]!= ""
      
      save_settings(@settings)
 

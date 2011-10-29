@@ -6,13 +6,14 @@
    <ul>
     <%@models.each do |model|%>
      <li class="list_model">
-          <span class="model"><%= link_to_remote model,:url => {:controller => 'easy_datas', 
+          <span id="ls_<%= model%>" class="model"><%= link_to_remote model,:url => {:controller => 'easy_datas', 
                                                        :action => :model_attributes, 
                                                        :model => model},
-                                           :update => "model_attributes",
-                                           :success => "Effect.Appear('model_attributes', { duration: 0.4 });",
-                                           :failure => "alert('Ooops! An error occurred.')"                
-                 %>
+                                                  :update => "model_attributes",
+                                                  :after => "$('ls_#{model}').className = 'model_active';",
+                                                  :success => "Effect.Appear('model_attributes', { duration: 0.4 });",
+                                                  :failure => "alert('Ooops! An error occurred.')"                
+                                                 %>
           </span>
      
       </li>

@@ -2,7 +2,7 @@
 
  <table class="settings_table">
    <tr>
-    <th colspan=2>Proyecto</th>
+    <th colspan="2"><div class="title_data_publications">Proyecto</div></th>
    </tr>
    <tr>
     <td><span>Project's name(?):</span></td><td><%= text_field "project","project",:value =>@settings["project"]["name"] %></td>
@@ -11,12 +11,12 @@
     <td><span>Logo(?):</span></td><td><%= select "project","logo",@images,{:selected => @settings["project"]["logo"]||nil,:prompt => "Select logo ..."}%></td>
    </tr>
    <tr>
-    <td><span>Description(?):</span></td><td><%= text_area "project","description","cols" => 80,"rows"=>5,:value=>@settings["project"]["description"]%></td>
+    <td><span>Description(?):</span></td><td><%= text_area "project","description","cols" => 45,"rows"=>5,:value=>@settings["project"]["description"]%></td>
    </tr>
    <tr>
     <td><span>Contact email(?):</span></td><td><%= text_field "project","email",:value=>@settings["project"]["contact_email"]%></td>
    </tr>
-   <tr><th colspan="2">Access</th>
+   <tr><th colspan="2"><div class="title_data_publications">Access</div></th>
    <tr>
      <td><span>User:</span></td><td><%= text_field "user_admin","user",:value=>@settings["user_admin"]["user"]%></td>
    </tr>
