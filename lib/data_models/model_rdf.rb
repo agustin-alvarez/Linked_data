@@ -188,7 +188,7 @@ class ModelRdf
        elements = {}
        models = []
        query.each do |element|
-          elements[element.id] = {'description' => "#{host}/#{element.class.to_s}?id:#{element.id}",
+          elements[element.id] = {'description' => "#{host}/s/#{element.class.to_s}/#{element.id}",
                                   'attributes' => get_properties_tag(element),
                                   'associations' => get_associations_tag(element)
                                  }

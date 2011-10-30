@@ -18,14 +18,8 @@ class EasyDatasController < ActionController::Base
       
       no_valid = lambda{|c| c.nil?||c.empty?}
       
-      unless conditions.empty?
-       begin
-        @reply = model.find :all, :conditions => conditions || nil
-       rescue
-        @reply = nil
-       end
-      end
-      
+      @reply = model.find :all, :conditions => {:id => params[:id]}
+           
       unless @reply.nil?
         @host="http://"+request.env["HTTP_HOST"]          
       

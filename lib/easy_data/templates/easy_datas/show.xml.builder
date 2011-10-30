@@ -8,7 +8,7 @@ unless @rdf_model.empty?
        end    
        prop["associations"].each do |assoc,value|
          value[:id].each do |id|
-           xml.tag!(assoc,nil,{"rdf:resource"=>"#{@host}/#{value[:model]}?id=#{id}"})
+           xml.tag!(assoc,nil,{"rdf:resource"=>"#{@host}/s/#{value[:model]}/#{id}"})
          end
        end
      end

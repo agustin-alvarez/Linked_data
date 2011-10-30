@@ -14,7 +14,7 @@ module EasyDataRouting
            ed_views.connect 'easy_datas/faq', :action => 'faq'
            ed_views.connect 'easy_datas/logout', :action => 'logout'
            DataModels.load_models.each do |model|
-             ed_views.connect "s/#{model.gsub("::","_")}", :controller => "easy_datas", 
+             ed_views.connect "s/#{model.gsub("::","_")}/:id", :controller => "easy_datas", 
                                                                :action => 'show',
                                                                :model => model,
                                                                :format => 'xml'

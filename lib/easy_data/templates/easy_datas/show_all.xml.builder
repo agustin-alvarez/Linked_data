@@ -7,7 +7,7 @@ xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8"
       end    
       prop["associations"].each do |assoc,value|
         value[:id].each do |id|
-          xml.tag!(assoc,nil,{"rdf:resource"=>"#{@host}/#{value[:model]}?id=#{id}"})
+          xml.tag!(assoc,nil,{"rdf:resource"=>"#{@host}/s/#{value[:model]}/#{id}"})
         end
       end
     end
