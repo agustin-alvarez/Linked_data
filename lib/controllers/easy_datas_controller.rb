@@ -167,15 +167,16 @@ class EasyDatasController < ActionController::Base
        render :inline => ""
      end
   end
-  
+
   def load_linked_data_graph
      if params[:model]
       @model = params[:model]
+      @associations = ModelRdf.new.get_associations_model(@model) 
+      @host = "http://"+request.env["HTTP_HOST"]
       render :partial => "linked_data_model"
      else
       models = DataModels.load_models
       @list = []
-      
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
       end
@@ -185,10 +186,10 @@ class EasyDatasController < ActionController::Base
   end
 
   def custom_attributes
-    
+
      rdf = ModelRdf.new
      @model = params[:model]
-     
+
      params["rdf_type_attributes"].each do |att,value|
         rdf.update_attributes_model(params[:model],att,'namespace',value) if value != ""
         if params["attributes_property"] && !params["attributes_property"][att].nil?

@@ -61,6 +61,13 @@ class ModelRdf
       self.model_rdf[model] 
    end
    
+   # Return all models which they are assocciations of current model
+   # @param [String] current model name
+   # @return [Array] list of models which the are assocciations with current model.
+   def get_associations_model(model)
+      self.model_rdf[model]['associations'].keys
+   end
+
    # RDFa: Return attributes of model RDF info
    # @param [String] model's name
    # @return [String] model's rdf information to insert in HTML tag
@@ -130,7 +137,7 @@ class ModelRdf
       end
 
       if data_model[:namespace] && data_model[:namespace] != 'not defined'
-        prefix << "xmls:#{data_model[:namespace]}=#{(eval "EasyData::RDF::#{data_model[:namespace].upcase}.get_uri")}"       
+        prefix << "xmls:#{data_model[:namespace]}=#{(eval "EasyData::RDF::#{data_model[:namespace].upcase}.get_uri")}"
       end
 
       prefix.uniq.join(" ")

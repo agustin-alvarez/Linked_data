@@ -35,7 +35,7 @@ div.attributes_info div.property span.attribute{font-size:1.15em;font-weight:bol
 
 .ed_info_content{background:url('images/shadow_menu.png') repeat-x 0 0 ;margin:0;padding:2% 20% 2% 20%;overflow:hidden;min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -70px;}
 .list_model_info{float:left;width:35%;overflow:hidden;border:1px #808080 solid;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;background-color:#ddbc8f}
-.list_model_info .title{font-size:22px;font-weight:bold;display:block;padding:10px 0 0 20px;color:#808080}
+.title{font-size:22px;font-weight:bold;display:block;padding:10px 0 0 20px;color:#808080}
 .list_model_info ul li{margin:0;overflow:hidden;color:#808080;padding:5px 20px}
 .list_model_info ul li:hover{margin:0;color:blue !important;}
 .list_model_info ul li a{color:#808080;font-weight:bold}
@@ -47,6 +47,8 @@ div.attributes_info div.property span.attribute{font-size:1.15em;font-weight:bol
 .ed_info_content .settings_table th{padding: 10px 0}
 .title_data_publications{color:#808080;font-weight:bold;text-decoration:underline;}
 .ed_info_content .ed_info_models .data_info{text-decoration:underline;color:#085DAD;font-size:15px;width:100%;display:block;}
+.linked_data_graphs{margin:50px 0 0 80px;}
+.linked_data_access{border:1px #ccc solid;width:95%;height:auto;overflow:hidden;margin-top:20px}
 /*Footer*/
 
 .easy_data_footer,.push{height:100px;bottom:0;display:block}
