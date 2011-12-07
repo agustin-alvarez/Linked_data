@@ -24,5 +24,5 @@ Gem::Specification.new do |s|
 
     s.add_dependency(%q<hpricot>, [">= 0.8.4"])
     s.add_dependency(%q<haml>, [">= 3.0.0"])
-    s.add_dependency(%q<rails>, ["< 3.0.0"])
+    s.add_dependency(%q<rails>, ["> 3.0.0"])
 end

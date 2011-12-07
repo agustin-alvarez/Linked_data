@@ -3,7 +3,7 @@ Installation
 
 In config/routes.rb at the end of routes declarations include:
 
-   EasyDataRouting.routes(map)
+   EasyDataRouting.routes
 
 <p>After, in [RAILS_HOME]/Rakefile copy this line:</p>
 
