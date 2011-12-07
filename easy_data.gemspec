@@ -4,13 +4,13 @@ $:.push File.expand_path("../lib", __FILE__)
 require "easy_data/version"
 
 Gem::Specification.new do |s|
-  s.name        = "easy_data"
+  s.name        = "easy_data3"
   s.version     = EasyData::VERSION
   s.authors     = ["jnillo"]
   s.email       = ["jnillo@rubysemantic.com"]
   s.homepage    = "http://rubygems.org/gem/easy_data"
   s.summary     = "Blau blau Easily publish the linked data data model of your project RoR"
-  s.description = "Easily publish the linked data data model of your project RoR"
+  s.description = "Easily publish the linked data data model of your project RoR 3.x"
 
   s.rubyforge_project = "easy_data"
 
