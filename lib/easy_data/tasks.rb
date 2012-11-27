@@ -1,4 +1,4 @@
-#require "ftools"
+require "fileutils"
 require 'rake'
 require 'easy_data'
 require 'active_record'
