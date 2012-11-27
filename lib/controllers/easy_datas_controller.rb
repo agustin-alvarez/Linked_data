@@ -9,24 +9,28 @@ class EasyDatasController < ActionController::Base
   before_filter :authenticated, :only => [:custom_rdf]
 
   def show
-     begin  
-        model = (eval params[:model].to_s)  
+    
+      if params[:id].nil? && params[:model] == params[:model].pluralize   #Because, the model's name is the sames in pluralize format, example: News
+         redirect_to :action => "show_all",:locals => {:model => params[:model]}
+      end 
+      begin
+        model = eval params[:model].to_s
       
         conditions = parser_params(params)
      
-      rdf = ModelRdf.new      
-      
-      no_valid = lambda{|c| c.nil?||c.empty?}
-      
-      @reply = model.find :all, :conditions => {:id => params[:id]}
-           
-      unless @reply.nil?
-        @host="http://"+request.env["HTTP_HOST"]          
-      
-        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
-      end
+        rdf = ModelRdf.new      
        
-      @xml = Builder::XmlMarkup.new
+        no_valid = lambda{|c| c.nil?||c.empty?}
+       
+        @reply = model.find :all, :conditions => {:id => params[:id]}
+            
+        unless @reply.nil?
+          @host="http://"+request.env["HTTP_HOST"]          
+      
+          @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
+        end
+       
+        @xml = Builder::XmlMarkup.new
       
         if no_valid.call(@rdf_model[:header]) || @reply.nil?  # If the URI not available or data no publicated
            render :nothing => true, :status => 400
@@ -48,12 +52,12 @@ class EasyDatasController < ActionController::Base
         rdf = ModelRdf.new      
       
         no_valid = lambda{|c| c.nil?||c.empty?}
- 
+
         @reply = model.find :all || nil
+     
+        @host="http://"+request.env["SERVER_NAME"]          
       
-        @host="http://"+request.env["HTTP_HOST"]          
-      
-        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["HTTP_HOST"])
+        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["SERVER_NAME"])
       
         @xml = Builder::XmlMarkup.new
       
