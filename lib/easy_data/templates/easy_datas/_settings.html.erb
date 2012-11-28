@@ -1,4 +1,4 @@
-<%- form_remote_for :settings,:url => {:controller => "easy_datas",:action=>"custom_settings"},:update => "custom_content" do%>
+<%- form_remote :settings,:url => {:controller => "easy_datas",:action=>"custom_settings"},:remote => true,:update => "custom_content" do%>
 
  <table class="settings_table">
    <tr>

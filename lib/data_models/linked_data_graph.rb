@@ -53,7 +53,7 @@ class LinkedDataGraph
 
    def self.generate_graph(graph_info,model)
       model = model.gsub("::","_")
-      file = File.open("#{RAILS_ROOT}/public/images/linked_data_graphs/linked_data_#{model}.dot",'w')
+      file = File.open("#{Rails.root}/public/images/linked_data_graphs/linked_data_#{model}.dot",'w')
       
       file.puts "digraph G {"
       #file.puts 'size="15,15";'
@@ -74,7 +74,7 @@ class LinkedDataGraph
 
       file.close
 
-      system "dot -Tpng #{RAILS_ROOT}/public/images/linked_data_graphs/linked_data_#{model}.dot -o #{RAILS_ROOT}/public/images/linked_data_graphs/linked_data_#{model}.png"
-      system "rm #{RAILS_ROOT}/public/images/linked_data_graphs/linked_data_#{model}.dot"
+      system "dot -Tpng #{Rails.root}/public/images/linked_data_graphs/linked_data_#{model}.dot -o #{Rails.root}/public/images/linked_data_graphs/linked_data_#{model}.png"
+      system "rm #{Rails.root}/public/images/linked_data_graphs/linked_data_#{model}.dot"
    end
 end

@@ -5,8 +5,7 @@ require "controllers/easy_datas_controller"
 require "data_models/model_rdf"
 require "data_models/linked_data_graph"
 require "data_models/RDFa"
-require "routes"
-require 'ftools'
+require 'fileutils'
 require 'ruby-debug'
 
 

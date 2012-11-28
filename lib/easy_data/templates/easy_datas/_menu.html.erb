@@ -5,19 +5,22 @@
                                                                   {:title => "Data Publications"}
                           %>
     </li>
-    <li class="menu_link"><%= link_to_remote "Linked Data",:url => {:controller => "easy_datas",:action => "load_linked_data_graph"},
-                                                           :update => "information_content",
-                                                           :html => {:title => "Linked Data"}
+    <li class="menu_link"><%= link_to "Linked Data",:url => {:controller => "easy_datas",:action => "load_linked_data_graph"},
+                                                    :update => "information_content",
+                                                    :html => {:title => "Linked Data"},
+                                                    :remote => true   
                           %>
     </li>
-    <!--<li class="menu_link"><%#= link_to_remote "Access to Data", :url => {:controller => "easy_datas", :action => "access_to_data"},
+    <!--<li class="menu_link"><%#= link_to "Access to Data", :url => {:controller => "easy_datas", :action => "access_to_data"},
                                                                :update => "information_content",
-                                                               :html => {:title => "How to access to data publications?"}
+                                                               :html => {:title => "How to access to data publications?"},
+                                                     :remote => true
                           %>
     </li>
-    <li class="menu_link"><%#= link_to_remote "Quiz", :url => {:controller => 'easy_datas',:action => 'faq'},
+    <li class="menu_link"><%#= link_to "Quiz", :url => {:controller => 'easy_datas',:action => 'faq'},
                                                      :update => "information_content",
-                                                     :html => {:title => "Any questions?"}
+                                                     :html => {:title => "Any questions?"},
+                                               :remote => true
                           %>
     </li>-->
   </ul>

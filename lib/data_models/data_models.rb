@@ -8,8 +8,8 @@ module DataModels
      mod = nil
 
      #Get all models in Model's folder
-     Dir["#{RAILS_ROOT}/app/models/**/*.rb"].each do |file|
-       models << file.gsub(RAILS_ROOT+'/app/models/',"").gsub('.rb','').classify
+     Dir["#{Rails.root}/app/models/**/*.rb"].each do |file|
+       models << file.gsub(Rails.root.to_s+'/app/models/',"").gsub('.rb','').classify
      end
      
      # Here, get the correct model's name: Singular or Plural

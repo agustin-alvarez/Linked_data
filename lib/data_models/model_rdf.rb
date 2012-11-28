@@ -17,7 +17,7 @@ class ModelRdf
    #Read the document of attributes relations with rdf properties
    # @return [Object] return a ModelRdf's instance whit rdf info 
    def initialize
-     @model_rdf = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/rdf_info.yaml"))
+     @model_rdf = YAML::load(File.open("#{Rails.root}/config/easy_data/rdf_info.yaml"))
    end
 
    # Return datas stored in the RDF informations yaml file
@@ -197,7 +197,7 @@ class ModelRdf
    # Save changes in rdf_info.yaml (configuration's yaml file)
    # return [Boolean] true or false if operations has finished correctly
    def save
-     file = File.open("#{RAILS_ROOT}/config/easy_data/rdf_info.yaml",'w')
+     file = File.open("#{Rails.root}/config/easy_data/rdf_info.yaml",'w')
      file.puts YAML::dump(self.model_rdf)
      file.close
    end

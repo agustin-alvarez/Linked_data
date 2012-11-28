@@ -1,8 +1,7 @@
 <div class="authenticate">
 <div class="left"></div>
 <div class="middle"> 
-  <%form_remote_tag :url => {:controller => 'easy_datas',:action => "login"}, 
-                  :update => "content" do  -%>
+  <%= form_tag login_easy_datas_path,:update => "content",:remote => true do  -%>
    <span>
      <%= label_tag :nick,nil,:class => "lbl_auth" %>
      <%= text_field_tag :nick,nil%>

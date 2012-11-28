@@ -5,9 +5,10 @@
                                       {:title => "Custom RDF information"}
                           %>
     </li>
-    <li class="menu_link"><%= link_to_remote "Settings", :url => {:controller => "easy_datas", :action => "view_settings"},
-                                             :update => "custom_content",
-                                             :html => {:title => "Project Settings"}
+    <li class="menu_link"><%= link_to "Settings", :url => {:controller => "easy_datas", :action => "view_settings"},
+                                                  :update => "custom_content",
+                                                  :html => {:title => "Project Settings"},
+                                                  :remote => true
                           %>
     </li>
     <li class="menu_link refresh"><%= link_to "Refresh Models", :url => {:controller => "easy_datas", :action => "refresh_information"},

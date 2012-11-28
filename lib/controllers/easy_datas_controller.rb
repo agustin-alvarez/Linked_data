@@ -4,8 +4,7 @@ require "builder"
 
 class EasyDatasController < ActionController::Base
   
-  layout 'easy_data_layout'
-  
+  layout 'easy_data_layout'  
   before_filter :authenticated, :only => [:custom_rdf]
 
   def show
@@ -77,7 +76,7 @@ class EasyDatasController < ActionController::Base
       rdf = ModelRdf.new
       models = rdf.get_not_hidden_models
       @list = []
-      @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+      @settings ||= YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
       
       models.each do |mod|
        @list << "#{mod.gsub("::","_")}"
@@ -103,7 +102,8 @@ class EasyDatasController < ActionController::Base
 
   def custom_rdf
     @models = DataModels.load_models
-    @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+    @settings ||= YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
+
   end
 
   def model_attributes
@@ -231,18 +231,18 @@ class EasyDatasController < ActionController::Base
   end
   
   def view_settings
-    @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+    @settings ||= YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
     render :template => "easy_datas/view_settings", :layout => false
   end
 
   def settings
-     @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
-     @images = Dir["#{RAILS_ROOT}/public/images/*"].map{|img| [img.gsub("#{RAILS_ROOT}/public/images/",""),img.gsub("#{RAILS_ROOT}/public/images/","")]}
+     @settings ||= YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
+     @images = Dir["#{Rails.root}/public/images/*"].map{|img| [img.gsub("#{Rails.root}/public/images/",""),img.gsub("#{Rails.root}/public/images/","")]}
      render :partial => "settings",:layout => nil
   end
 
   def custom_settings
-     @settings = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+     @settings = YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
      
      if !params["project"]["project"].empty? && params["project"]["project"]!=@settings["project"]["name"]
        @settings["project"]["name"] = params["project"]["project"]
@@ -281,8 +281,8 @@ class EasyDatasController < ActionController::Base
   end
 
   def login
-    @admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
-
+    @admin = YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
+    
     if @admin["user_admin"]["user"] == params[:nick] && @admin["user_admin"]["password"] == params[:pass]
       @current_user = params[:nick]
       session[:easy_data_session] = params[:nick]
@@ -320,9 +320,10 @@ class EasyDatasController < ActionController::Base
   end
 
   def authenticated
-    admin = YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))
+    admin = YAML::load(File.open("#{Rails.root}/config/easy_data/setting.yaml"))
     
     if admin["access"]["ip"].nil? || admin["access"]["ip"].to_s == request.ip.to_s
+    
      if session[:easy_data_session].nil?
        redirect_to :action => "authenticate_user"
      end
@@ -332,9 +333,15 @@ class EasyDatasController < ActionController::Base
   end
 
   def save_settings(settings)
-     file = File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml",'w')
+     file = File.open("#{Rails.root}/config/easy_data/setting.yaml",'w')
      file.puts YAML::dump(settings)
      file.close
+  end
+
+  private
+
+  def layout
+     render :layout => 'easy_data_layout'
   end
 
 end

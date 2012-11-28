@@ -1,4 +1,4 @@
-#require "ftools"
+require "fileutils"
 require 'rake'
 require 'easy_data'
 require 'active_record'
@@ -11,6 +11,7 @@ namespace :easy_data do
           END_DESC
   task :install => [:generate_info_initialize,:generate_info_rdf,:copy_style_interface,:build_linked_data_graph] do
      puts "*** Finish install Easy Data gem in this proyect  ***"
+     puts " You need to add the EasyData routes at your config/routes.rb, please read the initialize file config/initializers/load_easy_data.rb" 
   end
  
   desc <<-END_DESC
@@ -18,18 +19,24 @@ namespace :easy_data do
           END_DESC
   task :generate_info_initialize => :environment do
     
-    easy_data_initialize_dir = "#{RAILS_ROOT}/config/initializers"  
-
+    easy_data_initialize_dir = "#{Rails.root}/config/initializers"  
+    file_routes = File.open(File.join(File.dirname(__FILE__),"../routes.txt"),"r")
     file = File.open("#{easy_data_initialize_dir}/load_easy_data.rb","w")
     
     puts "Generating info initialize gem"
 
     file.puts "#Load templates paths:"
     file.puts "require 'easy_data'"
-    file.puts "ActionController::Base.view_paths << EasyData.get_view_path"   
-    
-
+    file.puts "ActionController::Base.view_paths=ActionController::Base.view_paths+[ActionView::OptimizedFileSystemResolver.new(EasyData.get_view_path)]"
+    file.puts "=begin"
+    file.puts "##  Copy this routes to config/routes.rb file  ##"
+    file.puts " "   
+    file_routes.each do |l|
+      file.puts l
+    end
+    file.puts "=end"
     file.close
+    file_routes.close
   end
 
   desc <<-END_DESC
@@ -41,7 +48,7 @@ namespace :easy_data do
 
    models = DataModels.load_models
 
-   easy_data_dir = "#{RAILS_ROOT}/config/easy_data"  
+   easy_data_dir = "#{Rails.root}/config/easy_data"  
 
    unless File.exist? easy_data_dir
      Dir.mkdir easy_data_dir
@@ -82,8 +89,8 @@ namespace :easy_data do
      #Copy file to public/stylesheets:
      puts "Copy Style File to this proyect"
 
-     easy_data_stylesheets = "#{RAILS_ROOT}/public/stylesheets/easy_data"
-     easy_data_linked_data_graphs = "#{RAILS_ROOT}/public/images/linked_data_graphs"
+     easy_data_stylesheets = "#{Rails.root}/public/stylesheets/easy_data"
+     easy_data_linked_data_graphs = "#{Rails.root}/public/images/linked_data_graphs"
 
      unless File.exist? easy_data_stylesheets
        Dir.mkdir easy_data_stylesheets
@@ -106,7 +113,7 @@ namespace :easy_data do
 
     args.with_defaults(:user => "admin", :pass => "admin")
 
-    easy_data_dir = "#{RAILS_ROOT}/config/easy_data"
+    easy_data_dir = "#{Rails.root}/config/easy_data"
 
     file = File.open("#{easy_data_dir}/setting.yaml","w")
     file.puts "#User admin:"
