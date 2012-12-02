@@ -105,6 +105,20 @@ class EasyDatasController < ActionController::Base
   def faq
   end
 
+  # Access to list of model of Data Model
+  def models 
+    @xml = Builder::XmlMarkup.new
+    rdf = ModelRdf.new
+    @list = rdf.get_not_hidden_models
+    @host="http://"+request.env["SERVER_NAME"]     
+    
+    respond_to do |format|
+      format.html
+      format.xml                     # render :template => "/rdf/request.xml.builder"   
+    end
+ 
+  end
+
   def custom_rdf
     @models = DataModels.load_models
     @settings ||= YAML::load(File.open("#{RAILS_ROOT}/config/easy_data/setting.yaml"))

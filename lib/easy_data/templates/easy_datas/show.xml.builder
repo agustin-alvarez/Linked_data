@@ -1,4 +1,5 @@
 xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8"
+
 unless @rdf_model.empty?
  xml.rdf :RDF, @rdf_model[:header] do 
    @rdf_model[:body].each do |element,prop|

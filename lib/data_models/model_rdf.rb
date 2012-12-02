@@ -30,7 +30,7 @@ class ModelRdf
    # @return [Hash] return RDF information about public access information of publicated models
    def get_public_models
       models = []
-      self.load_models.each do |mod|
+      DataModels.load_models.each do |mod|
         if self.public?(mod) 
           models << mod
         end
@@ -41,7 +41,7 @@ class ModelRdf
    # @return [Hash] return RDF information about not hidden rdf information's models. 
    def get_not_hidden_models
      models = []
-     self.load_models.each do |mod|
+     DataModels.load_models.each do |mod|
        unless self.hidden?(mod) 
          models << mod
        end
