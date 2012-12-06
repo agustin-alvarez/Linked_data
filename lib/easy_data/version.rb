@@ -1,3 +1,3 @@
 module EasyData
-  VERSION = "0.0.95"
+  VERSION = "0.1"
 end
