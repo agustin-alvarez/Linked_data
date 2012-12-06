@@ -26,7 +26,7 @@ class EasyDatasController < ActionController::Base
             
         unless @reply.nil?
           @host="http://"+request.env["HTTP_HOST"]+request.env["SCRIPT_NAME"]
-          debugger 
+          
           @rdf_model = rdf.get_model_rdf(@reply,params[:model],@host)
         end
        
