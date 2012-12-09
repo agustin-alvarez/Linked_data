@@ -59,9 +59,9 @@ class EasyDatasController < ActionController::Base
 
         @reply = model.find :all || nil
      
-        @host="http://"+request.env["SERVER_NAME"]          
+        @host="http://"+request.env["HTTP_HOST"]+request.env["SCRIPT_NAME"]         
       
-        @rdf_model = rdf.get_model_rdf(@reply,params[:model],"http://"+request.env["SERVER_NAME"])
+        @rdf_model = rdf.get_model_rdf(@reply,params[:model],@host)
       
         @xml = Builder::XmlMarkup.new
       
