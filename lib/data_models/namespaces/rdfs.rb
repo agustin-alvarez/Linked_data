@@ -13,7 +13,14 @@ module EasyData
                     "subClassOf" => "",
                     "subPropertyOf" => ""  
                    }
-       
+     @@classes = {"Class" => "",
+                  "Resource" => "",
+                  "Literal" => "",
+                  "Container" => "",
+                  "ContainerMembershipProperty" => "",
+                  "Datatype" => ""
+     }
+
      # Return Namespace URI
      def self.get_uri
        @@uri
@@ -35,7 +42,21 @@ module EasyData
          list[property] = property
        end
        list
+     end 
+
+     #Return a list of Namespace's classes
+     def self.classes
+        @@classes.keys
      end
+
+     def self.classes_form 
+       list = {}
+       @@classes.keys.each do |c|
+         list[c] = c
+       end
+       list
+     end
+
    end
  end
 end

@@ -59,6 +59,7 @@ module EasyData
                      "type" => "",
                      "valid" => ""
                     }
+     @@classes = {}
        
      # Return Namespace URI
      def self.get_uri
@@ -81,7 +82,21 @@ module EasyData
          list[property] = property
        end
        list
+     end 
+
+     #Return a list of Namespace's classes
+     def self.classes
+        @@classes.keys
      end
+
+     def self.classes_form 
+       list = {}
+       @@classes.keys.each do |c|
+         list[c] = c
+       end
+       list
+     end
+
    end
   end
 end

@@ -290,7 +290,7 @@ class ModelRdf
     # @param [Object] Model's instance
     # @return [Hash] RDF's association informations about the object 
     def get_associations_tag(element)
-       
+      
        associations = get_attributes_model(element.class.to_s)
        class_element = element.class
        if associations.nil?

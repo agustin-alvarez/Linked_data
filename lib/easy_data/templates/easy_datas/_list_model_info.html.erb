@@ -12,7 +12,7 @@
   <span class="rdf_info"><%= "(Current value: #{model[:namespace]})" %></span>
 </div>
          
-  <%= observe_field "namespace_#{model_name}",{:url => {:controller => "easy_datas",:action => "load_properties",
+  <%= observe_field "namespace_#{model_name}",{:url => {:controller => "easy_datas",:action => "load_classes",
                                                        :block=>"properties_#{model_name}",:attribute => model_name,:model => model_name},
                                                :with => '"id="+value',
                                                :on => :selected,

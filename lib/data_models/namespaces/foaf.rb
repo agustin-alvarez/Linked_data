@@ -65,6 +65,21 @@ module EasyData
     "workplaceHomepage" => "",
     "yahooChatID" => ""
      }
+
+     @@classes = {"Agent" => "",
+                  "Document" => "",
+                  "Group" => "",
+                  "Image" => "",
+                  "LabelProperty" => "",
+                  "OnlineAccount" => "",
+                  "OnlineChatAccount" => "",
+                  "OnlineEcommerceAccount" => "",
+                  "OnlineGamingAccount" => "",
+                  "Organization" => "",
+                  "Person" => "",
+                  "PersonalProfileDocument" => "",
+                  "Project" => ""            
+     }
        
      # Return Namespace URI
      def self.get_uri
@@ -88,6 +103,20 @@ module EasyData
        end
        list
      end 
+
+     #Return a list of Namespace's classes
+     def self.classes
+        @@classes.keys
+     end
+
+     def self.classes_form 
+       list = {}
+       @@classes.keys.each do |c|
+         list[c] = c
+       end
+       list
+     end
+
    end
  end
 end

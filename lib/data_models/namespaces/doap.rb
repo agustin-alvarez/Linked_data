@@ -41,6 +41,19 @@ module EasyData
     "vendor" => "",
     "wiki" => ""   
      }
+     @@classes = {"Project" => "",
+                  "Version" => "",
+                  "Specification" => "",
+                  "Repository" => "",
+                  "SVNRepository" => "",
+                  "BKRepository" => "",
+                  "CVSRepository" => "",
+                  "ArchRepository" => "",
+                  "BazaarBranch" => "",
+                  "GitRepository" => "",
+                  "HgRepository" => "",
+                  "DarcsRepository" => ""
+     }
        
      # Return Namespace URI
      def self.get_uri
@@ -63,6 +76,21 @@ module EasyData
          list[property] = property
        end
        list
-     end   end
+     end 
+
+     #Return a list of Namespace's classes
+     def self.classes
+        @@classes.keys
+     end
+
+     def self.classes_form 
+       list = {}
+       @@classes.keys.each do |c|
+         list[c] = c
+       end
+       list
+     end
+ 
+    end
   end
 end

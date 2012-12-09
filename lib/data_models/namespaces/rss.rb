@@ -2,7 +2,7 @@ module EasyData
   module RDF
    class RSS < Namespaces
 
-     @@uri = "http://purl.org/rss/1.0/"
+     @@uri = "http://web.resource.org/rss/1.0/schema.rdf"
      @@properties = {"description" => "",
                      "items" => "",
                      "link" => "",
@@ -11,6 +11,12 @@ module EasyData
                      "url" => "" 
                     }
        
+     @@classes = {"channel" => "",
+                  "image" => "",
+                  "item" => "",
+                  "textinput" => ""
+     }
+
      # Return Namespace URI
      def self.get_uri
        @@uri
@@ -32,7 +38,21 @@ module EasyData
          list[property] = property
        end
        list
+     end 
+
+     #Return a list of Namespace's classes
+     def self.classes
+        @@classes.keys
      end
+
+     def self.classes_form 
+       list = {}
+       @@classes.keys.each do |c|
+         list[c] = c
+       end
+       list
+     end
+
    end
  end
 end

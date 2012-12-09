@@ -19,6 +19,8 @@ class EasyDatasController < ActionController::Base
         conditions = parser_params(params)
      
         rdf = ModelRdf.new      
+
+        @model_info = rdf.get_attributes_model params[:model]
        
         no_valid = lambda{|c| c.nil?||c.empty?}
        
@@ -51,6 +53,8 @@ class EasyDatasController < ActionController::Base
       
         rdf = ModelRdf.new      
       
+        @model_info = rdf.get_attributes_model params[:model]
+
         no_valid = lambda{|c| c.nil?||c.empty?}
 
         @reply = model.find :all || nil
@@ -165,20 +169,33 @@ class EasyDatasController < ActionController::Base
        @model_attributes = rdf.get_attributes_model(params[:model])
        
        properties = (eval namespace).properties_form
-       
-       if params[:attribute]!=params[:model]
-         render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
-                          :locals => {:properties => properties,
-                                      :type => params[:type],
-                                      :attribute => params[:attribute],
-                                      :current_value => @model_attributes[params[:type]][params[:attribute]][:property]}
-       else
-         render :inline => "<span>Property:</span><%= select 'property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span><br />",
-                          :locals => {:properties => properties,
-                                      :attribute => params[:model],
-                                      :current_value => @model_attributes[:property]}
+   
+       render :inline => "<span>Property:</span><%= select type+'_property',attribute,properties,{:prompt => 'Select a property...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span>",
+              :locals => {:properties => properties,
+                          :type => params[:type],
+                          :attribute => params[:attribute],
+                          :current_value => @model_attributes[params[:type]][params[:attribute]][:property]}
+     else
+       render :inline => ""
+     end
+  end
+ 
+  def load_classes
+  
+     unless params[:id] == ""
+       namespace = "EasyData::RDF::#{params[:id].upcase}"
 
-       end
+       rdf = ModelRdf.new    
+ 
+       @namespace = params[:id]
+       @model_attributes = rdf.get_attributes_model(params[:model])
+       
+       classes = (eval namespace).classes_form
+       
+       render :inline => "<span>Class:</span><%= select 'property',attribute,properties,{:prompt => 'Select a class...'} -%><span class='rdf_info'>(Current value: <%= current_value%>)</span><br />",
+              :locals => {:properties => classes,
+                          :attribute => params[:model],
+                          :current_value => @model_attributes[:property]}
      else
        render :inline => ""
      end

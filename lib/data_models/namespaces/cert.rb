@@ -2,11 +2,21 @@ module EasyData
   module RDF
    class CERT < Namespaces
      @@uri = "http://www.w3.org/ns/auth/cert#"
-     @@properties= {"decimal" => "",
-                    "hex" => "",
+     @@properties= {"modulus" => "",
+                    "exponent" => "",
                     "identity" => "",
-                    "public_key" => "", 
+                    "key" => "",
+                    "privateExponent" => ""
      }
+     @@classes = {"Certificate" => "",
+                  "PGPCertificate" => "",
+                  "PrivateKey" => "",
+                  "PublicKey" => "",
+                  "RSAKey" => "",
+                  "RSAPublicKey" => "",
+                  "Signature" => "",
+                  "X509Certificate" => ""
+                }
        
      # Return Namespace URI
      def self.get_uri
@@ -28,6 +38,21 @@ module EasyData
          list[property] = property
        end
        list
-     end   end
+     end 
+
+     #Return a list of Namespace's classes
+     def self.classes
+        @@classes.keys
+     end
+
+     def self.classes_form 
+       list = {}
+       @@classes.keys.each do |c|
+         list[c] = c
+       end
+       list
+     end
+   
+   end
  end
 end
