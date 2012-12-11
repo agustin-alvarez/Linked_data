@@ -168,6 +168,7 @@ class ModelRdf
    def get_prefix(model)
       prefix = []
       data_model = get_attributes_model(model)
+      
       data_model["attributes"].each do |att,info|
        if info[:namespace] && info[:namespace] != 'not defined'
         puts info[:namespace]

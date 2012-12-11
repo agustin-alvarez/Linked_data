@@ -114,7 +114,7 @@ class EasyDatasController < ActionController::Base
     @xml = Builder::XmlMarkup.new
     rdf = ModelRdf.new
     @list = rdf.get_not_hidden_models
-    @host="http://"+request.env["SERVER_NAME"]     
+    @host="http://"+request.env["HTTP_HOST"]+request.env["SCRIPT_NAME"]     
     
     respond_to do |format|
       format.html
@@ -205,7 +205,7 @@ class EasyDatasController < ActionController::Base
      if params[:model]
       @model = params[:model]
       @associations = ModelRdf.new.get_associations_model(@model) 
-      @host = "http://"+request.env["HTTP_HOST"]
+      @host="http://"+request.env["HTTP_HOST"]+request.env["SCRIPT_NAME"]
       render :partial => "linked_data_model"
      else
       rdf = ModelRdf.new
