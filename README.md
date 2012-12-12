@@ -1,3 +1,11 @@
+
+Introduction
+--------------
+
+EasyData is a component makes it easy to publish, share and work with data by a RDF interface. Add a interface to custom a semantic informations associated to the data model and we have the data that are sensible to their publication under control.
+
+<img src="http://jnillovalley.dyndns.org/redmine/stylesheets/easy_data/images/LogoEasyData.jpg" title="EasyData logo"/>
+
 Installation
 --------------
 

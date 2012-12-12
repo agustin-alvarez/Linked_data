@@ -86,7 +86,7 @@ class RDFa
     html = "<#{tag} #{options}>"
     unless value.nil?
      data_model["attributes"].each do |att,info|
-      if info[:namespace] && info[:property]
+      if info[:namespace] && info[:property] && (info[:namespace]!='not defined' && info[:property]!='not defined')
         html << "<li property='#{info[:namespace]}:#{info[:property]}'>#{value.attributes[att]}</li>"
       end
      end
