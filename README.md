@@ -37,7 +37,7 @@ Commandas and Query
 
 <p>After, to get any information about any model or resource, used this url: </p>
 
-<pre><code>  http://[project_host]/foaf/[model]/[id][.format] </code></pre>
+<pre><code>  http://[project_host]/foaf/[model]/[id] </code></pre>
 
 <ul>
 <li>[model] = any model list in first url</li>
