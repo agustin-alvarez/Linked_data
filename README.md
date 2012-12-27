@@ -46,4 +46,4 @@ Collaborations
 License
 --------------------
 
-<p>EasyData uses the <a href="www.opensource.org/licenses/MIT" title="MIT license description">MIT</a> lincense.</p>
+<p>EasyData uses the <a href="http://www.opensource.org/licenses/MIT" title="MIT license description">MIT</a> lincense.</p>
