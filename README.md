@@ -42,3 +42,8 @@ Collaborations
 
 <p>If you want to collaborate on this project or have any ideas and would like to share, please email me at my email, all are welcome!</p>
 <p><a href="mailto:jnillo9@gmail.com" title="jnillo's mail">jnillo9@gmail.com</a></p>
+
+License
+--------------------
+
+<p>EasyData uses the <a href="www.opensource.org/licenses/MIT" title="MIT license description">MIT</a> lincense.</p>
